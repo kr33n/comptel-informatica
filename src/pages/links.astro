@@ -1,4 +1,5 @@
 ---
+import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 // Importe a foto de perfil caso vá usar a tag Image do Astro
 import profileImg from "../assets/logo.svg";
@@ -39,45 +40,55 @@ const links = [
 ];
 ---
 
-<html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{siteConfig.name} | Links</title>
-  </head>
-  <body class="linktree-body">
-    <main class="container">
-      <!-- Cabeçalho (Foto, Nome e Bio) -->
-      <header class="profile-header">
-        <Image
-          src={profileImg}
-          alt={`Foto de ${siteConfig.name}`}
-          class="avatar"
-        />
-        <h1 class="name">{siteConfig.name}</h1>
-        <p class="bio">{profile.bio}</p>
-      </header>
+<style>
+  .chat-widget {
+    display: none !important;
+  }
+</style>
 
-      <!-- Lista de Links -->
-      <nav class="links-container">
-        {
-          links.map((link) => (
-            <a
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="link-button"
-              style={`--hover-color: ${link.color};`}
-            >
-              {link.title}
-            </a>
-          ))
-        }
-      </nav>
-    </main>
-  </body>
-</html>
+<Layout
+  title="Comptel Informática - Soluções de TI"
+  description="Conheça nossa solução completa de ponta a ponta para alavancar o seu negócio com alta performance."
+>
+  <html lang="pt-BR">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>{siteConfig.name} | Links</title>
+    </head>
+    <body class="linktree-body">
+      <main class="container">
+        <!-- Cabeçalho (Foto, Nome e Bio) -->
+        <header class="profile-header">
+          <Image
+            src={profileImg}
+            alt={`Foto de ${siteConfig.name}`}
+            class="avatar"
+          />
+          <h1 class="name">{siteConfig.name}</h1>
+          <p class="bio">{profile.bio}</p>
+        </header>
 
+        <!-- Lista de Links -->
+        <nav class="links-container">
+          {
+            links.map((link) => (
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-button"
+                style={`--hover-color: ${link.color};`}
+              >
+                {link.title}
+              </a>
+            ))
+          }
+        </nav>
+      </main>
+    </body>
+  </html>
+</Layout>
 <style>
   /* Reset básico para a página de links */
   :global(body) {
@@ -187,3 +198,11 @@ const links = [
     }
   }
 </style>
+
+<script>
+  const chat = document.querySelector<HTMLElement>(".chat-widget");
+
+  if (chat) {
+    chat.style.setProperty("display", "none", "important");
+  }
+</script>
