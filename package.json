@@ -12,6 +12,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.1.2"
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.1.2",
+    "astro-compress": "^2.4.1",
+    "embla-carousel": "^8.6.0",
+    "simple-icons": "^16.27.0"
   }
 }
