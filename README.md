@@ -1,46 +1,59 @@
-# Astro Starter Kit: Basics
+# 💻 Comptel Informática - Landing Page & Links
 
-```sh
-npm create astro@latest -- --template basics
-```
+Landing page institucional e página de links (Bio/Linktree) moderna, ultra-rápida e totalmente responsiva desenvolvida para a **Comptel Informática**.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+O projeto apresenta a marca, destaca soluções em setups customizados (PC Gamer, Workstation/Home Office e Periféricos), informa dados de localização da loja física no Shopping Laranjeiras (Serra/ES) e oferece canais diretos de atendimento via WhatsApp e redes sociais.
 
-## 🚀 Project Structure
+---
 
-Inside of your Astro project, you'll see the following folders and files:
+## 🚀 Tecnologias Utilizadas
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+- **[Astro](https://astro.build/):** Framework web focado em performance e entrega de HTML estático com JavaScript zero por padrão.
+- **TypeScript:** Garante tipagem estática e maior confiabilidade na navegação dinâmica do carrossel.
+- **CSS3 Moderno:** Utilização de Flexbox, CSS Variables, Media Queries customizadas e funções de cálculo (`calc()`) para layout fluido.
+- **HTML5 Semântico:** Estruturação limpa voltada para acessibilidade e bom posicionamento em SEO.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+---
 
-## 🧞 Commands
+## ✨ Destaques do Projeto
 
-All commands are run from the root of the project, from a terminal:
+- **Hero Carousel Responsivo:**
+  - Layout dinâmico que se adapta entre Desktop (banner horizontal com sobreposição de produto) e Mobile (empilhamento de card centralizado).
+  - Deslocamento contínuo em pixels dinâmicos no JavaScript (`offsetWidth` + `gap`), garantindo respiro e alinhamento _pixel-perfect_ em qualquer resolução.
+- **Carrossel de Marcas:** Seção de parceiros com logos vetorizadas (Bluecase, Galax, Intel, NVIDIA, Redragon).
+- **Grid de Categorias:** Cards em pílulas focados em conversão para Workstations, PCs Gamer e Periféricos.
+- **Página de Links (`/links`):**
+  - Hub de Links no estilo Linktree integrado com a identidade visual da loja.
+  - Botões diretos para atendimento no WhatsApp, Instagram e Facebook.
+  - Formatação customizada para logos retangulares com container proporcional (`12rem` x `4.5rem`).
+- **Localização e Atendimento:** Informações claras da loja física (Shopping Laranjeiras, Loja 138 - Serra/ES) e horários de funcionamento.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+---
 
-## 👀 Want to learn more?
+## 🎨 Identidade Visual & Design System
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- **Cores Principais:** Azul Elétrico (`#0339E8` / `#1919FE`), Branco (`#FFFFFF`) e Cinza Suave (`#F8F9FA`).
+- **Tipografia:** Semântica e escalável, ajustada com `rem` para manter a proporcionalidade em todas as densidades de tela.
+- **Componentes Destacados:**
+  - `.carousel-wrapper`: Máscara de contenção e controle de transição do hero.
+  - `.link-button`: Botões interativos em formato pílula para a página de links.
+  - `.avatar`: Moldura retangular proporcional para logos institucionais.
+
+---
+
+## 🛠️ Como Rodar o Projeto Localmente
+
+### Pré-requisitos
+
+Certifique-se de ter instalado em sua máquina:
+
+- [Node.js](https://nodejs.org/) (versão 18.x ou superior)
+- Um gerenciador de pacotes (`npm`, `pnpm` ou `yarn`)
+
+### Passo a Passo
+
+1. **Clone o repositório:**
+   ```bash
+   git clone [https://github.com/seu-usuario/comptel-informatica.git](https://github.com/seu-usuario/comptel-informatica.git)
+   cd comptel-informatica
+   ```
