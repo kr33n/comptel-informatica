@@ -9,7 +9,7 @@
 <style>
   .feature-cards {
     display: flex;
-    height: 36.3125rem;
+    min-height: 36.3125rem;
     padding: 4rem;
     justify-content: center;
     align-items: center;
@@ -18,5 +18,13 @@
     /* width: 100%; */
     /* box-sizing: border-box; */
     flex-wrap: wrap;
+  }
+  @media (max-width: 1200px) {
+    .feature-cards {
+      flex-direction: column; /* Força um card abaixo do outro */
+      padding: 2rem 1rem; /* Reduz o padding para ganhar espaço na tela */
+      height: auto; /* Garante que a altura se adapte aos cards empilhados */
+      gap: 5rem;
+    }
   }
 </style>

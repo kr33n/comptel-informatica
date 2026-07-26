@@ -10,8 +10,10 @@ const imagesList = Object.values(bannerImages).map((img) => img.default);
 
 <section class="banner-section">
   <div class="banner-container">
-    <div class="banner-text">Trabalhamos com as melhores marcas do mercado</div>
     <div class="marquee-wrapper">
+      <div class="banner-text">
+        Trabalhamos com as melhores marcas do mercado
+      </div>
       {
         imagesList.map((image, index) => (
           <div class="logo-item">
