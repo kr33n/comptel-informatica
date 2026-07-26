@@ -1,0 +1,232 @@
+---
+export interface Props {
+  texto?: Record<string, any>;
+  botao?: Record<string, any>;
+  imagem?: Record<string, any>;
+  corFundo: string; // Use 'string' com 's' minúsculo (TypeScript padrão)
+}
+
+const {
+  texto,
+  botao,
+  imagem,
+  corFundo, // Azul da imagem de referência
+} = Astro.props;
+---
+
+<div class="banner-slide" style={`background: ${corFundo};`}>
+  <div class="banner-content">
+    <!-- Textos e Botão -->
+    <div class="banner-text-column">
+      <p class="linha1">{texto?.linha1}</p>
+      <h2 class="destaque">{texto?.palavraDestaque}</h2>
+      <p class="linha2">{texto?.linha2}</p>
+
+      <a href={botao?.linkBotao} target="_blank" class="banner-btn">
+        <span>{botao?.textoBotao}</span>
+
+        <svg
+          class="icon-seta"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2.5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M7 17L17 7M17 7H7M17 7V17"></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Imagens Sobrepostas -->
+    <div class="banner-image-column">
+      {
+        imagem?.imagemFundoTelas && (
+          <img
+            src={imagem.imagemFundoTelas.src}
+            alt="Telas"
+            class="img-fundo"
+            style={imagem.styleFundoTela}
+          />
+        )
+      }
+      {
+        imagem?.imagemPrincipal && (
+          <img
+            src={imagem.imagemPrincipal.src}
+            alt="PC Gamer"
+            class="img-frente"
+          />
+        )
+      }
+    </div>
+  </div>
+</div>
+
+<style
+  define:vars={{
+    corTextoBotao: botao?.corTextoBotao,
+    corFundoBotao: botao?.corFundoBotao,
+    corTexto: texto?.cor,
+  }}
+>
+  .banner-slide {
+    display: flex;
+    width: auto;
+    height: 35rem;
+    padding: 0 4rem;
+    justify-content: center;
+    align-items: flex-start;
+    border-radius: 2.25rem;
+  }
+
+  .banner-content {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    z-index: 10;
+    justify-content: center;
+    gap: 8rem;
+    align-items: flex-start;
+    height: 100%;
+    flex: 1 0 0;
+  }
+
+  .banner-text-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+
+    max-width: 45%;
+    width: 45%;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+    justify-content: center;
+  }
+
+  .linha1,
+  .linha2,
+  .destaque {
+    color: var(--corTexto);
+  }
+
+  .linha1 {
+    font-size: 2.25rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 3rem;
+    letter-spacing: -0.045rem;
+    align-self: stretch;
+  }
+
+  .destaque {
+    align-self: stretch;
+    font-size: 3.5rem;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 3.5rem;
+    letter-spacing: 0.035rem;
+  }
+
+  .linha2 {
+    align-self: stretch;
+    font-size: 2.25rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 3rem;
+    letter-spacing: -0.045rem;
+    padding: 0 0 4rem 0;
+  }
+
+  .banner-btn {
+    display: flex;
+    padding: 0.75rem 1.5rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 1.5rem;
+    background: var(--corFundoBotao);
+  }
+
+  .banner-btn span,
+  svg {
+    color: var(--corTextoBotao);
+    text-align: center;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 145%;
+    letter-spacing: -0.00563rem;
+  }
+
+  .banner-btn:hover {
+    background-color: var(--corTextoBotao);
+  }
+  .banner-btn:hover span,
+  .banner-btn:hover svg {
+    color: var(--corFundoBotao);
+  }
+
+  .icon-seta {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .banner-image-column {
+    position: relative;
+    width: 65%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .img-fundo {
+    position: absolute;
+    z-index: -1;
+    height: 130% !important;
+    max-height: none !important;
+    width: auto;
+    max-width: none !important;
+    right: -10%;
+    bottom: -20%;
+    top: auto;
+    left: auto;
+    transform: none;
+    pointer-events: none;
+    object-fit: contain;
+  }
+
+  .img-frente {
+    position: absolute;
+    right: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 150%;
+    max-width: none;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  @media (max-width: 900px) {
+    .banner-content {
+      padding: 2rem;
+    }
+    .destaque {
+      font-size: 3rem;
+    }
+    .img-fundo {
+      width: 140%;
+      left: -2rem;
+    }
+    .img-frente {
+      width: 80%;
+    }
+  }
+</style>

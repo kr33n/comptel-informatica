@@ -1,0 +1,134 @@
+/* Container principal fixo no canto inferior direito */
+.chat-widget {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+/* Janela do Chat */
+.chat-window {
+  display: none; /* Oculto por padrão */
+  width: 320px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #eaeaea;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+/* Classe para exibir a janela via JavaScript */
+.chat-window.show {
+  display: flex;
+}
+
+/* Cabeçalho */
+.chat-header {
+  background-color: #25d366; /* Azul combinando com sua logo */
+  color: #ffffff;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.close-btn:hover {
+  opacity: 1;
+}
+
+/* Corpo do chat */
+.chat-body {
+  padding: 20px;
+  background-color: #f9fafb;
+  height: 130px;
+  overflow-y: auto;
+}
+
+.chat-message {
+  background-color: #ffffff;
+  border: 1px solid #eaeaea;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border-top-left-radius: 2px;
+  font-size: 14px;
+  color: #333333;
+  max-width: 90%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Rodapé / Input */
+.chat-footer {
+  padding: 12px;
+  background-color: #ffffff;
+  border-top: 1px solid #eaeaea;
+  display: flex;
+  gap: 8px;
+}
+
+#chat-input {
+  flex: 1;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#chat-input:focus {
+  border-color: #25d366;
+}
+
+.send-btn {
+  background-color: #25d366;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.send-btn:hover {
+  background-color: #25d366;
+}
+
+/* Botão Flutuante */
+.chat-fab {
+  background-color: #25d366;
+  color: #ffffff;
+  border: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(3, 3, 232, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.chat-fab:hover {
+  transform: scale(1.05);
+}

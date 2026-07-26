@@ -1,0 +1,73 @@
+---
+import { siWhatsapp, siInstagram, siTiktok, siFacebook } from "simple-icons";
+import { siteConfig } from "../../siteConfig";
+import "./Footer.css";
+import { Image } from "astro:assets";
+import LogoFooter from "../../assets/logo-footer.png";
+---
+
+<div class="container footer-content">
+  <!-- Container dos ícones com as regras do Figma -->
+  <div class="social-links">
+    <a
+      href={`${siteConfig.links.whatsappUrl}${siteConfig.phone}?text=${siteConfig.whatsappText}Gostaria de falar com algum atendente`}
+      aria-label="WhatsApp"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <svg
+        role="img"
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+        fill="currentColor"
+      >
+        <path d={siWhatsapp.path}></path>
+      </svg>
+      <title>Whatsapp</title>
+    </a>
+    <a
+      href={`${siteConfig.links.instagram}`}
+      aria-label="Instagram"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <svg
+        role="img"
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+        fill="currentColor"
+      >
+        <path d={siInstagram.path}></path>
+      </svg>
+      <title>Instagram</title>
+    </a>
+    <a
+      href={`${siteConfig.links.facebook}`}
+      aria-label="Facebook"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <svg
+        role="img"
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+        fill="currentColor"
+      >
+        <path d={siFacebook.path}></path>
+      </svg>
+      <title>Facebook</title>
+    </a>
+  </div>
+  <p class="footer-title">
+    © {new Date().getFullYear()} Comptel. Todos os direitos reservados.<br />
+    <a href="https://www.instagram.com/gabcabral_"
+      >Desenvolvido por Gab Studio</a
+    >
+  </p>
+  <div class="logo-empresa">
+    <Image src={LogoFooter} alt="" />
+  </div>
+</div>

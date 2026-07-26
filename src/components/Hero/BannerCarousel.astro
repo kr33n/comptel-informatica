@@ -1,0 +1,136 @@
+---
+// src/components/BannerCarousel.astro
+import BannerSlide from "./BannerSlide.astro";
+import { siteConfig } from "../../siteConfig";
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/heroCarousel/*.{png,jpg,jpeg,webp,svg}",
+  { eager: true },
+);
+
+// Função auxiliar para resgatar a imagem pelo nome do arquivo
+function getImage(fileName: string) {
+  const path = `/src/assets/heroCarousel/${fileName}`;
+  return images[path]?.default;
+}
+const slidesPromocionais = [
+  {
+    id: 1,
+    texto: {
+      linha1: "Jogue na",
+      palavraDestaque: "RESOLUÇÃO",
+      linha2: "que você sempre quis!",
+      cor: "#FFF",
+    },
+    botao: {
+      textoBotao: "Quero meu orçamento gamer",
+      corTextoBotao: "#1919FE",
+      corFundoBotao: "#FFF",
+      linkBotao: `${siteConfig.links.whatsappUrl}${siteConfig.phone}?text=${siteConfig.whatsappText}Quero montar meu pc gamer`,
+    },
+    imagem: {
+      imagemFundoTelas: getImage("logo-diagonal.svg"),
+      styleFundoTela: "",
+      imagemPrincipal: getImage("pc-gamer.png"),
+    },
+    corFundo: "linear-gradient(180deg, #1919FE 0%, #2727D9 100%);",
+  },
+  {
+    id: 2,
+    texto: {
+      linha1: "Computadores",
+      palavraDestaque: "SOB MEDIDA",
+      linha2: "para sua rotina!",
+      cor: "#FFF",
+    },
+    botao: {
+      textoBotao: "Monte o seu agora",
+      corFundoBotao: "#FFF",
+      corTextoBotao: "#6B99F5",
+      linkBotao: `${siteConfig.links.whatsappUrl}${siteConfig.phone}?text=${siteConfig.whatsappText}Quero montar meu pc`,
+    },
+    imagem: {
+      imagemFundoTelas: getImage("logo-diagonal.svg"),
+      styleFundoTela: "transform: rotateY(180deg);",
+      imagemPrincipal: getImage("pc-office.png"),
+    },
+    corFundo: "linear-gradient(180deg, #75A3FE 0%, #8EB4FF 100%);",
+  },
+  {
+    id: 3,
+    texto: {
+      linha1: "",
+      palavraDestaque: "PRODUTIVIDADE",
+      linha2: "em qualquer lugar!",
+      cor: "#6B99F5",
+    },
+    botao: {
+      textoBotao: "Quero meu orçamento gamer",
+      corTextoBotao: "#6B98F4",
+      corFundoBotao: "#FFF",
+      linkBotao: `${siteConfig.links.whatsappUrl}${siteConfig.phone}?text=${siteConfig.whatsappText}Quero um notebook`,
+    },
+    imagem: {
+      imagemFundoTelas: getImage("logo-diagonal.svg"),
+      styleFundoTela:
+        "filter: brightness(0) saturate(100%) invert(65%) sepia(44%) saturate(3089%) hue-rotate(194deg) brightness(96%) contrast(101%);; transform: rotate(360deg);",
+      imagemPrincipal: getImage("notebook.png"),
+    },
+    corFundo: "#E1E7F3",
+  },
+];
+---
+
+<div class="embla" id="meu-banner-embla">
+  <div class="embla__container">
+    {
+      slidesPromocionais.map((slide) => (
+        <div class="embla__slide">
+          <BannerSlide
+            texto={slide.texto}
+            botao={slide.botao}
+            imagem={slide.imagem}
+            corFundo={slide.corFundo}
+          />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  /* CSS Estrutural obrigatório para o Embla funcionar */
+  .embla {
+    overflow: hidden;
+    width: calc(
+      100% - 2rem
+    ); /* Garante 1rem de respiro em cada lado nas telas pequenas */
+    max-width: 84.625rem;
+    margin: 0 auto;
+    /* padding-right: 2.25rem; Descomente esta linha */
+    /* padding-left: 2.25rem;  Descomente esta linha */
+  }
+
+  .embla__container {
+    display: flex;
+    /* Adiciona um pequeno espaço entre os slides se desejar. Caso não, remova o gap */
+    gap: 1rem;
+  }
+
+  .embla__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+</style>
+
+<script>
+  import EmblaCarousel from "embla-carousel";
+
+  // O Astro executa isso no lado do cliente
+  document.addEventListener("DOMContentLoaded", () => {
+    const emblaNode = document.getElementById("meu-banner-embla");
+    if (emblaNode) {
+      // Ativa o loop infinito
+      EmblaCarousel(emblaNode, { loop: true });
+    }
+  });
+</script>
