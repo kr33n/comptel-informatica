@@ -5,14 +5,14 @@
 Fornecemos soluções completas em informática para o público corporativo, doméstico, gamers e entusiastas de hardware. Nossos serviços incluem montagem de setups sob medida, manutenção preventiva e corretiva, upgrades de sistema e diagnóstico de falhas.
 
 ## Serviços e Produtos
-- [Catálogo de Produtos](https://comptel.com.br/produtos.md): Lista atualizada de componentes (placas de vídeo, processadores, memórias), periféricos e notebooks disponíveis em estoque.
-- [Assistência Técnica](https://comptel.com.br/servicos.md): Detalhes dos serviços de manutenção, escopo de diagnósticos, valores de bancada e acompanhamento de Ordem de Serviço (OS).
-- [Montagem de PC](https://comptel.com.br/pc-custom.md): Guia e formulário para solicitação de orçamentos de computadores personalizados (gamers e workstations).
+- [Catálogo de Produtos](https://comptelinfo.com.br/produtos.md): Lista atualizada de componentes (placas de vídeo, processadores, memórias), periféricos e notebooks disponíveis em estoque.
+- [Assistência Técnica](https://comptelinfo.com.br/servicos.md): Detalhes dos serviços de manutenção, escopo de diagnósticos, valores de bancada e acompanhamento de Ordem de Serviço (OS).
+- [Montagem de PC](https://comptelinfo.com.br/pc-custom.md): Guia e formulário para solicitação de orçamentos de computadores personalizados (gamers e workstations).
 
 ## Atendimento
-- [Localização e Contato](https://comptel.com.br/contato.md): Endereço físico da loja na Serra - ES, horário de funcionamento, telefone e link de atendimento via WhatsApp.
-- [Políticas de Garantia](https://comptel.com.br/garantia.md): Prazos de garantia legais e do fabricante, regras para devolução (RMA) e suporte técnico pós-venda.
+- [Localização e Contato](https://comptelinfo.com.br/contato.md): Endereço físico da loja na Serra - ES, horário de funcionamento, telefone e link de atendimento via WhatsApp.
+- [Políticas de Garantia](https://comptelinfo.com.br/garantia.md): Prazos de garantia legais e do fabricante, regras para devolução (RMA) e suporte técnico pós-venda.
 
 ## Optional
-- [História da Loja](https://comptel.com.br/sobre.md): Como a Comptel se estabeleceu na região da Grande Vitória e nossa missão.
-- [Dicas de Manutenção](https://comptel.com.br/blog/dicas.md): Tutoriais básicos sobre limpeza de hardware, escolha de peças e otimização de sistema operacional.
+- [História da Loja](https://comptelinfo.com.br/sobre.md): Como a Comptel se estabeleceu na região da Grande Vitória e nossa missão.
+- [Dicas de Manutenção](https://comptelinfo.com.br/blog/dicas.md): Tutoriais básicos sobre limpeza de hardware, escolha de peças e otimização de sistema operacional.
