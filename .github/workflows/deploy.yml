@@ -1,0 +1,32 @@
+name: Deploy Automático para HostGator
+
+on:
+  push:
+    branches: [main, master] # Dispara o deploy sempre que você enviar código para abranch principal
+
+jobs:
+  web-deploy:
+    name: Fazendo Build e Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependências e rodar o Build do Astro
+        run: |
+          npm install
+          npm run build
+
+      - name: Enviar arquivos gerados para a HostGator via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/ # Pasta que o Astro gera o site pronto
+          server-dir: /public_html/teste/ # Altere para /public_html/ quando for para o site oficial
