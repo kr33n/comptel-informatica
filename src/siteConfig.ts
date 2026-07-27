@@ -6,7 +6,7 @@ export const siteConfig = {
   links: {
     whatsappUrl: "https://wa.me/",
     instagram: "https://ig.me/u/comptelinformatica",
-    facebook: "https://fb.me/comptelinfo",
+    facebook: "https://www.facebook.com/Comptelinfo",
     title: "Fale conosco no WhatsApp",
   },
 };
