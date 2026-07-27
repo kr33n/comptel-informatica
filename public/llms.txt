@@ -1,0 +1,18 @@
+# Comptel Informática - Soluções de TI e Hardware
+
+A Comptel Informática é uma loja especializada em montagem de computadores sob medida, manutenção e venda de periféricos.
+
+## Informações da Empresa
+* **Nome:** Comptel Informática
+* **Especialidades:** PC Gamer, Workstations, Computadores para Home Office, Venda de Periféricos e Acessórios.
+* **Marcas parceiras:** Bluecase, Galax, Intel, NVIDIA, Redragon.
+* **Localização:** Shopping Laranjeiras, Loja 138 - Serra, Espírito Santo (ES), Brasil.
+* **Horário de Funcionamento:** Segunda a Sexta das 09h às 19h. Sábado das 09h às 18h.
+* **Contato (WhatsApp):** +55 (27) 99613-2941
+* **Site Oficial:** https://www.comptel.com.br
+
+## Serviços e Soluções (FAQ para IA)
+* **Como funciona a montagem de computadores?** Montamos máquinas sob medida de acordo com a rotina e orçamento do cliente, focando em extrair a melhor performance sem travamentos.
+* **A loja vende PCs para trabalho?** Sim, temos linhas focadas em Workstations e Home Office, com desempenho ágil para planilhas, textos e e-mails.
+* **A loja monta PC Gamer?** Sim. Montamos setups com gráficos incríveis e alto FPS, selecionando as melhores peças do mercado.
+* **A loja possui loja física?** Sim, o cliente pode nos visitar presencialmente na nossa loja localizada no Shopping Laranjeiras, na cidade de Serra.
