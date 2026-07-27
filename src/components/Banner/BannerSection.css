@@ -1,12 +1,12 @@
 .banner-container {
   display: flex;
-  height: 19.25rem;
-  padding: 6.75rem 4rem;
+  /* height: 19.25rem; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 2.5rem;
   align-self: stretch;
+  padding: 2.5rem 4rem 6.75rem 4rem;
 }
 
 .marquee-wrapper {
@@ -42,19 +42,33 @@
   font-weight: 500;
   line-height: 145%; /* 1.8125rem */
   letter-spacing: -0.00625rem;
+  padding: 6.75rem 4rem 0 2.5rem;
+}
+/* tablet */
+@media (max-width: 1024px) {
+  .banner-text {
+    padding: 4rem 4rem 2.5rem 4rem;
+  }
+  .banner-container {
+    padding-bottom: 4rem;
+  }
 }
 
-@media (max-width: 48rem) {
+/* celular */
+@media (max-width: 768px) {
   .banner-container {
     display: flex;
     max-height: 16rem;
-    padding: 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 2.5rem;
     flex-shrink: 0;
     align-self: stretch;
+    padding-bottom: 4rem;
+  }
+  .banner-text {
+    padding-bottom: 0;
   }
 
   .marquee-wrapper {
