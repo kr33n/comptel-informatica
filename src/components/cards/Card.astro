@@ -26,7 +26,13 @@ if (!imageObject) {
 
 <article class="card">
   <div class="image-box">
-    <Image src={imageObject} alt={imageAlt} class="card-image" />
+    <Image
+      src={imageObject}
+      alt={imageAlt}
+      loading="lazy"
+      fetchpriority="high"
+      class="card-image"
+    />
   </div>
 
   <div class="text-box">

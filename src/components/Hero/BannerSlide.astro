@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 export interface Props {
   texto?: Record<string, any>;
   botao?: Record<string, any>;
@@ -44,19 +45,23 @@ const {
     <div class="banner-image-column">
       {
         imagem?.imagemFundoTelas && (
-          <img
-            src={imagem.imagemFundoTelas.src}
-            alt="Telas"
+          <Image
+            src={imagem.imagemFundoTelas}
+            alt={imagem.imagemAltFundoTela}
             class="img-fundo"
+            loading="eager"
+            fetchpriority="high"
             style={imagem.styleFundoTela}
           />
         )
       }
       {
         imagem?.imagemPrincipal && (
-          <img
-            src={imagem.imagemPrincipal.src}
-            alt="PC Gamer"
+          <Image
+            src={imagem.imagemPrincipal}
+            loading="eager"
+            fetchpriority="high"
+            alt={imagem.imagemAltFundoPrincipal}
             class="img-frente"
           />
         )
