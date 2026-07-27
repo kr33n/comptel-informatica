@@ -15,7 +15,7 @@ jobs:
       - name: Instalar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Instalar dependências e rodar o Build do Astro
         run: |
@@ -29,4 +29,4 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/ # Pasta que o Astro gera o site pronto
-          server-dir: /public_html/teste/ # Altere para /public_html/ quando for para o site oficial
+          server-dir: /teste/ # Altere para /public_html/ quando for para o site oficial
