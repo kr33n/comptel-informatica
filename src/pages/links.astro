@@ -9,7 +9,7 @@ const siteOrigin = Astro.url.origin;
 // 1. Dados do Perfil
 const profile = {
   name: "Nome da sua Marca",
-  bio: "Soluções em tecnologia e setups personalizados.",
+  bio: "Especialista em computadores! PCs Gamer, office, notebooks e periféricos de elite em Serra/ES. Visite nossa loja no Shopping Laranjeiras e monte sua máquina ideal",
   avatarUrl: profileImg, // Exemplo com URL externa
 };
 
@@ -22,20 +22,25 @@ const links = [
     color: "#0000ff", // Cor oficial do WhatsApp
   },
   {
-    title: "Fale conosco no WhatsApp",
+    title: "WhatsApp",
     // Note o formato wa.me com o código do Brasil (55) e o DDD (27)
     url: `${siteConfig.links.whatsappUrl}${siteConfig.phone}?text=${siteConfig.whatsappText}Gostaria de falar com algum atendente`,
     color: "#25D366", // Cor oficial do WhatsApp
   },
   {
-    title: "Acompanhe no Instagram",
+    title: "Instagram",
     url: `${siteConfig.links.instagram}`,
     color: "#E1306C", // Cor base do Instagram
   },
   {
-    title: "Curta nossa página no Facebook",
+    title: "Facebook",
     url: `${siteConfig.links.facebook}`,
     color: "#1877F2", // Cor oficial do Facebook
+  },
+  {
+    title: "Localização",
+    url: "https://maps.app.goo.gl/qd6Seq3cpC3bUQNc8",
+    color: "#000000", // Cor oficial do Facebook
   },
 ];
 ---
@@ -47,8 +52,9 @@ const links = [
 </style>
 
 <Layout
-  title="Comptel Informática - Soluções de TI"
-  description="Conheça nossa solução completa de ponta a ponta para alavancar o seu negócio com alta performance."
+  title="Comptel Informática | Links"
+  description="Especialista em computadores! PCs Gamer, office, notebooks e 
+  periféricos de elite em Serra/ES. Visite nossa loja no Shopping Laranjeiras e monte sua máquina ideal."
 >
   <html lang="pt-BR">
     <head>
