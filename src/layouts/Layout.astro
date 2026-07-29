@@ -95,6 +95,19 @@ const schemaData = {
     />
     <link rel="canonical" href={Astro.site || "https://www.comptel.com.br"} />
     <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+
+    <script
+      type="text/partytown"
+      src="https://www.googletagmanager.com/gtag/js?id=G-SEU_ID_AQUI"></script>
+    <script type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-2TKRLQHGWR");
+    </script>
   </head>
   <body>
     <SimpleChat />
