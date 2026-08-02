@@ -1,28 +1,30 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header/Header.astro";
-import FeatureSection from "../components/cards/FeatureSection.astro";
-import BannerSection from "../components/Banner/BannerSection.astro";
-import LocationSection from "../components/Location/LocationSection.astro";
-import Footer from "../components/Footer/Footer.astro";
-import BannerCarousel from "../components/Hero/BannerCarousel.astro";
+import { GamerCarousel } from "@/components/hero-carousel/Carousel";
+import { Header } from "@/components//header/header";
+
+import { BrandsCarousel } from "@/components/brands-carousel/BrandsCarousel";
+import { FeatureCards } from "@/components/feature-cards/FeatureCards";
+import { LocationSection } from "@/components/location/LocationSection";
+import { Footer } from "@/components/footer/Footer";
 ---
 
-<Layout
-  title="Comptel Informática"
-  description="Especialista em computadores! PCs Gamer, office, notebooks e 
-  periféricos de elite em Serra/ES. Visite nossa loja no Shopping Laranjeiras e monte sua máquina ideal."
->
-  <header>
-    <Header />
-  </header>
-  <main>
-    <BannerCarousel />
-    <BannerSection />
-    <FeatureSection />
-    <LocationSection />
-  </main>
-  <footer class="footer">
-    <Footer />
-  </footer>
-</Layout>
+<html lang="pt-BR">
+  <Layout
+    title="Comptel Informática"
+    description="Comptel Informática - Soluções em Tecnologia da Informação e
+      Comunicação. Oferecemos serviços de consultoria, suporte técnico,
+      manutenção de hardware e software, além de soluções personalizadas para
+      empresas e residências."
+  >
+    <head> </head>
+    <body class="flex flex-col bg-background">
+      <Header client:load />
+      <GamerCarousel client:load />
+      <BrandsCarousel client:load />
+      <FeatureCards client:load />
+      <LocationSection client:load />
+      <Footer client:load />
+    </body>
+  </Layout>
+</html>

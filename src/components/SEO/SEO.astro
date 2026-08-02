@@ -1,6 +1,6 @@
 ---
 /* src/components/SEO.astro */
-import { siteConfig } from "../../siteConfig.ts";
+import { siteConfig } from "@/siteConfig";
 
 export interface Props {
   title: string;
@@ -12,7 +12,7 @@ export interface Props {
 const {
   title,
   description,
-  image = "/og-image.jpg",
+  image = "/og-image.png",
   canonicalURL = Astro.url.href,
 } = Astro.props;
 
@@ -44,5 +44,4 @@ const siteName = `${siteConfig.name}`;
 <meta name="twitter:image" content={new URL(image, Astro.site)} />
 
 <!-- Favicon padrão -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

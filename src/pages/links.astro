@@ -1,214 +1,101 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from "astro:assets";
-// Importe a foto de perfil caso vá usar a tag Image do Astro
-import profileImg from "../assets/logo.svg";
 import { siteConfig } from "../siteConfig";
+import logoComptel from "@/assets/logo-branding-horizontal.svg";
+
 const siteOrigin = Astro.url.origin;
 
-// 1. Dados do Perfil
 const profile = {
-  name: "Nome da sua Marca",
   bio: "Especialista em computadores! PCs Gamer, office, notebooks e periféricos de elite em Serra/ES. Visite nossa loja no Shopping Laranjeiras e monte sua máquina ideal",
-  avatarUrl: profileImg, // Exemplo com URL externa
+  logoUrl: logoComptel, // Substitua pela imagem da sua logo
 };
 
-// 2. Lista Dinâmica de Links
 const links = [
   {
     title: "Site Oficial",
-    // Note o formato wa.me com o código do Brasil (55) e o DDD (27)
-    url: siteOrigin, // Link para o site oficial
-    color: "#0000ff", // Cor oficial do WhatsApp
+    url: siteOrigin,
+    hoverColor: "#1919FE",
   },
   {
     title: "WhatsApp",
-    // Note o formato wa.me com o código do Brasil (55) e o DDD (27)
-    url: `${siteConfig.links.whatsappUrl}${siteConfig.phone}?text=${siteConfig.whatsappText}Gostaria de falar com algum atendente`,
-    color: "#25D366", // Cor oficial do WhatsApp
+    url: `${siteConfig.links.whatsappUrl}${siteConfig.phone}?text=${encodeURIComponent(siteConfig.whatsappText + "Gostaria de falar com algum atendente")}`,
+    hoverColor: "#25D366",
   },
   {
     title: "Instagram",
-    url: `${siteConfig.links.instagram}`,
-    color: "#E1306C", // Cor base do Instagram
+    url: siteConfig.links.instagram,
+    hoverColor: "#E1306C",
   },
   {
     title: "Facebook",
-    url: `${siteConfig.links.facebook}`,
-    color: "#1877F2", // Cor oficial do Facebook
+    url: siteConfig.links.facebook,
+    hoverColor: "#1877F2",
   },
   {
     title: "Localização",
     url: "https://maps.app.goo.gl/qd6Seq3cpC3bUQNc8",
-    color: "#000000", // Cor oficial do Facebook
+    hoverColor: "#EA4335",
   },
 ];
 ---
 
+<Layout title={`${siteConfig.name} | Links`} description={profile.bio}>
+  <main
+    class="min-h-screen bg-[#050505] text-white flex flex-col items-center justify-center px-4 py-12 font-sans"
+  >
+    <div class="w-full max-w-md flex flex-col items-center gap-8">
+      {/* Header com Logo, Nome e Bio */}
+      <header class="flex flex-col items-center text-center gap-4">
+        {/* Card da Logo em formato pílula/card branco */}
+        <div
+          class="bg-white p-4 rounded-2xl w-48 h-20 flex items-center justify-center shadow-lg"
+        >
+          <img
+            src={profile.logoUrl.src}
+            alt={siteConfig.name}
+            class="max-w-full max-h-full object-contain"
+          />
+        </div>
+
+        {/* Nome da Marca */}
+        <h1 class="text-2xl font-bold tracking-tight text-white mt-2">
+          {siteConfig.name}
+        </h1>
+
+        {/* Bio */}
+        <p class="text-sm text-gray-300 max-w-sm leading-relaxed opacity-90">
+          {profile.bio}
+        </p>
+      </header>
+
+      {/* Lista de Links */}
+      <nav class="w-full flex flex-col gap-4">
+        {
+          links.map((link) => (
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-btn w-full py-4 px-6 bg-white text-gray-900 font-semibold text-center text-base rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-[1.01] hover:shadow-xl cursor-pointer"
+              style={`--hover-color: ${link.hoverColor};`}
+            >
+              {link.title}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+  </main>
+</Layout>
+
 <style>
-  .chat-widget {
+  /* Efeito de hover dinâmico puxando a cor da marca */
+  .link-btn:hover {
+    color: var(--hover-color);
+  }
+
+  /* Oculta o widget flutuante do WhatsApp apenas nesta rota */
+  :global(.fixed.bottom-6) {
     display: none !important;
   }
 </style>
-
-<Layout
-  title="Comptel Informática | Links"
-  description="Especialista em computadores! PCs Gamer, office, notebooks e 
-  periféricos de elite em Serra/ES. Visite nossa loja no Shopping Laranjeiras e monte sua máquina ideal."
->
-  <html lang="pt-BR">
-    <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>{siteConfig.name} | Links</title>
-    </head>
-    <body class="linktree-body">
-      <main class="container">
-        <!-- Cabeçalho (Foto, Nome e Bio) -->
-        <header class="profile-header">
-          <Image
-            src={profileImg}
-            alt={`Foto de ${siteConfig.name}`}
-            class="avatar"
-          />
-          <h1 class="name">{siteConfig.name}</h1>
-          <p class="bio">{profile.bio}</p>
-        </header>
-
-        <!-- Lista de Links -->
-        <nav class="links-container">
-          {
-            links.map((link) => (
-              <a
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-button"
-                style={`--hover-color: ${link.color};`}
-              >
-                {link.title}
-              </a>
-            ))
-          }
-        </nav>
-      </main>
-    </body>
-  </html>
-</Layout>
-<style>
-  /* Reset básico para a página de links */
-  :global(body) {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  /* Fundo da página (pode usar o azul do seu banner aqui) */
-  .linktree-body {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0b0b0b 0%, #060707 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 1rem;
-  }
-
-  /* Container central que segura tudo */
-  .container {
-    width: 100%;
-    max-width: 40rem; /* Limita a largura no desktop para não ficar esticado */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2.5rem;
-  }
-
-  /* Cabeçalho do Perfil */
-  .profile-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    color: #ffffff;
-    gap: 1rem;
-  }
-
-  .avatar {
-    width: 12rem; /* Bem mais largo para acomodar o nome da empresa */
-    height: 4.5rem; /* Altura menor para eliminar o excesso de fundo branco */
-    border-radius: 0.75rem; /* Arredondamento suave nos cantos */
-    object-fit: contain;
-    background-color: #ffffff; /* Mantém o fundo branco para destacar a logo azul */
-    padding: 0.5rem 1rem; /* Respiro menor em cima/embaixo e maior nas laterais */
-    border: none; /* Removemos a borda extra para um visual mais limpo */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-  }
-
-  .name {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-  }
-
-  .bio {
-    font-size: 1rem;
-    margin: 0;
-    opacity: 0.9;
-    max-width: 25rem;
-    line-height: 1.4;
-  }
-
-  /* Container dos Botões */
-  .links-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-  }
-
-  /* Estilo dos Botões */
-  .link-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 1.25rem;
-    background: #ffffff;
-    color: #333333;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.125rem;
-    border-radius: 3rem; /* Bordas bem arredondadas, estilo pílula */
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-  }
-
-  /* Efeito de Hover Dinâmico puxando a cor da variável CSS */
-  .link-button:hover {
-    transform: scale(1.02) translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-    color: var(--hover-color); /* O texto ganha a cor da rede social no hover */
-  }
-
-  /* Responsividade para telas menores */
-  @media (max-width: 480px) {
-    .link-button {
-      padding: 1rem;
-      font-size: 1rem;
-    }
-    .avatar {
-      width: 5.5rem;
-      height: 5.5rem;
-    }
-  }
-</style>
-
-<script>
-  const chat = document.querySelector<HTMLElement>(".chat-widget");
-
-  if (chat) {
-    chat.style.setProperty("display", "none", "important");
-  }
-</script>
