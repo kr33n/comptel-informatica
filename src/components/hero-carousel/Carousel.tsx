@@ -17,6 +17,7 @@ const slides = [
       titleMain: "RESOLUÇÃO",
       titleBottom: "que você sempre quis!",
       buttonText: "Quero meu orçamento gamer",
+      buttonTextColor: "text-brand-primary",
     },
     image: {
       productsImage: "/assets/images/carousel-1.png",
@@ -42,6 +43,7 @@ const slides = [
       titleMain: "SOB MEDIDA",
       titleBottom: "para sua rotina!",
       buttonText: "Monte o seu agora",
+      buttonTextColor: "text-[#6B99F5]",
     },
     image: {
       productsImage: "/assets/images/carousel-2.png",
@@ -67,6 +69,7 @@ const slides = [
       titleMain: "PRODUTIVIDADE",
       titleBottom: "em qualquer lugar!",
       buttonText: "Chamar no WhatsApp",
+      buttonTextColor: "text-[#6B98F4]",
     },
     image: {
       productsImage: "/assets/images/carousel-3.png",

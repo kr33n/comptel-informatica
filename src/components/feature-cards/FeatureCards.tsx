@@ -34,15 +34,16 @@ const features = [
       "w-64 sm:w-72 md:w-80 -mt-16 sm:-mt-20 md:-mt-20 scale-110 md:scale-110",
   },
 ];
+
 export function FeatureCards() {
-  // 1. O useEffect garante que o AOS só rode no lado do cliente
-  // após o componente ser renderizado na tela.
   useEffect(() => {
     AOS.init({
       duration: 800,
       once: true,
       offset: 100,
     });
+    // Força o AOS a recalcular as posições após a hidratação do React
+    AOS.refresh();
   }, []);
 
   return (

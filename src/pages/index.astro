@@ -9,22 +9,19 @@ import { LocationSection } from "@/components/location/LocationSection";
 import { Footer } from "@/components/footer/Footer";
 ---
 
-<html lang="pt-BR">
-  <Layout
-    title="Comptel Informática"
-    description="Comptel Informática - Soluções em Tecnologia da Informação e
+<Layout
+  title="Comptel Informática"
+  description="Comptel Informática - Soluções em Tecnologia da Informação e
       Comunicação. Oferecemos serviços de consultoria, suporte técnico,
       manutenção de hardware e software, além de soluções personalizadas para
       empresas e residências."
-  >
-    <head> </head>
-    <body class="flex flex-col bg-background">
-      <Header client:load />
-      <GamerCarousel client:load />
-      <BrandsCarousel client:load />
-      <FeatureCards client:load />
-      <LocationSection client:load />
-      <Footer client:load />
-    </body>
-  </Layout>
-</html>
+>
+  <div class="flex flex-col bg-background w-full">
+    <Header client:only="react" />
+    <GamerCarousel client:only="react" />
+    <BrandsCarousel client:only="react" />
+    <FeatureCards client:only="react" />
+    <LocationSection client:only="react" />
+    <Footer client:only="react" />
+  </div>
+</Layout>

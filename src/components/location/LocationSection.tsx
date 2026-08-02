@@ -1,6 +1,17 @@
-import React from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 export function LocationSection() {
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100,
+    });
+    // Força o AOS a recalcular as posições após a hidratação do React
+    AOS.refresh();
+  }, []);
   return (
     <section className="w-full mx-auto pt-24 lg:pt-34 px-16 lg:px-26.75 pb-12">
       {/* GRID RESPONSIVO */}
@@ -31,7 +42,7 @@ export function LocationSection() {
 
         <div
           data-aos="fade-up-left"
-          data-aos-delay="1300"
+          data-aos-delay="1000"
           className="relative w-full min-w-62 h-123 overflow-hidden bg-gray-100"
         >
           <iframe

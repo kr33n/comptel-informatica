@@ -66,7 +66,7 @@ import "@/styles/global.css";
 
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <script>
+    <!-- <script>
       import AOS from "aos";
       import "aos/dist/aos.css"; // Importa os estilos da animação
 
@@ -74,11 +74,11 @@ import "@/styles/global.css";
         duration: 800,
         once: true,
         offset: 100,
-      });
-    </script>
+      }); 
+    </script>-->
   </head>
-  <body>
+  <body class="overflow-x-hidden w-full">
+    <!-- <WhatsAppWidget client:only="react" /> -->
     <slot />
-    <WhatsAppWidget client:idle />
   </body>
 </html>

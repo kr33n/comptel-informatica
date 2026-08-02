@@ -2,12 +2,13 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import backgroundImage from "@/assets/logo-comptel.svg";
+import React, { useState, useEffect } from "react";
+import Autoplay from "embla-carousel-autoplay";
+import { type CarouselApi } from "@/components/ui/carousel";
 
 // Importe ou receba os slides via props do orquestrador
 interface GamerCarouselTabletProps {
@@ -15,10 +16,35 @@ interface GamerCarouselTabletProps {
 }
 
 export function CarouselDesktop({ slides }: GamerCarouselTabletProps) {
+  const plugin = React.useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true }),
+  );
+
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap());
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
   return (
     // <div className="relative w-full max-w-338.5 mx-auto px-6 md:px-0 mt-8">
     <div className="relative w-full mx-auto max-w-338.5 px-6 mt-8 overflow-visible">
-      <Carousel className="w-full">
+      <Carousel
+        className="w-full"
+        plugins={[plugin.current]}
+        opts={{ loop: true }}
+        setApi={setApi}
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
+      >
         <CarouselContent>
           {slides.map((slide) => (
             <CarouselItem key={slide.id}>
@@ -32,29 +58,29 @@ export function CarouselDesktop({ slides }: GamerCarouselTabletProps) {
                   aria-hidden="true"
                   className={`${slide.backgroundImage.className} animate-[slideLeft_1.8s_ease-out_forwards]`}
                 />
-                <div className="pl-8.5 col-span-12 sm:col-span-6 lg:col-span-5 flex flex-col justify-center items-start z-10 space-y-1 md:space-y-2 h-full animate-[slideRight_1.5s_ease-out_forwards]">
+                <div className="pl-8.5 gap-1 col-span-12 lg:col-span-5 flex flex-col justify-center items-start z-10 space-y-1 h-full animate-[slideRight_1.5s_ease-out_forwards] ">
                   <p
-                    className={`text-base sm:text-lg md:text-xl font-bold ${slide.text.ClassColor}`}
+                    className={`text-4xl font-bold leading-12 tracking-[-0.72px] ${slide.text.ClassColor}`}
                   >
                     {slide.text.titleTop}
                   </p>
                   <p
-                    className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold uppercase tracking-tighter leading-none ${slide.text.ClassColor}`}
+                    className={`uppercase text-[56px] font-extrabold leading-14 tracking-[0.035rem] ${slide.text.ClassColor}`}
                   >
                     {slide.text.titleMain}
                   </p>
                   <p
-                    className={`text-sm sm:text-base md:text-lg font-medium pb-2 md:pb-4 ${slide.text.ClassColor}`}
+                    className={`text-4xl font-bold leading-12 tracking-[-0.72px] ${slide.text.ClassColor}`}
                   >
                     {slide.text.titleBottom}
                   </p>
 
                   <Button
                     variant="outline"
-                    className="rounded-full bg-white text-blue-700 hover:bg-white/90 border-white px-5 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 text-sm sm:text-base font-semibold group flex items-center gap-2 transition-all relative z-20 mt-auto md:mt-12 animate-[fadeUp_1.2s_ease-out_0.4s_both]"
+                    className={`group flex items-center rounded-full bg-white ${slide.text.buttonTextColor} hover:${slide.text.buttonTextColor} hover:bg-white/90 px-4 gap-2 transition-all hover:scale-[1.09] relative z-20 mt-auto md:mt-12 animate-[fadeUp_1.2s_ease-out_0.4s_both] cursor-pointer text-[18px] py-6 font-semibold leading-[145%] tracking-[-0.09px] text-lg md:text-xl`}
                   >
                     {slide.text.buttonText}
-                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5 transition-transform group-hover:translate-x-1" />
+                    <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5 transition-transform" />
                   </Button>
                 </div>
 
@@ -70,6 +96,20 @@ export function CarouselDesktop({ slides }: GamerCarouselTabletProps) {
             </CarouselItem>
           ))}
         </CarouselContent>
+        <div className="absolute bottom-6 left-0 right-0 flex pl-16 justify-left gap-2 z-20 animate-[fadeUp_1.2s_ease-out_0.4s_both]">
+          {Array.from({ length: slides.length }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => api?.scrollTo(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                current === index
+                  ? "bg-white scale-110"
+                  : "bg-white/40 hover:bg-white/60"
+              }`}
+              aria-label={`Ir para o slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </Carousel>
     </div>
   );

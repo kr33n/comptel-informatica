@@ -1,4 +1,6 @@
-import React from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 // 1. O Vite/Astro importa todos os arquivos da pasta 'brands' automaticamente
 const imageModules = import.meta.glob<{ default: any }>(
@@ -33,6 +35,16 @@ function Card() {
 }
 
 export function BrandsCarousel() {
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100,
+    });
+    // Força o AOS a recalcular as posições após a hidratação do React
+    AOS.refresh();
+  }, []);
+
   return (
     <section className="w-full bg-white flex flex-col items-center overflow-hidden">
       <div
