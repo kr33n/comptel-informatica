@@ -1,5 +1,6 @@
 import { CarouselDesktop } from "./CarouselDesktop";
 import { CarouselMobile } from "./CarouselMobile";
+import { type Variants } from "framer-motion";
 
 // Coloque o array 'slides' aqui para compartilhar entre as duas views
 const slides = [
@@ -82,16 +83,50 @@ const slides = [
     },
   },
 ];
+export const carouselMotionVariants: Record<string, Variants> = {
+  text: {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.5,
+        duration: 2,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    }),
+  },
+  image: {
+    hidden: { opacity: 0, scale: 0.9, y: 20 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+
+      transition: {
+        delay: 0.5,
+        duration: 5,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  },
+};
 
 export function GamerCarousel() {
   return (
     <>
       <div className="block lg:hidden">
-        <CarouselMobile slides={slides} />
+        <CarouselMobile
+          slides={slides}
+          carouselMotionVariants={carouselMotionVariants}
+        />
       </div>
 
       <div className="hidden lg:block">
-        <CarouselDesktop slides={slides} />
+        <CarouselDesktop
+          slides={slides}
+          carouselMotionVariants={carouselMotionVariants}
+        />
       </div>
     </>
   );
