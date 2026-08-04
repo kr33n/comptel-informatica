@@ -86,12 +86,10 @@ const slides = [
 export function GamerCarousel() {
   return (
     <>
-      {/* EXIBIDO APENAS EM MOBILE (telas menores que 'md' / 768px) */}
       <div className="block lg:hidden">
         <CarouselMobile slides={slides} />
       </div>
 
-      {/* EXIBIDO APENAS EM DESKTOP (telas a partir de 'lg' / 1024px) */}
       <div className="hidden lg:block">
         <CarouselDesktop slides={slides} />
       </div>

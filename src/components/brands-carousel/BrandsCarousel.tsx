@@ -1,22 +1,14 @@
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { useEffect } from "react";
-
-// 1. O Vite/Astro importa todos os arquivos da pasta 'brands' automaticamente
 const imageModules = import.meta.glob<{ default: any }>(
   "@/assets/brands/*.{png,jpg,jpeg,svg,webp}",
+
   { eager: true },
 );
-
-// 2. Transformamos o objeto retornado em um array fácil de mapear no HTML
 const brands = Object.entries(imageModules).map(([path, module], index) => {
-  // Pega o nome do arquivo (ex: "nvidia.png" vira "nvidia") para usar no alt
   const fileName = path.split("/").pop()?.split(".")[0] || `marca-${index}`;
 
   return {
     id: index,
     name: fileName,
-    // No Astro, imagens importadas podem vir como string ou um objeto { src, width, height }
     src:
       typeof module.default === "string" ? module.default : module.default?.src,
   };
@@ -24,48 +16,38 @@ const brands = Object.entries(imageModules).map(([path, module], index) => {
 
 function Card() {
   const displayBrands = brands.length < 6 ? [...brands, ...brands] : brands;
+
   return displayBrands.map((brand, i) => (
-    <img
+    <div
       key={`track2-${brand.id}-${i}`}
-      src={brand.src}
-      alt={brand.name}
-      className="max-h-8 sm:h-10 w-auto object-contain transition-all duration-300"
-    />
+      // Define uma caixa fixa padrão para todas as marcas
+      className="w-24 sm:w-32 h-10 flex items-center justify-center shrink-0"
+    >
+      <img
+        src={brand.src}
+        alt={brand.name}
+        // max-w-full e max-h-full garantem que a logo preencha a caixa sem sair dela
+        className="max-w-full max-h-full w-auto h-auto object-contain shrink-0 transition-all duration-300"
+      />
+    </div>
   ));
 }
 
 export function BrandsCarousel() {
-  useEffect(() => {
-    AOS.init({
-      duration: 800,
-      once: true,
-      offset: 100,
-    });
-    // Força o AOS a recalcular as posições após a hidratação do React
-    AOS.refresh();
-  }, []);
-
   return (
     <section className="w-full bg-white flex flex-col items-center overflow-hidden">
-      <div
-        className="relative w-full"
-        data-aos="fade-in"
-        data-aos-duration="1800"
-        data-aos-delay="300"
-        data-aos-easing="ease-out-cubic"
-      >
-        <p
-          className="text-[#0000008C] lg:text-[20px] leading-5.75 sm:text-[16px] font-medium text-center
-        p-10 lg:pt-26 sm:pt-18"
-        >
+      <div className="relative w-full">
+        <p className="text-[#0000008C] text-[16px] lg:text-[20px] leading-5.75 sm:text-[20px] font-medium text-center p-10 lg:pt-26 sm:pt-18">
           Trabalhamos com as melhores marcas do mercado
         </p>
-        <div className="relative flex w-full overflow-hidden max-w-300 mx-auto group border-x-18 border-white lg:pb-26 sm:pb-18">
-          <div className="flex shrink-0 animate-marquee gap-12 px-6 items-center">
+
+        <div className="relative flex w-full overflow-hidden max-w-300 mx-auto group border-x-18 border-white lg:pb-26">
+          <div className="flex shrink-0 animate-marquee gap-8 sm:gap-12 px-4 sm:px-6 items-center will-change-transform">
             <Card />
           </div>
+
           <div
-            className="flex shrink-0 animate-marquee gap-12 px-6 items-center"
+            className="flex shrink-0 animate-marquee gap-8 sm:gap-12 px-4 sm:px-6 items-center will-change-transform"
             aria-hidden="true"
           >
             <Card />

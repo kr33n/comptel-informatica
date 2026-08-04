@@ -1,27 +1,10 @@
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { useEffect } from "react";
-
 export function LocationSection() {
-  useEffect(() => {
-    AOS.init({
-      duration: 800,
-      once: true,
-      offset: 100,
-    });
-    // Força o AOS a recalcular as posições após a hidratação do React
-    AOS.refresh();
-  }, []);
   return (
     <section className="w-full mx-auto pt-24 lg:pt-34 px-16 lg:px-26.75 pb-12">
       {/* GRID RESPONSIVO */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_1.4fr] items-center gap-34 tracking-[-1px]">
         {/* COLUNA 1: Textos */}
-        <div
-          data-aos="fade-up-right"
-          data-aos-delay="500"
-          className="flex flex-col space-y-8 gap-6"
-        >
+        <div className="flex flex-col space-y-8 gap-6">
           <p className="text-5xl font-bold text-brand-primary leading-[120%]">
             Venha nos <br className="block lg:hidden" /> visitar!
           </p>
@@ -40,11 +23,7 @@ export function LocationSection() {
           </div>
         </div>
 
-        <div
-          data-aos="fade-up-left"
-          data-aos-delay="1000"
-          className="relative w-full min-w-62 h-123 overflow-hidden bg-gray-100"
-        >
+        <div className="relative w-full min-w-62 h-123 overflow-hidden bg-gray-100">
           <iframe
             src="https://maps.google.com/maps?hl=pt&q=Comptel%20Inform%C3%A1tica&t=k&z=17&ie=UTF8&iwloc=B&output=embed"
             className="absolute inset-0 w-full h-full border-0"

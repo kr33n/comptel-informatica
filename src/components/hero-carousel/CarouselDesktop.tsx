@@ -58,7 +58,7 @@ export function CarouselDesktop({ slides }: GamerCarouselTabletProps) {
                   aria-hidden="true"
                   className={`${slide.backgroundImage.className} animate-[slideLeft_1.8s_ease-out_forwards]`}
                 />
-                <div className="pl-8.5 gap-1 col-span-12 lg:col-span-5 flex flex-col justify-center items-start z-10 space-y-1 h-full animate-[slideRight_1.5s_ease-out_forwards] ">
+                <div className="pl-8.5 gap-1 col-span-12 lg:col-span-5 flex flex-col justify-center items-start z-10 space-y-1 h-full">
                   <p
                     className={`text-4xl font-bold leading-12 tracking-[-0.72px] ${slide.text.ClassColor}`}
                   >
@@ -77,7 +77,7 @@ export function CarouselDesktop({ slides }: GamerCarouselTabletProps) {
 
                   <Button
                     variant="outline"
-                    className={`group flex items-center rounded-full bg-white ${slide.text.buttonTextColor} hover:${slide.text.buttonTextColor} hover:bg-white/90 px-4 gap-2 transition-all hover:scale-[1.09] relative z-20 mt-auto md:mt-12 animate-[fadeUp_1.2s_ease-out_0.4s_both] cursor-pointer text-[18px] py-6 font-semibold leading-[145%] tracking-[-0.09px] text-lg md:text-xl`}
+                    className={`group flex items-center rounded-full bg-white ${slide.text.buttonTextColor} hover:${slide.text.buttonTextColor} hover:bg-white/90 px-4 gap-2 transition-all hover:scale-[1.09] relative z-20 mt-auto md:mt-12 cursor-pointer text-[18px] py-6 font-semibold leading-[145%] tracking-[-0.09px] text-lg md:text-xl`}
                   >
                     {slide.text.buttonText}
                     <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5 transition-transform" />
@@ -88,7 +88,7 @@ export function CarouselDesktop({ slides }: GamerCarouselTabletProps) {
                   <img
                     src={slide.image.productsImage}
                     alt={slide.image.imageLabel}
-                    className="h-full w-auto max-h-[95%] object-contain object-center sm:object-right drop-shadow-xl animate-[slideLeft_1.8s_ease-out_forwards]"
+                    className="h-full w-auto max-h-[95%] object-contain object-center sm:object-right drop-shadow-xl"
                     style={slide.image.style.desktop}
                   />
                 </div>
@@ -96,7 +96,7 @@ export function CarouselDesktop({ slides }: GamerCarouselTabletProps) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="absolute bottom-6 left-0 right-0 flex pl-16 justify-left gap-2 z-20 animate-[fadeUp_1.2s_ease-out_0.4s_both]">
+        <div className="absolute bottom-6 left-0 right-0 flex pl-16 justify-left gap-2 z-20 ">
           {Array.from({ length: slides.length }).map((_, index) => (
             <button
               key={index}

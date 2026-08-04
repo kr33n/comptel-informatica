@@ -1,7 +1,3 @@
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { useEffect } from "react";
-
 // Importe as imagens reais do seu projeto
 import pcTrabalhoImg from "@/assets/cards/office.png";
 import pcGamerImg from "@/assets/cards/gamer.png";
@@ -14,7 +10,8 @@ const features = [
     description:
       "Desempenho ágil para tarefas diárias. Planilhas, textos e e-mails sem travamentos irritantes.",
     image: pcTrabalhoImg,
-    imageClasses: "w-32 sm:w-40 md:w-44 -mt-16 sm:-mt-20 md:-mt-24",
+    // Gabinete de escritório (mais estreito e alto)
+    imageClasses: "w-[120px] lg:w-[150px]",
   },
   {
     id: 2,
@@ -22,7 +19,8 @@ const features = [
     description:
       "Gráficos incríveis e FPS alto. Jogue cada batalha com uma máquina montada com as melhores peças.",
     image: pcGamerImg,
-    imageClasses: "w-48 sm:w-56 md:w-60 -mt-20 sm:-mt-24 md:-mt-28",
+    // PC Gamer (proporção média)
+    imageClasses: "w-[180px] lg:w-[220px]",
   },
   {
     id: 3,
@@ -30,46 +28,39 @@ const features = [
     description:
       "Teclados, mouses, headsets e muito mais. Mais conforto, precisão e estilo para o seu dia a dia.",
     image: perifericosImg,
-    imageClasses:
-      "w-64 sm:w-72 md:w-80 -mt-16 sm:-mt-20 md:-mt-20 scale-110 md:scale-110",
+    // Periféricos (mais largo)
+    imageClasses: "w-[250px] lg:w-[300px]",
   },
 ];
 
 export function FeatureCards() {
-  useEffect(() => {
-    AOS.init({
-      duration: 800,
-      once: true,
-      offset: 100,
-    });
-    // Força o AOS a recalcular as posições após a hidratação do React
-    AOS.refresh();
-  }, []);
-
   return (
-    <section className="w-full max-w-300 mx-auto px-6 sm:py-32 py-28  pb-0!">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-y-28 md:gap-y-0 gap-x-6 lg:gap-x-10">
-        {features.map((item, index) => (
+    <section className="w-full max-w-90 lg:max-w-360 mx-auto px-4 lg:px-28">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-18 lg:gap-y-0 gap-x-6 lg:gap-x-8 min-h-102.25 mt-25">
+        {features.map((item) => (
           <div
             key={item.id}
-            // 2. Os atributos do AOS que adicionamos continuam aqui!
-            data-aos="fade-up"
-            data-aos-delay={index * 150}
-            className="relative bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.06)] px-6 pb-8 sm:pb-10 flex flex-col text-left h-full"
+            className="flex flex-col bg-white rounded-[2rem] border border-gray-100 text-left h-full shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
           >
-            <div className="relative w-full h-32 sm:h-36 md:h-40 lg:h-44 flex justify-center z-10 pointer-events-none">
+            {/* 
+              A MÁGICA ESTÁ AQUI: 
+              1. h-[160px] lg:h-[180px]: Trava a altura do espaço da imagem. O texto sempre vai começar abaixo dessa medida.
+              2. items-end: Faz a imagem "sentar" no fundo dessa div e crescer para cima, vazando do card pelo -mt.
+            */}
+            <div className="w-full h-40 lg:h-45 flex justify-center items-end pointer-events-none px-6">
               <img
                 src={item.image.src}
                 alt={item.title}
-                className={`object-contain drop-shadow-2xl transition-all ${item.imageClasses}`}
+                className={`object-contain drop-shadow-2xl transition-all duration-300 ${item.imageClasses}`}
               />
             </div>
 
-            <div className="mt-2 sm:mt-3 flex flex-col gap-3">
-              <h3 className="text-xl lg:text-2xl font-bold text-blue-700 tracking-tight">
+            {/* Container do texto perfeitamente alinhado */}
+            <div className="flex flex-col gap-2 grow p-6 pt-4 ">
+              <h3 className="text-2xl font-semibold text-brand-primary leading-[34.8px] tracking-[-0.48px] text-nowrap sm:text-balance">
                 {item.title}
               </h3>
-              <p className="text-sm lg:text-base text-gray-500 font-medium leading-relaxed">
+              <p className="text-base text-[#0000008C] font-medium leading-6 tracking-[-0.08px]">
                 {item.description}
               </p>
             </div>

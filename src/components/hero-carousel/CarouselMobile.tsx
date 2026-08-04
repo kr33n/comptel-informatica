@@ -47,11 +47,11 @@ export function CarouselMobile({ slides }: GamerCarouselMobileProps) {
           {slides.map((slide) => (
             <CarouselItem key={slide.id} className="overflow-visible pl-0!">
               <div
-                className="relative w-full h-auto flex  flex-col items-center sm:justify-start gap-16 p-6 sm:p-8 text-center"
+                className="relative w-full min-h-115 h-auto flex flex-col items-center justify-between gap-4 sm:gap-8 p-5 sm:p-8 text-center"
                 aria-label={slide.ariaLabel}
               >
                 <div
-                  className={`${slide.backgrondLayout} absolute inset-0 rounded-3xl overflow-hidden z-0`}
+                  className={`${slide.backgrondLayout} absolute inset-0 rounded-3xl overflow-hidden z-0 h-auto`}
                 ></div>
 
                 <div className="relative w-full flex items-center justify-center  z-20 -mt-16 sm:-mt-16 animate-[slideLeft_1.8s_ease-out_forwards]">
@@ -59,11 +59,11 @@ export function CarouselMobile({ slides }: GamerCarouselMobileProps) {
                     src={slide.image.productsImage}
                     alt={slide.image.imageLabel}
                     style={slide.image.style.mobile}
-                    className="w-full h-auto max-h-67.5 sm:max-h-75 object-contain drop-shadow-2xl scale-110"
+                    className="w-full h-44 sm:h-67.5 object-contain drop-shadow-2xl scale-100 sm:scale-110"
                   />
                 </div>
 
-                <div className="flex flex-col items-center justify-center z-20 w-full pb-16 gap-6">
+                <div className="flex flex-col items-center justify-center z-20 w-full pb-6 pt-8 sm:pb-8 gap-3 sm:gap-6">
                   <div className="animate-[slideRight_1.5s_ease-out_forwards] gap-4 ">
                     <h2
                       className={`text-[32px] font-bold tracking-[-0.64px] leading-11 ${slide.text.ClassColor} flex items-center justify-center gap-2 flex-wrap`}
@@ -99,7 +99,7 @@ export function CarouselMobile({ slides }: GamerCarouselMobileProps) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="absolute bottom-6 left-0 right-0 flex pl-16 justify-left gap-2 z-20 animate-[fadeUp_1.2s_ease-out_0.4s_both]">
+        <div className="absolute bottom-4 -left-10 flex pl-16 justify-left gap-2 z-20 animate-[fadeUp_1.2s_ease-out_0.4s_both]">
           {Array.from({ length: slides.length }).map((_, index) => (
             <button
               key={index}
