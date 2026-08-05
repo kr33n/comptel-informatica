@@ -11,7 +11,7 @@ O projeto foi construído utilizando um ecossistema moderno para garantir o melh
 * **[Astro](https://astro.build/):** Framework web focado em conteúdo e velocidade (SSG/SSR).
 * **[React](https://reactjs.org/):** Biblioteca para a construção de interfaces de usuário e componentes interativos (utilizados via hidratação parcial).
 * **[Tailwind CSS](https://tailwindcss.com/):** Framework de CSS utilitário para estilização rápida, padronizada e responsiva.
-* **[Partytown](https://partytown.builder.io/):** Otimização que move a execução de scripts de terceiros para web workers, liberando a thread principal.
+* **[Partytown](https://partytown.qwik.dev/):** Otimização que move a execução de scripts de terceiros para web workers, liberando a thread principal.
 
 ---
 
@@ -83,4 +83,4 @@ A aplicação foi rigorosamente otimizada para atingir os mais altos padrões we
 
 ---
 
-*Desenvolvido para a [Comptel Informática](#).*
+*Desenvolvido para a [Comptel Informática](https://comptelinfo.com.br/).*
