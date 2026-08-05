@@ -1,59 +1,75 @@
-# 💻 Comptel Informática - Landing Page & Links
+# Comptel Informática — Landing Page
 
-Landing page institucional e página de links (Bio/Linktree) moderna, ultra-rápida e totalmente responsiva desenvolvida para a **Comptel Informática**.
+Landing page institucional da **Comptel Informática**, desenvolvida com foco em alta performance, acessibilidade e SEO.
 
-O projeto apresenta a marca, destaca soluções em setups customizados (PC Gamer, Workstation/Home Office e Periféricos), informa dados de localização da loja física no Shopping Laranjeiras (Serra/ES) e oferece canais diretos de atendimento via WhatsApp e redes sociais.
+## 🛠️ Tecnologias Utilizadas
 
----
-
-## 🚀 Tecnologias Utilizadas
-
-- **[Astro](https://astro.build/):** Framework web focado em performance e entrega de HTML estático com JavaScript zero por padrão.
-- **TypeScript:** Garante tipagem estática e maior confiabilidade na navegação dinâmica do carrossel.
-- **CSS3 Moderno:** Utilização de Flexbox, CSS Variables, Media Queries customizadas e funções de cálculo (`calc()`) para layout fluido.
-- **HTML5 Semântico:** Estruturação limpa voltada para acessibilidade e bom posicionamento em SEO.
+* **Framework:** Astro (SSG/SSR)
+* **UI / Componentes:** React, Tailwind CSS
+* **Recursos Adicionais:** Partytown (para otimização de scripts de terceiros)
 
 ---
 
-## ✨ Destaques do Projeto
-
-- **Hero Carousel Responsivo:**
-  - Layout dinâmico que se adapta entre Desktop (banner horizontal com sobreposição de produto) e Mobile (empilhamento de card centralizado).
-  - Deslocamento contínuo em pixels dinâmicos no JavaScript (`offsetWidth` + `gap`), garantindo respiro e alinhamento _pixel-perfect_ em qualquer resolução.
-- **Carrossel de Marcas:** Seção de parceiros com logos vetorizadas (Bluecase, Galax, Intel, NVIDIA, Redragon).
-- **Grid de Categorias:** Cards em pílulas focados em conversão para Workstations, PCs Gamer e Periféricos.
-- **Página de Links (`/links`):**
-  - Hub de Links no estilo Linktree integrado com a identidade visual da loja.
-  - Botões diretos para atendimento no WhatsApp, Instagram e Facebook.
-  - Formatação customizada para logos retangulares com container proporcional (`12rem` x `4.5rem`).
-- **Localização e Atendimento:** Informações claras da loja física (Shopping Laranjeiras, Loja 138 - Serra/ES) e horários de funcionamento.
-
----
-
-## 🎨 Identidade Visual & Design System
-
-- **Cores Principais:** Azul Elétrico (`#0339E8` / `#1919FE`), Branco (`#FFFFFF`) e Cinza Suave (`#F8F9FA`).
-- **Tipografia:** Semântica e escalável, ajustada com `rem` para manter a proporcionalidade em todas as densidades de tela.
-- **Componentes Destacados:**
-  - `.carousel-wrapper`: Máscara de contenção e controle de transição do hero.
-  - `.link-button`: Botões interativos em formato pílula para a página de links.
-  - `.avatar`: Moldura retangular proporcional para logos institucionais.
-
----
-
-## 🛠️ Como Rodar o Projeto Localmente
+## 🚀 Como Executar o Projeto
 
 ### Pré-requisitos
-
-Certifique-se de ter instalado em sua máquina:
-
-- [Node.js](https://nodejs.org/) (versão 18.x ou superior)
-- Um gerenciador de pacotes (`npm`, `pnpm` ou `yarn`)
+* Node.js (versão 18 ou superior)
+* npm, pnpm ou yarn
 
 ### Passo a Passo
 
-1. **Clone o repositório:**
-   ```bash
-   git clone [https://github.com/seu-usuario/comptel-informatica.git](https://github.com/seu-usuario/comptel-informatica.git)
-   cd comptel-informatica
-   ```
+1. **Clonar o repositório:**
+
+        git clone https://github.com/usuario/comptel-landing-page.git
+        cd comptel-landing-page
+
+2. **Instalar as dependências:**
+
+        npm install
+
+3. **Iniciar o servidor de desenvolvimento:**
+
+        npm run dev
+
+   Acesse a aplicação em `http://localhost:4321`.
+
+4. **Gerar a build de produção:**
+
+        npm run build
+
+---
+
+## 📊 Performance & Diagnóstico (Lighthouse)
+
+Status do último teste de auditoria realizado via Lighthouse:
+
+| Categoria | Pontuação | Status |
+| :--- | :---: | :--- |
+| **Performance** | `93/100` | 🟢 Excelente |
+| **Accessibility** | `100/100` | 🟢 Perfeito |
+| **Best Practices** | `96/100` | 🟢 Excelente |
+| **SEO** | `100/100` | 🟢 Perfeito |
+
+### Métricas Principais (Core Web Vitals)
+* **First Contentful Paint (FCP):** 0.5s
+* **Speed Index:** 1.4s
+* **Time to Interactive (TTI):** 1.6s
+* **Largest Contentful Paint (LCP):** 1.6s
+* **Total Blocking Time (TBT):** 0ms
+* **Cumulative Layout Shift (CLS):** 0
+
+---
+
+## 📋 Plano de Otimização (PONTOS A CORRIGIR)
+
+Embora as notas estejam altas, os seguintes pontos foram identificados para melhorias futuras no código:
+
+* **Otimização de Imagens (`Image Delivery`):**
+  * Definir dimensões explícitas (`width` e `height`) nas tags `<img>` para evitar avisos de layout shift.
+  * Redimensionar e comprimir as imagens em WebP para exibição em telas menores (`carousel-1.webp`, `gamer.webp`, `perifericos.webp`).
+* **Atributos de Preconnect:**
+  * Revisar a tag `<link rel="preconnect">` dos Google Fonts no `<head>`, pois o Lighthouse apontou que não está sendo utilizada corretamente.
+* **Política de Cache:**
+  * Configurar cabeçalhos `Cache-Control` mais longos no servidor de hospedagem para recursos estáticos e scripts de terceiros (como os da API do Google Maps).
+* **Limpeza de Scripts (`Unused JS`):**
+  * Testar o build de produção final fora do ambiente local, pois parte do código não utilizado detectado no relatório era proveniente de extensões do navegador Chrome (ex: Adobe Acrobat).
