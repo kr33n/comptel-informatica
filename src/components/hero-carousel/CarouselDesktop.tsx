@@ -100,7 +100,6 @@ export function CarouselDesktop({
               <CarouselItem key={slide.id}>
                 <div
                   className={`${slide.backgrondLayout} relative w-full aspect-1354/560 min-h-105 rounded-2xl overflow-hidden text-white grid grid-cols-12 items-center p-7.5 gap-4`}
-                  aria-label={slide.ariaLabel}
                 >
                   <AnimatePresence mode="wait">
                     {isActive && (
@@ -109,8 +108,9 @@ export function CarouselDesktop({
                         initial="hidden"
                         animate="visible"
                         variants={carouselMotionVariants.image}
+                        aria-label={slide.ariaLabel}
                         src={backgroundImage.src}
-                        alt=""
+                        alt={slide.ariaLabel}
                         aria-hidden="true"
                         className={slide.backgroundImage.className}
                       />
@@ -163,7 +163,9 @@ export function CarouselDesktop({
                               onClick={() => {
                                 window.open(
                                   siteConfig.links.whatsappUrl +
-                                    slide.text.buttonUrl,
+                                    siteConfig.phone +
+                                    `?text=${siteConfig.whatsappText}` +
+                                    slide.ariaLabel,
                                   "_blank",
                                   "noopener,noreferrer",
                                 );
@@ -209,7 +211,7 @@ export function CarouselDesktop({
             <button
               key={index}
               onClick={() => api?.scrollTo(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`p-2 w-3 h-3 rounded-full transition-all duration-300 ${
                 current === index
                   ? "bg-white scale-110"
                   : "bg-white/40 hover:bg-white/60"

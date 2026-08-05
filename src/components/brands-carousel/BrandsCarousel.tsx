@@ -28,7 +28,7 @@ function Card() {
       <img
         src={brand.src}
         alt={brand.name}
-        className="max-w-full max-h-full w-auto h-auto object-contain shrink-0"
+        className="max-w-full sm:w-32 h-12 max-h-full w-auto object-contain shrink-0"
       />
     </div>
   ));

@@ -56,7 +56,7 @@ export function CarouselMobile({
               <CarouselItem key={slide.id} className="overflow-visible pl-0!">
                 <div
                   className="relative w-full min-h-115 h-auto flex flex-col items-center justify-between gap-4 sm:gap-8 p-5 sm:p-8 text-center"
-                  aria-label={slide.ariaLabel}
+                  // aria-label={slide.ariaLabel}
                 >
                   {/* Fundo do Card */}
                   <div

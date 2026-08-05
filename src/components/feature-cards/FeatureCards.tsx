@@ -2,9 +2,9 @@ import { motion, useInView, type Variants } from "framer-motion";
 import { useRef } from "react";
 
 // Importe as imagens reais do seu projeto
-import pcTrabalhoImg from "@/assets/cards/office.png";
-import pcGamerImg from "@/assets/cards/gamer.png";
-import perifericosImg from "@/assets/cards/perifericos.png";
+import pcTrabalhoImg from "@/assets/cards/office.webp";
+import pcGamerImg from "@/assets/cards/gamer.webp";
+import perifericosImg from "@/assets/cards/perifericos.webp";
 
 const features = [
   {
@@ -91,7 +91,7 @@ function FeatureCardItem({ item }: { item: (typeof features)[0] }) {
 
 export function FeatureCards() {
   return (
-    <section className="w-full max-w-90 lg:max-w-360 mx-auto px-4 lg:px-28">
+    <section className="w-full lg:max-w-360 mx-auto px-4 lg:px-28">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-18 lg:gap-y-0 gap-x-6 lg:gap-x-8 min-h-102.25 mt-25">
         {features.map((item) => (
           <FeatureCardItem key={item.id} item={item} />

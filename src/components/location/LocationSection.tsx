@@ -91,11 +91,13 @@ export function LocationSection() {
           {/* 2. Adicione pointer-events-none lg:pointer-events-auto block */}
           <iframe
             src="https://maps.google.com/maps?hl=pt&q=Comptel%20Inform%C3%A1tica&t=k&z=17&ie=UTF8&iwloc=B&output=embed"
-            className="absolute inset-0 w-full h-full border-0 pointer-events-none lg:pointer-events-auto block"
-            allowFullScreen={false}
+            title="Mapa da Comptel Informática no Google Maps"
+            width="100%"
+            height="100%"
+            className="absolute inset-0 w-full h-full border-0 pointer-events-none block"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Mapa da Comptel Informática no Google Maps"
+            aria-label="Mapa da Comptel Informática no Google Maps"
           ></iframe>
         </motion.div>
 

@@ -1,12 +1,13 @@
 import React from "react";
-
+import { siteConfig } from "@/siteConfig";
 export function Footer() {
   return (
     <footer className="w-full bg-white border-t border-gray-200 px-8">
       <div className="max-w-300 mx-auto flex flex-col md:flex-row items-center justify-between gap-5 py-13">
         <div className="flex items-center gap-5 text-blue-700">
           <a
-            href="#"
+            title="Facebook"
+            href={siteConfig.links.facebook}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:opacity-75 transition-opacity"
@@ -15,12 +16,12 @@ export function Footer() {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
+              aria-hidden="true"
               height="24"
               viewBox="0 0 24 24"
               fill="none"
             >
               <path
-                role="img"
                 viewBox="0 0 24 24"
                 fill="white"
                 className="w-6 h-6 object-contain"
@@ -34,7 +35,8 @@ export function Footer() {
           </a>
 
           <a
-            href="#"
+            href={siteConfig.links.instagram}
+            title="Instagram"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:opacity-75 transition-opacity"
