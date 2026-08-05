@@ -2,7 +2,6 @@ import { CarouselDesktop } from "./CarouselDesktop";
 import { CarouselMobile } from "./CarouselMobile";
 import { type Variants } from "framer-motion";
 
-// Coloque o array 'slides' aqui para compartilhar entre as duas views
 const slides = [
   {
     id: 1,

@@ -1,4 +1,5 @@
 ---
+import WhatsAppButton from "@/components/whatsapp/WhatsAppWidget";
 import SEO from "../components/SEO/SEO.astro";
 const { title, description, image } = Astro.props;
 import "@/styles/global.css";
@@ -68,5 +69,6 @@ import "@/styles/global.css";
   </head>
   <body>
     <slot />
+    <WhatsAppButton client:idle />
   </body>
 </html>

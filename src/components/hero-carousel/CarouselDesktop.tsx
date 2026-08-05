@@ -119,7 +119,6 @@ export function CarouselDesktop({
                     )}
                   </AnimatePresence>
 
-                  {/* BLOCO DE TEXTOS COM ANIMAÇÃO */}
                   <div className="pl-8.5 gap-1 col-span-12 lg:col-span-5 flex flex-col justify-center items-start z-10 space-y-1 h-full">
                     <AnimatePresence mode="wait">
                       {isActive && (
@@ -184,7 +183,6 @@ export function CarouselDesktop({
                     </AnimatePresence>
                   </div>
 
-                  {/* BLOCO DA IMAGEM DO PRODUTO COM ANIMAÇÃO */}
                   <div className="col-span-12 sm:col-span-6 lg:col-span-7 relative h-full flex items-center justify-center sm:justify-end z-10 overflow-hidden">
                     <AnimatePresence mode="wait">
                       {isActive && (
@@ -209,7 +207,6 @@ export function CarouselDesktop({
           })}
         </CarouselContent>
 
-        {/* PAGINAÇÃO DE DOTS */}
         <div className="absolute bottom-6 left-0 right-0 flex pl-16 justify-left gap-2 z-20">
           {Array.from({ length: slides.length }).map((_, index) => (
             <button

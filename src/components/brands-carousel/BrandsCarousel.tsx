@@ -36,7 +36,6 @@ function Card() {
   ));
 }
 
-// Variante para a animação de aparecimento gradual da seção
 const revealVariants: Variants = {
   hidden: {
     opacity: 0,
@@ -46,8 +45,8 @@ const revealVariants: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 3, // Velocidade suave de aparecimento
-      ease: [0.22, 1, 0.36, 1], // Curva de aceleração fluida (Apple style)
+      duration: 3,
+      ease: [0.22, 1, 0.36, 1],
     },
   },
 };
@@ -55,8 +54,6 @@ const revealVariants: Variants = {
 export function BrandsCarousel() {
   const sectionRef = useRef(null);
 
-  // O hook detecta a visibilidade do componente na tela.
-  // amount: 0.3 garante que exige 30% da seção visível para disparar.
   const isInView = useInView(sectionRef, {
     once: false,
     amount: 0.3,
@@ -68,7 +65,6 @@ export function BrandsCarousel() {
       className="w-full bg-white flex flex-col items-center overflow-hidden"
     >
       <div className="relative w-full max-w-6xl mx-auto py-10 lg:py-16">
-        {/* Título com animação sincronizada ao scroll */}
         <motion.p
           variants={revealVariants}
           initial="hidden"
@@ -78,14 +74,12 @@ export function BrandsCarousel() {
           Trabalhamos com as melhores marcas do mercado
         </motion.p>
 
-        {/* Contêiner da Máscara Lateral + Animação de Entrada */}
         <motion.div
           className="relative flex w-full overflow-hidden mask-[linear-gradient(to_right,transparent_0%,black_10%,black_90%,transparent_100%)] border-x-18 border-white lg:pb-26"
           variants={revealVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {/* Marquee Infinito (Mantido) */}
           <motion.div
             className="flex shrink-0 gap-8 sm:gap-16 items-center pr-8 sm:pr-16"
             animate={{ x: ["0%", "-50%"] }}

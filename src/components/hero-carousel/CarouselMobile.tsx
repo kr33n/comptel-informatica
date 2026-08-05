@@ -55,27 +55,20 @@ export function CarouselMobile({
 
             return (
               <CarouselItem key={slide.id} className="overflow-visible pl-0!">
-                <div
-                  className="relative w-full min-h-115 h-auto flex flex-col items-center justify-between gap-4 sm:gap-8 p-5 sm:p-8 text-center"
-                  // aria-label={slide.ariaLabel}
-                >
-                  {/* Fundo do Card */}
+                <div className="relative w-full min-h-115 h-auto flex flex-col items-center justify-between gap-4 sm:gap-8 p-5 sm:p-8 text-center">
                   <div
                     className={`${slide.backgrondLayout} absolute inset-0 rounded-3xl overflow-hidden z-0 h-auto`}
                   ></div>
 
-                  {/* IMAGEM DO PRODUTO COM MOTION */}
                   <div className="relative w-full flex items-center justify-center z-20 -mt-16 sm:-mt-16">
                     <AnimatePresence mode="wait">
                       {isActive && (
                         <picture key={`pic-${slide.id}`}>
-                          {/* O Navegador BAIXA ESTA IMAGEM se a tela for menor que 640px */}
                           <source
                             media="(max-width: 640px)"
                             srcSet={slide.image.productsImageMobile}
                           />
 
-                          {/* O Navegador BAIXA ESTA IMAGEM se a tela for MAIOR que 640px */}
                           <source
                             media="(min-width: 641px)"
                             srcSet={slide.image.productsImage}
@@ -85,12 +78,10 @@ export function CarouselMobile({
                             initial="hidden"
                             animate="visible"
                             variants={carouselMotionVariants.image}
-                            // A imagem padrão atua como um "fallback" para a tag <picture>
                             src={slide.image.productsImage}
                             alt={slide.image.imageLabel}
                             style={slide.image.style.mobile}
                             className="w-full h-44 sm:h-67.5 object-contain drop-shadow-2xl scale-100 sm:scale-110"
-                            // Continue com a definição de tamanho explícita para evitar o aviso de Unsized Image
                             width={slide.image.width || 800}
                             height={slide.image.height || 800}
                           />
@@ -169,7 +160,6 @@ export function CarouselMobile({
           })}
         </CarouselContent>
 
-        {/* CONTROLES DE PAGINAÇÃO (DOTS) */}
         <div className="absolute bottom-4 -left-10 flex pl-16 justify-left gap-2 z-20">
           {Array.from({ length: slides.length }).map((_, index) => (
             <button

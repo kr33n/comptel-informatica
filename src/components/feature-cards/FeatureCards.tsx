@@ -1,7 +1,6 @@
 import { motion, useInView, type Variants } from "framer-motion";
 import { useRef } from "react";
 
-// Importe as imagens reais do seu projeto
 import pcTrabalhoImg from "@/assets/cards/office.webp";
 import pcGamerImg from "@/assets/cards/gamer.webp";
 import perifericosImg from "@/assets/cards/perifericos.webp";
@@ -33,11 +32,10 @@ const features = [
   },
 ];
 
-// Variante individual para cada Card
 const cardVariants: Variants = {
   hidden: {
     opacity: 0,
-    x: -50, // Deslocamento para a esquerda
+    x: -50,
   },
   visible: {
     opacity: 1,
@@ -49,14 +47,12 @@ const cardVariants: Variants = {
   },
 };
 
-// Componente isolado para gerenciar o foco/visibilidade individual
 function FeatureCardItem({ item }: { item: (typeof features)[0] }) {
   const cardRef = useRef(null);
 
-  // Monitora a visibilidade DESTE card específico
   const isInView = useInView(cardRef, {
     once: false,
-    amount: 0.3, // Dispara quando 30% DESTE card entrar na tela
+    amount: 0.3,
   });
 
   return (
@@ -67,7 +63,6 @@ function FeatureCardItem({ item }: { item: (typeof features)[0] }) {
       animate={isInView ? "visible" : "hidden"}
       className="flex flex-col bg-white rounded-[2rem] border border-gray-100 text-left h-full shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
     >
-      {/* Espaço da Imagem */}
       <div className="w-full h-40 lg:h-45 flex justify-center items-end pointer-events-none px-6">
         <img
           src={item.image.src}
@@ -76,7 +71,6 @@ function FeatureCardItem({ item }: { item: (typeof features)[0] }) {
         />
       </div>
 
-      {/* Conteúdo do Texto */}
       <div className="flex flex-col gap-2 grow p-6 pt-4">
         <h3 className="text-2xl font-semibold text-brand-primary leading-[34.8px] tracking-[-0.48px] text-nowrap sm:text-balance">
           {item.title}
