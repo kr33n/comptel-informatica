@@ -44,9 +44,7 @@ const links = [
     class="min-h-screen bg-[#050505] text-white flex flex-col items-center justify-center px-4 py-12 font-sans"
   >
     <div class="w-full max-w-md flex flex-col items-center gap-8">
-      {/* Header com Logo, Nome e Bio */}
       <header class="flex flex-col items-center text-center gap-4">
-        {/* Card da Logo em formato pílula/card branco */}
         <div
           class="bg-white p-4 rounded-2xl w-48 h-20 flex items-center justify-center shadow-lg"
         >
@@ -57,18 +55,15 @@ const links = [
           />
         </div>
 
-        {/* Nome da Marca */}
         <h1 class="text-2xl font-bold tracking-tight text-white mt-2">
           {siteConfig.name}
         </h1>
 
-        {/* Bio */}
         <p class="text-sm text-gray-300 max-w-sm leading-relaxed opacity-90">
           {profile.bio}
         </p>
       </header>
 
-      {/* Lista de Links */}
       <nav class="w-full flex flex-col gap-4">
         {
           links.map((link) => (
@@ -89,12 +84,10 @@ const links = [
 </Layout>
 
 <style>
-  /* Efeito de hover dinâmico puxando a cor da marca */
   .link-btn:hover {
     color: var(--hover-color);
   }
 
-  /* Oculta o widget flutuante do WhatsApp apenas nesta rota */
   :global(.fixed.bottom-6) {
     display: none !important;
   }

@@ -9,6 +9,7 @@ import React, { useState, useEffect } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { type CarouselApi } from "@/components/ui/carousel";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { siteConfig } from "@/siteConfig";
 
 interface GamerCarouselMobileProps {
   slides: any[];
@@ -67,21 +68,37 @@ export function CarouselMobile({
                   <div className="relative w-full flex items-center justify-center z-20 -mt-16 sm:-mt-16">
                     <AnimatePresence mode="wait">
                       {isActive && (
-                        <motion.img
-                          key={`img-${slide.id}`}
-                          initial="hidden"
-                          animate="visible"
-                          variants={carouselMotionVariants.image}
-                          src={slide.image.productsImage}
-                          alt={slide.image.imageLabel}
-                          style={slide.image.style.mobile}
-                          className="w-full h-44 sm:h-67.5 object-contain drop-shadow-2xl scale-100 sm:scale-110"
-                        />
+                        <picture key={`pic-${slide.id}`}>
+                          {/* O Navegador BAIXA ESTA IMAGEM se a tela for menor que 640px */}
+                          <source
+                            media="(max-width: 640px)"
+                            srcSet={slide.image.productsImageMobile}
+                          />
+
+                          {/* O Navegador BAIXA ESTA IMAGEM se a tela for MAIOR que 640px */}
+                          <source
+                            media="(min-width: 641px)"
+                            srcSet={slide.image.productsImage}
+                          />
+
+                          <motion.img
+                            initial="hidden"
+                            animate="visible"
+                            variants={carouselMotionVariants.image}
+                            // A imagem padrão atua como um "fallback" para a tag <picture>
+                            src={slide.image.productsImage}
+                            alt={slide.image.imageLabel}
+                            style={slide.image.style.mobile}
+                            className="w-full h-44 sm:h-67.5 object-contain drop-shadow-2xl scale-100 sm:scale-110"
+                            // Continue com a definição de tamanho explícita para evitar o aviso de Unsized Image
+                            width={slide.image.width || 800}
+                            height={slide.image.height || 800}
+                          />
+                        </picture>
                       )}
                     </AnimatePresence>
                   </div>
 
-                  {/* CONTEÚDO DE TEXTO E BOTÃO COM MOTION */}
                   <div className="flex flex-col items-center justify-center z-20 w-full pb-6 pt-8 sm:pb-8 gap-3 sm:gap-6">
                     <AnimatePresence mode="wait">
                       {isActive && (
@@ -123,8 +140,18 @@ export function CarouselMobile({
                             className="w-full max-w-110 relative z-20 mt-4"
                           >
                             <Button
+                              onClick={() => {
+                                window.open(
+                                  siteConfig.links.whatsappUrl +
+                                    siteConfig.phone +
+                                    `?text=${siteConfig.whatsappText}` +
+                                    slide.ariaLabel,
+                                  "_blank",
+                                  "noopener,noreferrer",
+                                );
+                              }}
                               variant="outline"
-                              className="w-full rounded-full bg-white text-blue-700 hover:bg-white/90 border-white py-6 text-base font-semibold group flex items-center justify-center gap-2 transition-all"
+                              className={`w-full rounded-full py-6 text-base font-semibold group flex items-center justify-center gap-2 transition-all  bg-white ${slide.text.buttonTextColor} hover:${slide.text.buttonTextColor} hover:bg-white/90 hover:scale-[1.09] cursor-pointer`}
                             >
                               <p className="text-[16px] sm:text-[18px] font-semibold leading-[23.2px]">
                                 {slide.text.buttonText}
@@ -148,7 +175,7 @@ export function CarouselMobile({
             <button
               key={index}
               onClick={() => api?.scrollTo(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`p-2 w-3 h-3 rounded-full transition-all duration-300 ${
                 current === index
                   ? "bg-white scale-110"
                   : "bg-white/40 hover:bg-white/60"

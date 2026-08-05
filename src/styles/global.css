@@ -145,8 +145,5 @@
 }
 
 a {
-  color: unset;
-  -webkit-text-decoration: none !important;
   text-decoration: none;
-  display: block;
 }

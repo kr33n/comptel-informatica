@@ -11,7 +11,9 @@ export function Header() {
       <div className="flex items-center justify-center">
         <img
           src={logoComptel.src}
-          alt="Comptel Informática"
+          width={200}
+          height={50}
+          alt="Logo Comptel Informática"
           className="h-8 sm:h-10 w-auto object-contain"
         />
       </div>

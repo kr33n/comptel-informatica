@@ -110,6 +110,8 @@ export function CarouselDesktop({
                         variants={carouselMotionVariants.image}
                         aria-label={slide.ariaLabel}
                         src={backgroundImage.src}
+                        width={500}
+                        height={500}
                         alt={slide.ariaLabel}
                         aria-hidden="true"
                         className={slide.backgroundImage.className}
@@ -171,7 +173,7 @@ export function CarouselDesktop({
                                 );
                               }}
                               variant="outline"
-                              className={`group flex items-center rounded-full bg-white ${slide.text.buttonTextColor} hover:${slide.text.buttonTextColor} hover:bg-white/90 px-4 gap-2 transition-all hover:scale-[1.09] cursor-pointer text-[18px] py-6 font-semibold leading-[145%] tracking-[-0.09px] text-lg md:text-xl`}
+                              className={`group flex items-center rounded-full  px-4 gap-2 transition-all  text-[18px] py-6 font-semibold leading-[145%] tracking-[-0.09px] text-lg md:text-xl bg-white ${slide.text.buttonTextColor} hover:${slide.text.buttonTextColor} hover:bg-white/90 hover:scale-[1.09] cursor-pointer`}
                             >
                               {slide.text.buttonText}
                               <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5 transition-transform" />
@@ -190,6 +192,8 @@ export function CarouselDesktop({
                           key={slide.id}
                           initial="hidden"
                           animate="visible"
+                          width={800}
+                          height={800}
                           variants={carouselMotionVariants.image}
                           src={slide.image.productsImage}
                           alt={slide.image.imageLabel}

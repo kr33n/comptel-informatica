@@ -28,6 +28,8 @@ function Card() {
       <img
         src={brand.src}
         alt={brand.name}
+        width={96}
+        height={48}
         className="max-w-full sm:w-32 h-12 max-h-full w-auto object-contain shrink-0"
       />
     </div>
