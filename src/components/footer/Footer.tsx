@@ -68,7 +68,16 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} Comptel. Todos os direitos reservados.
           </p>
-          <p>Desenvolvido por Gab Studio</p>
+          <a
+            title="Agência desenvolvedora"
+            href="https://www.instagram.com/gabcabral_"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:opacity-75 transition-opacity"
+            aria-label="Contato com agência"
+          >
+            <p>Desenvolvido por Gab Studio</p>
+          </a>
         </div>
 
         <div className="flex items-center justify-center text-blue-700">
