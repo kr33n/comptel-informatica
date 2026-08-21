@@ -1,75 +1,86 @@
-# Comptel Informática — Landing Page
+# 💻 Comptel Informática
 
-Landing page institucional da **Comptel Informática**, desenvolvida com foco em alta performance, acessibilidade e SEO.
-
-## 🛠️ Tecnologias Utilizadas
-
-* **Framework:** Astro (SSG/SSR)
-* **UI / Componentes:** React, Tailwind CSS
-* **Recursos Adicionais:** Partytown (para otimização de scripts de terceiros)
+Landing page institucional moderna, focada em alta performance, acessibilidade e SEO, desenvolvida para a **Comptel Informática**.
 
 ---
 
-## 🚀 Como Executar o Projeto
+## 🚀 Tecnologias
+
+O projeto foi construído utilizando um ecossistema moderno para garantir o melhor tempo de carregamento e experiência de usuário:
+
+* **[Astro](https://astro.build/):** Framework web focado em conteúdo e velocidade (SSG/SSR).
+* **[React](https://reactjs.org/):** Biblioteca para a construção de interfaces de usuário e componentes interativos (utilizados via hidratação parcial).
+* **[Tailwind CSS](https://tailwindcss.com/):** Framework de CSS utilitário para estilização rápida, padronizada e responsiva.
+* **[Partytown](https://partytown.qwik.dev/):** Otimização que move a execução de scripts de terceiros para web workers, liberando a thread principal.
+
+---
+
+## 📂 Estrutura do Projeto
+
+A organização segue o padrão recomendado pela documentação do Astro:
+
+    /
+    ├── public/             # Arquivos estáticos servidos diretamente (favicon, fontes)
+    ├── src/
+    │   ├── assets/         # Imagens otimizadas (WebP/SVG) e estilos globais
+    │   ├── components/     # Componentes reutilizáveis (React e Astro)
+    │   ├── layouts/        # Estruturas base de página (ex: Layout padrão)
+    │   └── pages/          # Rotas da aplicação (ex: index.astro)
+    ├── astro.config.mjs    # Configurações do framework e integrações
+    ├── package.json        # Dependências e scripts
+    └── tailwind.config.mjs # Configurações de design system do Tailwind
+
+---
+
+## ⚙️ Como Executar
 
 ### Pré-requisitos
-* Node.js (versão 18 ou superior)
-* npm, pnpm ou yarn
+* **Node.js** (versão 18 ou superior recomendada)
+* Gerenciador de pacotes (`npm`, `yarn` ou `pnpm`)
 
-### Passo a Passo
+### Instalação e Execução local
 
-1. **Clonar o repositório:**
+1. **Clone este repositório:**
+   
+        git clone [https://github.com/kr33n/comptel-informatica.git](https://github.com/kr33n/comptel-informatica.git)
 
-        git clone https://github.com/usuario/comptel-landing-page.git
-        cd comptel-landing-page
+2. **Acesse a pasta do projeto:**
+   
+        cd comptel-informatica
 
-2. **Instalar as dependências:**
-
+3. **Instale as dependências necessárias:**
+   
         npm install
 
-3. **Iniciar o servidor de desenvolvimento:**
-
+4. **Inicie o servidor de desenvolvimento:**
+   
         npm run dev
 
-   Acesse a aplicação em `http://localhost:4321`.
-
-4. **Gerar a build de produção:**
-
-        npm run build
+5. Abra o navegador e acesse `http://localhost:4321`.
 
 ---
 
-## 📊 Performance & Diagnóstico (Lighthouse)
+## 📜 Comandos Disponíveis
 
-Status do último teste de auditoria realizado via Lighthouse:
-
-| Categoria | Pontuação | Status |
-| :--- | :---: | :--- |
-| **Performance** | `93/100` | 🟢 Excelente |
-| **Accessibility** | `100/100` | 🟢 Perfeito |
-| **Best Practices** | `96/100` | 🟢 Excelente |
-| **SEO** | `100/100` | 🟢 Perfeito |
-
-### Métricas Principais (Core Web Vitals)
-* **First Contentful Paint (FCP):** 0.5s
-* **Speed Index:** 1.4s
-* **Time to Interactive (TTI):** 1.6s
-* **Largest Contentful Paint (LCP):** 1.6s
-* **Total Blocking Time (TBT):** 0ms
-* **Cumulative Layout Shift (CLS):** 0
+| Comando | Descrição |
+| :--- | :--- |
+| `npm run dev` | Inicia o servidor local de desenvolvimento com Hot Module Replacement (HMR). |
+| `npm run build` | Gera a versão de produção otimizada no diretório `dist/`. |
+| `npm run preview` | Inicia um servidor local estático para visualizar a build de produção gerada. |
 
 ---
 
-## 📋 Plano de Otimização (PONTOS A CORRIGIR)
+## 📊 Performance e Qualidade
 
-Embora as notas estejam altas, os seguintes pontos foram identificados para melhorias futuras no código:
+A aplicação foi rigorosamente otimizada para atingir os mais altos padrões web, apresentando resultados excelentes em auditorias de Core Web Vitals (Lighthouse):
 
-* **Otimização de Imagens (`Image Delivery`):**
-  * Definir dimensões explícitas (`width` e `height`) nas tags `<img>` para evitar avisos de layout shift.
-  * Redimensionar e comprimir as imagens em WebP para exibição em telas menores (`carousel-1.webp`, `gamer.webp`, `perifericos.webp`).
-* **Atributos de Preconnect:**
-  * Revisar a tag `<link rel="preconnect">` dos Google Fonts no `<head>`, pois o Lighthouse apontou que não está sendo utilizada corretamente.
-* **Política de Cache:**
-  * Configurar cabeçalhos `Cache-Control` mais longos no servidor de hospedagem para recursos estáticos e scripts de terceiros (como os da API do Google Maps).
-* **Limpeza de Scripts (`Unused JS`):**
-  * Testar o build de produção final fora do ambiente local, pois parte do código não utilizado detectado no relatório era proveniente de extensões do navegador Chrome (ex: Adobe Acrobat).
+* **Acessibilidade:** 100/100
+* **SEO:** 100/100
+* **Melhores Práticas:** 96/100
+* **Performance:** 93/100
+
+*Métriças de destaque: First Contentful Paint (FCP) de 0.5s e Cumulative Layout Shift (CLS) em 0.*
+
+---
+
+*Desenvolvido para a [Comptel Informática](https://comptelinfo.com.br/).*
