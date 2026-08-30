@@ -1,0 +1,46 @@
+---
+import Layout from "../layouts/Layout.astro";
+import GeradorEtiquetas from "../components/etiquetas/GeradorEtiquetas.jsx";
+---
+
+<Layout title="Gerador de Etiquetas - Comptel Informática">
+  <!-- MUDANÇA: h-screen, overflow-hidden e ajuste de padding -->
+  <main
+    class="h-screen overflow-hidden bg-white pt-24 pb-6 print:h-auto print:overflow-visible print:pt-0 print:pb-0"
+  >
+    <div class="max-w-[1600px] mx-auto px-6 mb-4 print:hidden">
+      <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">
+        Impressão de Etiquetas
+      </h1>
+      <p class="text-gray-600 mt-1">
+        Preencha os dados. Salve até 4 etiquetas para otimizar o uso da folha
+        A4.
+      </p>
+    </div>
+
+    <GeradorEtiquetas client:load />
+  </main>
+</Layout>
+
+<style is:global>
+  @media print {
+    header,
+    footer,
+    nav,
+    [aria-label="Fale conosco pelo WhatsApp"] {
+      display: none !important;
+    }
+
+    body {
+      background-color: white !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+      overflow: unset;
+    }
+  }
+</style>
