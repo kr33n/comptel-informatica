@@ -4,50 +4,48 @@ import { templates } from "./templates";
 export default function GeradorEtiquetas() {
   const [etiquetasSalvas, setEtiquetasSalvas] = useState([]);
 
-  // 1. Draft agora inicia vazio (usando apenas placeholders na interface)
+  // Adicionamos 'variante' e 'textoRodape' ao estado inicial
   const [draft, setDraft] = useState({
     titulo1: "",
     titulo2: "",
     pagamento: "",
-    preco: "0,00", // Valor inicial cravado em 0,00
+    preco: "0,00",
     precoAntigo: "",
+    textoRodape: "",
     templateId: "padrao",
+    variante: "v1", // Variante Padrão
   });
 
   const isLandscape = draft.templateId === "paisagem";
+  const isPadrao = draft.templateId === "padrao";
 
-  // Handler para campos de texto normais
+  // Helpers para identificar a variação atual e mudar os labels do formulário
+  const isV1 = draft.variante === "v1" || !draft.variante;
+  const isV2 = draft.variante === "v2";
+  const isV3 = draft.variante === "v3";
+  const isV4 = draft.variante === "v4";
+
   const handleChange = (e) => {
     setDraft({ ...draft, [e.target.name]: e.target.value });
   };
 
-  // 2. Handler exclusivo para campos de preço (Preenchimento Direita -> Esquerda)
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
-
-    // Remove tudo que não for número
     const onlyDigits = value.replace(/\D/g, "");
 
-    // Se o campo for Preço Antigo e o usuário apagar tudo, deixa vazio para sumir o "DE:"
     if (name === "precoAntigo" && onlyDigits === "") {
       setDraft({ ...draft, [name]: "" });
       return;
     }
-
-    // Se for o Preço Atual e apagar tudo, trava no 0,00
     if (name === "preco" && onlyDigits === "") {
       setDraft({ ...draft, [name]: "0,00" });
       return;
     }
 
-    // Transforma a string de números puros em decimal (ex: 1234 -> 12.34)
     let number = (parseInt(onlyDigits, 10) / 100).toFixed(2);
     let [intPart, decPart] = number.split(".");
-
-    // Adiciona o ponto de milhar
     intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-    // Salva no formato brasileiro
     setDraft({ ...draft, [name]: `${intPart},${decPart}` });
   };
 
@@ -87,12 +85,23 @@ export default function GeradorEtiquetas() {
       templates.find((t) => t.id === data.templateId)?.component ||
       templates[0].component;
 
-    // Tratamento visual: Se o draft estiver vazio, mostra o placeholder no preview
+    // Detecta a variante para injetar os placeholders corretos no preview
+    const v = data.variante || "v1";
+    let defaultPagamento = "À VISTA";
+    if (v === "v2") defaultPagamento = "10x";
+    if (v === "v3" || v === "v4") defaultPagamento = "POR APENAS";
+
+    let defaultTextoRodape = "DE:";
+    if (v === "v2") defaultTextoRodape = "À VISTA";
+    if (v === "v3") defaultTextoRodape = "ou 10x s/ juros";
+    if (v === "v4") defaultTextoRodape = "5% de desconto no PIX";
+
     const templateData = {
       ...data,
       titulo1: data.titulo1 || "Cadeira Gamer Havit",
       titulo2: data.titulo2 || "GC932 | Reclinação 166°",
-      pagamento: data.pagamento || "À VISTA",
+      pagamento: data.pagamento || defaultPagamento,
+      textoRodape: data.textoRodape || defaultTextoRodape,
     };
 
     return <TemplateComponent data={templateData} isSingle={isSingle} />;
@@ -102,6 +111,42 @@ export default function GeradorEtiquetas() {
     !isSingle && displayList.length < 4
       ? Array.from({ length: 4 - displayList.length })
       : [];
+
+  // --- Lógica de Labels Dinâmicas para o Formulário ---
+  let labelPagamento = "Forma de Pagamento";
+  let placeholderPagamento = "À VISTA";
+  if (isV2) {
+    labelPagamento = "Qtd. Parcelas (ex: 10x)";
+    placeholderPagamento = "10x";
+  } else if (isV3 || isV4) {
+    labelPagamento = "Chamada Superior";
+    placeholderPagamento = "POR APENAS";
+  }
+
+  let labelPreco = isV2 ? "Valor da Parcela" : "Preço Principal";
+
+  let labelRodape = "Preço Antigo";
+  let placeholderRodape = "12.999,00";
+  if (isV2) {
+    labelRodape = "Valor Total à Vista";
+    placeholderRodape = "6.999,00";
+  } else if (isV3) {
+    labelRodape = "Valor da Parcela";
+    placeholderRodape = "199,00";
+  }
+
+  let labelTextoRodape = "Texto do Rodapé";
+  let placeholderTextoRodape = "DE:";
+  if (isV2) {
+    labelTextoRodape = "Texto Auxiliar";
+    placeholderTextoRodape = "À VISTA";
+  } else if (isV3) {
+    labelTextoRodape = "Texto da Parcela";
+    placeholderTextoRodape = "ou 10x s/ juros";
+  } else if (isV4) {
+    labelTextoRodape = "Texto Promocional";
+    placeholderTextoRodape = "5% de desconto no PIX";
+  }
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 max-w-[1600px] mx-auto h-[calc(100%-6rem)] px-6">
@@ -142,6 +187,33 @@ export default function GeradorEtiquetas() {
               ))}
             </select>
           </div>
+
+          {/* Sub-menu de Variações visível apenas no Modelo Padrão */}
+          {isPadrao && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Variação do Layout
+              </label>
+              <select
+                name="variante"
+                value={draft.variante || "v1"}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border-gray-300 p-2.5 border bg-white font-medium text-blue-800"
+              >
+                <option value="v1">V1: Padrão (Preço + De/Por)</option>
+                <option disabled value="v2">
+                  V2: Parcela em Destaque
+                </option>
+                <option disabled value="v3">
+                  V3: Parcela no Rodapé
+                </option>
+                <option disabled value="v4">
+                  V4: Texto Promocional
+                </option>
+              </select>
+            </div>
+          )}
+
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Título 1
@@ -150,6 +222,7 @@ export default function GeradorEtiquetas() {
               type="text"
               name="titulo1"
               value={draft.titulo1}
+              maxLength="46"
               onChange={handleChange}
               placeholder="Cadeira Gamer Havit"
               className="mt-1 block w-full rounded-md p-2.5 border border-gray-300"
@@ -168,25 +241,26 @@ export default function GeradorEtiquetas() {
               className="mt-1 block w-full rounded-md p-2.5 border border-gray-300"
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Forma de Pagamento
+              {labelPagamento}
             </label>
             <input
               type="text"
               name="pagamento"
               value={draft.pagamento}
               onChange={handleChange}
-              placeholder="À VISTA"
+              placeholder={placeholderPagamento}
               className="mt-1 block w-full rounded-md p-2.5 border border-gray-300"
             />
           </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Preço Atual
+                {labelPreco}
               </label>
-              {/* Note o handlePriceChange aqui */}
               <input
                 type="text"
                 name="preco"
@@ -195,32 +269,52 @@ export default function GeradorEtiquetas() {
                 className="mt-1 block w-full rounded-md p-2.5 border border-gray-300 font-bold text-blue-600"
               />
             </div>
+
+            {/* O campo de Preço Antigo/Secundário some na V4 pois ela é apenas texto */}
+            {!isV4 && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  {labelRodape}
+                </label>
+                <div className="relative mt-1">
+                  <input
+                    type="text"
+                    name="precoAntigo"
+                    value={draft.precoAntigo}
+                    onChange={handlePriceChange}
+                    placeholder={placeholderRodape}
+                    className="block w-full rounded-md p-2.5 pr-8 border border-gray-300"
+                  />
+                  {draft.precoAntigo && (
+                    <button
+                      type="button"
+                      onClick={() => setDraft({ ...draft, precoAntigo: "" })}
+                      className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Campo liberado para editar o "DE:", "À VISTA" ou a Promocão do rodapé */}
+          {isPadrao && (
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Preço Antigo
+                {labelTextoRodape}
               </label>
-              <div className="relative mt-1">
-                <input
-                  type="text"
-                  name="precoAntigo"
-                  value={draft.precoAntigo}
-                  onChange={handlePriceChange}
-                  placeholder="12.999,00"
-                  className="block w-full rounded-md p-2.5 pr-8 border border-gray-300"
-                />
-                {draft.precoAntigo && (
-                  <button
-                    type="button"
-                    onClick={() => setDraft({ ...draft, precoAntigo: "" })}
-                    aria-label="Limpar Preço Antigo"
-                    className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
+              <input
+                type="text"
+                name="textoRodape"
+                value={draft.textoRodape || ""}
+                onChange={handleChange}
+                placeholder={placeholderTextoRodape}
+                className="mt-1 block w-full rounded-md p-2.5 border border-gray-300"
+              />
             </div>
-          </div>
+          )}
         </div>
 
         <div className="flex flex-col gap-3 mt-6">
@@ -250,7 +344,7 @@ export default function GeradorEtiquetas() {
           </div>
         </div>
 
-        {/* Tabela de Fila (some automaticamente no modo Paisagem) */}
+        {/* Tabela de Fila */}
         {!isLandscape && etiquetasSalvas.length > 0 && (
           <div className="mt-6 pt-6 border-t border-gray-200 pb-4">
             <h3 className="text-sm font-bold text-gray-800 mb-3 uppercase tracking-wider">
@@ -272,7 +366,7 @@ export default function GeradorEtiquetas() {
                   {etiquetasSalvas.map((etiqueta, index) => (
                     <tr key={index} className="hover:bg-gray-50">
                       <td
-                        className="px-4 py-3 text-gray-700 font-medium truncate max-w-45"
+                        className="px-4 py-3 text-gray-700 font-medium truncate max-w-[180px]"
                         title={etiqueta.titulo1}
                       >
                         {etiqueta.titulo1}
@@ -296,7 +390,6 @@ export default function GeradorEtiquetas() {
 
       {/* ÁREA DE PREVIEW / FOLHA A4 */}
       <div className="w-full lg:w-2/3 h-full flex justify-center items-start print:items-start print:fixed print:inset-0 print:m-0 print:p-0 print:bg-white print:z-50 bg-gray-200 p-8 rounded-xl print:rounded-none overflow-y-auto print:overflow-hidden">
-        {/* Wrapper de Escala */}
         <div className="transform scale-[0.45] md:scale-[0.5] lg:scale-[0.55] xl:scale-[0.7] 2xl:scale-[0.8] origin-top print:scale-100 print:transform-none transition-transform duration-300">
           <div
             className="bg-white shadow-2xl print:shadow-none mx-auto flex flex-wrap content-start relative overflow-hidden transition-all duration-300"
@@ -305,7 +398,6 @@ export default function GeradorEtiquetas() {
               height: isLandscape ? "210mm" : "297mm",
             }}
           >
-            {/* LINHAS GUIAS DE CORTE EM CRUZ */}
             {!isSingle && !isLandscape && (
               <>
                 <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0 border-r border-dashed border-gray-400 z-20 pointer-events-none" />

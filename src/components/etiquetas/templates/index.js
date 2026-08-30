@@ -12,10 +12,5 @@ export const templates = [
     id: "minecraft",
     nome: "Minecraft (Dia das Crianças) 2026",
     component: ModeloMinecraft,
-  }, // <-- Adicione aqui
-  {
-    id: "paisagem",
-    nome: "Modelo Paisagem (1 p/ folha)",
-    component: ModeloPaisagem,
   },
 ];
