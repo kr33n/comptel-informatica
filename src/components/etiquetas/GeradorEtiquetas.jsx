@@ -199,15 +199,26 @@ export default function GeradorEtiquetas() {
               <label className="block text-sm font-medium text-gray-700">
                 Preço Antigo
               </label>
-              {/* Note o handlePriceChange aqui */}
-              <input
-                type="text"
-                name="precoAntigo"
-                value={draft.precoAntigo}
-                onChange={handlePriceChange}
-                placeholder="12.999,00"
-                className="mt-1 block w-full rounded-md p-2.5 border border-gray-300"
-              />
+              <div className="relative mt-1">
+                <input
+                  type="text"
+                  name="precoAntigo"
+                  value={draft.precoAntigo}
+                  onChange={handlePriceChange}
+                  placeholder="12.999,00"
+                  className="block w-full rounded-md p-2.5 pr-8 border border-gray-300"
+                />
+                {draft.precoAntigo && (
+                  <button
+                    type="button"
+                    onClick={() => setDraft({ ...draft, precoAntigo: "" })}
+                    aria-label="Limpar Preço Antigo"
+                    className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
