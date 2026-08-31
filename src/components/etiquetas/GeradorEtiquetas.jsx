@@ -33,7 +33,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Printer, Trash2, RotateCcw } from "lucide-react";
+import { Printer, Trash2, RotateCcw, Check, Eye, Copy } from "lucide-react";
 
 const defaultTag = {
   titulo1: "",
@@ -134,6 +134,32 @@ export default function GeradorEtiquetas() {
     }
 
     setActiveStep(newIndex);
+    setTimeout(() => {
+      const inputTitulo1 = document.querySelector('input[name="titulo1"]');
+      if (inputTitulo1) {
+        inputTitulo1.focus();
+        inputTitulo1.select(); // Opcional: seleciona o texto existente para facilitar a edição
+      }
+    }, 50);
+  };
+
+  const handleDuplicarParaProxima = (e, sourceIndex) => {
+    e.stopPropagation(); // Evita acionar o clique de navegação do step
+
+    // Define o destino: o próximo slot ou o anterior caso esteja no último (slot 4)
+    const targetIndex = sourceIndex < 3 ? sourceIndex + 1 : sourceIndex - 1;
+
+    const newTags = [...tags];
+    newTags[targetIndex] = { ...tags[sourceIndex] };
+    setTags(newTags);
+    setActiveStep(targetIndex);
+
+    setTimeout(() => {
+      const inputTitulo1 = document.querySelector('input[name="titulo1"]');
+      if (inputTitulo1) {
+        inputTitulo1.focus();
+      }
+    }, 50);
   };
 
   const confirmarLimparAtual = () => {
@@ -252,12 +278,40 @@ export default function GeradorEtiquetas() {
       {/* PAINEL DE CONTROLES */}
       <Card className="w-full lg:w-1/3 print:hidden h-full flex flex-col shadow-sm border-border bg-card">
         <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-bold tracking-tight">
-            Criar Etiqueta
-          </CardTitle>
-          <CardDescription>
-            Configure os dados e o layout para impressão
-          </CardDescription>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <CardTitle className="text-xl font-bold tracking-tight">
+                Criar Etiqueta
+              </CardTitle>
+              <CardDescription>
+                Configure os dados e o layout para impressão
+              </CardDescription>
+            </div>
+
+            {/* Ações Rápidas no Cabeçalho */}
+            <div className="flex items-center gap-1.5">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => setOpenLimparTodos(true)}
+                title="Limpar todas as etiquetas"
+                className="h-9 w-9 text-muted-foreground hover:text-destructive hover:bg-destructive/10 hover:border-destructive/30 cursor-pointer transition-colors"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+
+              <Button
+                type="button"
+                size="icon"
+                onClick={handlePrint}
+                title="Imprimir folha"
+                className="h-9 w-9 shadow-sm cursor-pointer"
+              >
+                <Printer className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
 
           {/* TOGGLE DE MODO: A4 vs A6 */}
           <div className="grid grid-cols-2 p-1 bg-muted rounded-lg mt-3">
@@ -284,25 +338,102 @@ export default function GeradorEtiquetas() {
             </Button>
           </div>
 
-          {/* STEPPER (Navegação A6) */}
+          {/* STEPPER BASE SHADCN (Navegação A6) */}
           {printMode === "A6" && (
-            <div className="mt-3 p-3 bg-muted/40 rounded-lg border border-border/60">
-              <span className="block text-[11px] font-semibold text-muted-foreground mb-2 uppercase tracking-wider text-center">
-                Etiqueta em edição
-              </span>
-              <div className="grid grid-cols-4 gap-2">
-                {[0, 1, 2, 3].map((step) => (
-                  <Button
-                    key={step}
-                    type="button"
-                    variant={activeStep === step ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => handleStepChange(step)}
-                    className="font-bold text-sm h-9 cursor-pointer"
-                  >
-                    {step + 1}
-                  </Button>
-                ))}
+            <div className="w-full pt-4 pb-2">
+              <div className="flex items-start justify-between">
+                {[0, 1, 2, 3].map((step, index) => {
+                  const isCurrent = activeStep === step;
+
+                  const tagData = tags[step];
+                  const isFilled =
+                    Boolean(tagData.titulo1?.trim()) ||
+                    Boolean(tagData.titulo2?.trim()) ||
+                    Boolean(tagData.precoAntigo?.trim()) ||
+                    (tagData.preco !== "0,00" &&
+                      Boolean(tagData.preco?.trim()));
+
+                  return (
+                    <React.Fragment key={step}>
+                      {/* Step Item */}
+                      <div
+                        onClick={() => handleStepChange(step)}
+                        className="group flex flex-col items-center cursor-pointer select-none"
+                      >
+                        <div
+                          className={`w-9 h-9 flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-200 ${
+                            isCurrent
+                              ? "bg-primary text-primary-foreground shadow-sm ring-2 ring-primary ring-offset-2 ring-offset-background"
+                              : isFilled
+                                ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+                          }`}
+                        >
+                          {isCurrent ? (
+                            <Eye className="w-4 h-4" />
+                          ) : isFilled ? (
+                            <Check className="w-4 h-4 stroke-[2.5]" />
+                          ) : (
+                            step + 1
+                          )}
+                        </div>
+                        <span
+                          className={`mt-2 text-[11px] font-medium transition-colors ${
+                            isCurrent
+                              ? "text-foreground font-semibold"
+                              : "text-muted-foreground group-hover:text-foreground"
+                          }`}
+                        >
+                          Etiqueta {step + 1}
+                        </span>
+
+                        {/* Ações Rápidas: Duplicar e Limpar */}
+                        <div className="mt-1 flex items-center gap-1">
+                          {step < 3 && (
+                            <button
+                              type="button"
+                              onClick={(e) =>
+                                handleDuplicarParaProxima(e, step)
+                              }
+                              title={`Duplicar Etiqueta ${step + 1} para Etiqueta ${step + 2}`}
+                              className="p-1 text-muted-foreground hover:text-primary hover:bg-muted/80 rounded transition-colors cursor-pointer border border-border/40"
+                            >
+                              <Copy className="w-3 h-3" />
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveStep(step);
+                              setOpenLimparAtual(true);
+                            }}
+                            title={`Limpar Etiqueta ${step + 1}`}
+                            className="p-1 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded transition-colors cursor-pointer border border-border/40"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Linha Conectora entre os steps */}
+                      {index < 3 && (
+                        <div
+                          className={`flex-1 h-[2px] mx-2 mt-4.5 transition-colors duration-200 ${
+                            tags[index] &&
+                            (Boolean(tags[index].titulo1?.trim()) ||
+                              Boolean(tags[index].titulo2?.trim()) ||
+                              Boolean(tags[index].precoAntigo?.trim()) ||
+                              (tags[index].preco !== "0,00" &&
+                                Boolean(tags[index].preco?.trim())))
+                              ? "bg-primary"
+                              : "bg-border"
+                          }`}
+                        />
+                      )}
+                    </React.Fragment>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -385,44 +516,6 @@ export default function GeradorEtiquetas() {
 
           {/* FORMULÁRIO DINÂMICO DA VARIANTE */}
           {renderFormulario()}
-
-          <Separator className="my-2" />
-
-          {/* AÇÕES FINAIS */}
-          <div className="space-y-2 pt-2">
-            <Button
-              type="button"
-              onClick={handlePrint}
-              className="w-full gap-2 font-bold shadow cursor-pointer"
-              size="lg"
-            >
-              <Printer className="w-4 h-4" />
-              Imprimir Folha
-            </Button>
-
-            <div className="grid grid-cols-2 gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => setOpenLimparAtual(true)}
-                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                Limpar Atual
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => setOpenLimparTodos(true)}
-                className="gap-1.5 text-xs text-destructive border-destructive/20 hover:bg-destructive/10 hover:text-destructive cursor-pointer"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                Limpar Todos
-              </Button>
-            </div>
-          </div>
         </CardContent>
       </Card>
 
