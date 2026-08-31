@@ -6,18 +6,8 @@ import GeradorEtiquetas from "../components/etiquetas/GeradorEtiquetas.jsx";
 <Layout title="Gerador de Etiquetas - Comptel Informática">
   <!-- MUDANÇA: h-screen, overflow-hidden e ajuste de padding -->
   <main
-    class="h-screen overflow-hidden bg-white pt-24 pb-6 print:h-auto print:overflow-visible print:pt-0 print:pb-0"
+    class="h-screen bg-white pt-12 pb-8 print:h-auto print:overflow-visible print:pt-0 print:pb-0"
   >
-    <div class="max-w-[1600px] mx-auto px-6 mb-4 print:hidden">
-      <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">
-        Impressão de Etiquetas
-      </h1>
-      <p class="text-gray-600 mt-1">
-        Preencha os dados. Salve até 4 etiquetas para otimizar o uso da folha
-        A4.
-      </p>
-    </div>
-
     <GeradorEtiquetas client:load />
   </main>
 </Layout>

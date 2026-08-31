@@ -33,7 +33,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Printer, Trash2, RotateCcw, Check, Eye, Copy } from "lucide-react";
+import { Printer, Trash2, Check, Eye, Copy } from "lucide-react";
 
 const defaultTag = {
   titulo1: "",
@@ -47,11 +47,9 @@ const defaultTag = {
 };
 
 export default function GeradorEtiquetas() {
-  // --- GERENCIAMENTO DE ESTADO ---
-  const [printMode, setPrintMode] = useState("A6"); // "A4" ou "A6"
+  const [printMode, setPrintMode] = useState("A6");
   const [activeStep, setActiveStep] = useState(0);
 
-  // Estados dos Diálogos de Confirmação (shadcn/ui)
   const [openLimparAtual, setOpenLimparAtual] = useState(false);
   const [openLimparTodos, setOpenLimparTodos] = useState(false);
 
@@ -75,13 +73,11 @@ export default function GeradorEtiquetas() {
     }
   }, [tags]);
 
-  // --- VARIÁVEIS DA ETIQUETA ATIVA ---
   const currentTag = tags[activeStep];
   const isLandscape = currentTag.templateId === "paisagem";
   const hasVariantes =
     currentTag.templateId === "padrao" || currentTag.templateId === "minecraft";
 
-  // --- HANDLERS ---
   const updateActiveTag = (updates) => {
     const newTags = [...tags];
     newTags[activeStep] = { ...newTags[activeStep], ...updates };
@@ -138,15 +134,14 @@ export default function GeradorEtiquetas() {
       const inputTitulo1 = document.querySelector('input[name="titulo1"]');
       if (inputTitulo1) {
         inputTitulo1.focus();
-        inputTitulo1.select(); // Opcional: seleciona o texto existente para facilitar a edição
+        inputTitulo1.select();
       }
     }, 50);
   };
 
   const handleDuplicarParaProxima = (e, sourceIndex) => {
-    e.stopPropagation(); // Evita acionar o clique de navegação do step
+    e.stopPropagation();
 
-    // Define o destino: o próximo slot ou o anterior caso esteja no último (slot 4)
     const targetIndex = sourceIndex < 3 ? sourceIndex + 1 : sourceIndex - 1;
 
     const newTags = [...tags];
@@ -183,9 +178,8 @@ export default function GeradorEtiquetas() {
     window.print();
   };
 
-  // --- RENDERIZADORES ---
   const isSingle = printMode === "A4" || isLandscape;
-  const displayList = isSingle ? [tags[0]] : tags;
+  const printList = isSingle ? [tags[0]] : tags;
 
   const renderFormulario = () => {
     const props = {
@@ -205,68 +199,34 @@ export default function GeradorEtiquetas() {
     return <FormularioV1 {...props} />;
   };
 
-  const renderTemplate = (data, index) => {
-    const isEmpty =
-      !data.titulo1 &&
-      !data.titulo2 &&
-      (data.preco === "0,00" || !data.preco) &&
-      !data.precoAntigo;
-    const isEditingThis = !isSingle && activeStep === index;
-
-    if (isEmpty && !isSingle && !isEditingThis) {
-      return (
-        <div
-          className="w-full h-full border-2 border-dashed border-muted-foreground/20 rounded-lg flex flex-col items-center justify-center bg-muted/30 print:bg-white print:border-none cursor-pointer hover:bg-muted/60 transition-colors"
-          onClick={() => handleStepChange(index)}
-        >
-          <span className="text-muted-foreground font-semibold text-sm print:hidden">
-            Etiqueta {index + 1} Vazia
-          </span>
-          <span className="text-muted-foreground/70 text-xs mt-0.5 print:hidden">
-            Clique para editar
-          </span>
-        </div>
-      );
-    }
-
+  const renderTemplateComponent = (data, singleMode) => {
     const TemplateComponent =
       templates.find((t) => t.id === data.templateId)?.component ||
       templates[0].component;
 
     const v = data.variante || "v1";
-    let defaultPagamento = "À VISTA";
+    let defaultPagamento = "MÉTODO DE PAGAMENTO";
     if (v === "v2") defaultPagamento = "10x";
     if (v === "v3" || v === "v4") defaultPagamento = "POR APENAS";
 
     let defaultTextoRodape = "DE:";
-    if (v === "v2") defaultTextoRodape = "À VISTA";
-    if (v === "v3") defaultTextoRodape = "ou 10x s/ juros";
-    if (v === "v4") defaultTextoRodape = "5% de desconto no PIX";
+    if (v === "v2") defaultTextoRodape = "MÉTODO DE PAGAMENTO";
+    if (v === "v3") defaultTextoRodape = "ou 0x s/ juros";
+    if (v === "v4") defaultTextoRodape = "0% de desconto no PIX";
 
     const templateData = {
       ...data,
-      titulo1: data.titulo1 || "Cadeira Gamer Havit",
-      titulo2: data.titulo2 || "GC932 | Reclinação 166°",
+      titulo1: data.titulo1 || "Rascunho Titulo 1",
+      titulo2: data.titulo2 || "Rascunho Título 2",
       pagamento: data.pagamento || defaultPagamento,
       textoRodape: data.textoRodape || defaultTextoRodape,
     };
 
-    return (
-      <div
-        className={`w-full h-full transition-all cursor-pointer rounded-sm ${
-          isEditingThis
-            ? "ring-2 ring-primary ring-offset-2 shadow-sm print:ring-0 print:ring-offset-0"
-            : "hover:ring-2 hover:ring-primary/40 hover:ring-offset-1 print:hover:ring-0"
-        }`}
-        onClick={() => handleStepChange(index)}
-      >
-        <TemplateComponent data={templateData} isSingle={isSingle} />
-      </div>
-    );
+    return <TemplateComponent data={templateData} isSingle={singleMode} />;
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 max-w-[1600px] mx-auto h-[calc(100%-6rem)] px-6">
+    <div className="flex flex-col lg:flex-row items-start gap-6 max-w-350 mx-auto px-4 sm:px-6 pb-16">
       {isLandscape && (
         <style>{`
           @media print {
@@ -275,46 +235,44 @@ export default function GeradorEtiquetas() {
         `}</style>
       )}
 
-      {/* PAINEL DE CONTROLES */}
-      <Card className="w-full lg:w-1/3 print:hidden h-full flex flex-col shadow-sm border-border bg-card">
-        <CardHeader className="pb-4">
-          <div className="flex items-start justify-between gap-2">
+      {/* PAINEL DE EDIÇÃO (FLUXO NATURAL DA PÁGINA) */}
+      <Card className="w-full lg:flex-1 print:hidden shadow-sm border-border bg-card">
+        <CardHeader className="p-5 sm:p-6 pb-4">
+          <div className="flex items-center justify-between gap-4">
             <div>
-              <CardTitle className="text-xl font-bold tracking-tight">
-                Criar Etiqueta
+              <CardTitle className="text-xl sm:text-2xl font-bold tracking-tight">
+                Impressão de Etiquetas
               </CardTitle>
-              <CardDescription>
-                Configure os dados e o layout para impressão
+              <CardDescription className="text-sm mt-1">
+                Preencha os dados. Salve até 4 etiquetas para otimizar o uso da
+                folha A4.
               </CardDescription>
             </div>
 
-            {/* Ações Rápidas no Cabeçalho */}
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <Button
                 type="button"
                 variant="outline"
                 size="icon"
                 onClick={() => setOpenLimparTodos(true)}
                 title="Limpar todas as etiquetas"
-                className="h-9 w-9 text-muted-foreground hover:text-destructive hover:bg-destructive/10 hover:border-destructive/30 cursor-pointer transition-colors"
+                className="h-10 w-10 text-muted-foreground hover:text-destructive hover:bg-destructive/10 hover:border-destructive/30 cursor-pointer"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-
               <Button
                 type="button"
                 size="icon"
                 onClick={handlePrint}
                 title="Imprimir folha"
-                className="h-9 w-9 shadow-sm cursor-pointer"
+                className="h-10 w-10 shadow-sm cursor-pointer"
               >
                 <Printer className="w-4 h-4" />
               </Button>
             </div>
           </div>
 
-          {/* TOGGLE DE MODO: A4 vs A6 */}
-          <div className="grid grid-cols-2 p-1 bg-muted rounded-lg mt-3">
+          <div className="grid grid-cols-2 p-1 bg-muted rounded-lg mt-5 max-w-sm">
             <Button
               type="button"
               variant={printMode === "A4" ? "default" : "ghost"}
@@ -323,7 +281,7 @@ export default function GeradorEtiquetas() {
                 setPrintMode("A4");
                 setActiveStep(0);
               }}
-              className="text-xs font-semibold shadow-none cursor-pointer"
+              className="text-xs font-semibold shadow-none cursor-pointer h-9"
             >
               A4 (1 Etiqueta)
             </Button>
@@ -332,19 +290,17 @@ export default function GeradorEtiquetas() {
               variant={printMode === "A6" ? "default" : "ghost"}
               size="sm"
               onClick={() => setPrintMode("A6")}
-              className="text-xs font-semibold shadow-none cursor-pointer"
+              className="text-xs font-semibold shadow-none cursor-pointer h-9"
             >
               A6 (4 Etiquetas)
             </Button>
           </div>
 
-          {/* STEPPER BASE SHADCN (Navegação A6) */}
           {printMode === "A6" && (
-            <div className="w-full pt-4 pb-2">
+            <div className="w-full pt-5 pb-2 max-w-2xl">
               <div className="flex items-start justify-between">
                 {[0, 1, 2, 3].map((step, index) => {
                   const isCurrent = activeStep === step;
-
                   const tagData = tags[step];
                   const isFilled =
                     Boolean(tagData.titulo1?.trim()) ||
@@ -355,22 +311,21 @@ export default function GeradorEtiquetas() {
 
                   return (
                     <React.Fragment key={step}>
-                      {/* Step Item */}
                       <div
                         onClick={() => handleStepChange(step)}
                         className="group flex flex-col items-center cursor-pointer select-none"
                       >
                         <div
-                          className={`w-9 h-9 flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-200 ${
+                          className={`w-10 h-10 flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-200 ${
                             isCurrent
-                              ? "bg-primary text-primary-foreground shadow-sm ring-2 ring-primary ring-offset-2 ring-offset-background"
+                              ? "bg-foreground text-background shadow-md ring-2 ring-foreground/20 ring-offset-2 ring-offset-background"
                               : isFilled
-                                ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                ? "bg-foreground/90 text-background hover:bg-foreground"
                                 : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
                           }`}
                         >
                           {isCurrent ? (
-                            <Eye className="w-4 h-4" />
+                            step + 1
                           ) : isFilled ? (
                             <Check className="w-4 h-4 stroke-[2.5]" />
                           ) : (
@@ -378,7 +333,7 @@ export default function GeradorEtiquetas() {
                           )}
                         </div>
                         <span
-                          className={`mt-2 text-[11px] font-medium transition-colors ${
+                          className={`mt-2 text-xs font-medium transition-colors ${
                             isCurrent
                               ? "text-foreground font-semibold"
                               : "text-muted-foreground group-hover:text-foreground"
@@ -387,7 +342,6 @@ export default function GeradorEtiquetas() {
                           Etiqueta {step + 1}
                         </span>
 
-                        {/* Ações Rápidas: Duplicar e Limpar */}
                         <div className="mt-1 flex items-center gap-1">
                           {step < 3 && (
                             <button
@@ -395,7 +349,7 @@ export default function GeradorEtiquetas() {
                               onClick={(e) =>
                                 handleDuplicarParaProxima(e, step)
                               }
-                              title={`Duplicar Etiqueta ${step + 1} para Etiqueta ${step + 2}`}
+                              title="Duplicar para a próxima"
                               className="p-1 text-muted-foreground hover:text-primary hover:bg-muted/80 rounded transition-colors cursor-pointer border border-border/40"
                             >
                               <Copy className="w-3 h-3" />
@@ -408,7 +362,7 @@ export default function GeradorEtiquetas() {
                               setActiveStep(step);
                               setOpenLimparAtual(true);
                             }}
-                            title={`Limpar Etiqueta ${step + 1}`}
+                            title="Limpar Etiqueta"
                             className="p-1 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded transition-colors cursor-pointer border border-border/40"
                           >
                             <Trash2 className="w-3 h-3" />
@@ -416,17 +370,16 @@ export default function GeradorEtiquetas() {
                         </div>
                       </div>
 
-                      {/* Linha Conectora entre os steps */}
                       {index < 3 && (
                         <div
-                          className={`flex-1 h-[2px] mx-2 mt-4.5 transition-colors duration-200 ${
+                          className={`flex-1 h-0.5 mx-3 mt-5 transition-colors duration-200 ${
                             tags[index] &&
                             (Boolean(tags[index].titulo1?.trim()) ||
                               Boolean(tags[index].titulo2?.trim()) ||
                               Boolean(tags[index].precoAntigo?.trim()) ||
                               (tags[index].preco !== "0,00" &&
                                 Boolean(tags[index].preco?.trim())))
-                              ? "bg-primary"
+                              ? "bg-foreground"
                               : "bg-border"
                           }`}
                         />
@@ -441,20 +394,17 @@ export default function GeradorEtiquetas() {
 
         <Separator />
 
-        <CardContent className="flex-1 overflow-y-auto space-y-4 pt-4">
-          {/* SELETORES GERAIS */}
-          <div className="space-y-4">
+        <CardContent className="p-5 sm:p-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-4 rounded-xl border border-border/50">
             <div className="space-y-1.5">
-              <Label className="text-xs font-semibold text-foreground">
-                Modelo Geral
-              </Label>
+              <Label className="text-xs font-semibold">Modelo Geral</Label>
               <Select
                 value={currentTag.templateId}
                 onValueChange={(val) =>
                   handleChange({ target: { name: "templateId", value: val } })
                 }
               >
-                <SelectTrigger className="w-full bg-background cursor-pointer">
+                <SelectTrigger className="w-full bg-background cursor-pointer h-10">
                   <SelectValue placeholder="Selecione o modelo">
                     {templates.find((t) => t.id === currentTag.templateId)
                       ?.nome || "Modelo Padrão"}
@@ -476,7 +426,7 @@ export default function GeradorEtiquetas() {
 
             {hasVariantes && (
               <div className="space-y-1.5">
-                <Label className="text-xs font-semibold text-foreground">
+                <Label className="text-xs font-semibold">
                   Variação do Layout
                 </Label>
                 <Select
@@ -485,7 +435,7 @@ export default function GeradorEtiquetas() {
                     handleChange({ target: { name: "variante", value: val } })
                   }
                 >
-                  <SelectTrigger className="w-full bg-background cursor-pointer">
+                  <SelectTrigger className="w-full bg-background cursor-pointer h-10">
                     <SelectValue placeholder="Selecione a variante">
                       {currentTag.variante === "v2" &&
                         "V2: Parcela em Destaque"}
@@ -499,7 +449,7 @@ export default function GeradorEtiquetas() {
                     <SelectItem value="v1" className="cursor-pointer">
                       V1: Padrão (Preço + De/Por)
                     </SelectItem>
-                    <SelectItem disabled value="v2" className="cursor-pointer">
+                    <SelectItem value="v2" className="cursor-pointer">
                       V2: Parcela em Destaque
                     </SelectItem>
                     <SelectItem disabled value="v3" className="cursor-pointer">
@@ -514,47 +464,72 @@ export default function GeradorEtiquetas() {
             )}
           </div>
 
-          {/* FORMULÁRIO DINÂMICO DA VARIANTE */}
-          {renderFormulario()}
+          <div className="pt-2">{renderFormulario()}</div>
         </CardContent>
       </Card>
 
-      {/* ÁREA DE PREVIEW / FOLHA A4 */}
-      <div className="w-full lg:w-2/3 h-full flex justify-center items-start print:items-start print:fixed print:inset-0 print:m-0 print:p-0 print:bg-white print:z-50 bg-muted/40 border border-border/60 rounded-xl p-8 print:border-none print:rounded-none overflow-y-auto print:overflow-hidden">
-        <div className="transform scale-[0.45] md:scale-[0.5] lg:scale-[0.55] xl:scale-[0.7] 2xl:scale-[0.8] origin-top print:scale-100 print:transform-none transition-transform duration-300">
-          <div
-            className="bg-white shadow-xl print:shadow-none mx-auto flex flex-wrap content-start relative overflow-hidden transition-all duration-300 rounded-sm"
-            style={{
-              width: isLandscape ? "295mm" : "210mm",
-              height: isLandscape ? "210mm" : "297mm",
-            }}
-          >
-            {!isSingle && !isLandscape && (
-              <>
-                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0 border-r border-dashed border-gray-300 z-20 pointer-events-none" />
-                <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0 border-b border-dashed border-gray-300 z-20 pointer-events-none" />
-              </>
-            )}
+      {/* ÁREA DE PREVIEW STICKY (FICA FIXO AO ROLAR O FORMULÁRIO) */}
+      <div className="w-full lg:w-95 xl:w-105 shrink-0 print:hidden sticky top-6 flex flex-col gap-4 bg-muted/20 border border-border/60 rounded-xl p-4 sm:p-5">
+        <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground px-1">
+          <span className="flex items-center gap-1.5">
+            <Eye className="w-4 h-4" />
+            Visualizando
+          </span>
+          <span className="bg-background px-2.5 py-1 rounded-md shadow-sm border border-border/40">
+            Etiqueta {activeStep + 1}
+          </span>
+        </div>
 
-            {displayList.map((item, index) => (
+        <div className="w-full aspect-[1/1.414] bg-white shadow-md rounded-md border border-border/40 overflow-hidden flex items-center justify-center">
+          {renderTemplateComponent(currentTag, isSingle)}
+        </div>
+      </div>
+
+      {/* GRADE COMPLETA EXCLUSIVA PARA IMPRESSÃO */}
+      <div className="hidden print:block fixed inset-0 m-0 p-0 bg-white z-50 overflow-hidden">
+        <div
+          className="bg-white mx-auto flex flex-wrap content-start relative overflow-hidden"
+          style={{
+            width: isLandscape ? "295mm" : "210mm",
+            height: isLandscape ? "210mm" : "297mm",
+          }}
+        >
+          {!isSingle && !isLandscape && (
+            <>
+              <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0 border-r border-dashed border-gray-300 z-20 pointer-events-none" />
+              <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0 border-b border-dashed border-gray-300 z-20 pointer-events-none" />
+            </>
+          )}
+
+          {printList.map((item, index) => {
+            const isEmpty =
+              !item.titulo1 &&
+              !item.titulo2 &&
+              (item.preco === "0,00" || !item.preco) &&
+              !item.precoAntigo;
+
+            return (
               <div
                 key={index}
-                className="print:break-inside-avoid box-border p-2 print:p-0 relative"
+                className="print:break-inside-avoid box-border p-0 relative"
                 style={{
                   width: isSingle ? "100%" : "50%",
                   height: isSingle ? "100%" : "50%",
                 }}
               >
-                {renderTemplate(item, index)}
+                {!isEmpty ? (
+                  renderTemplateComponent(item, isSingle)
+                ) : (
+                  <div className="w-full h-full bg-white" />
+                )}
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* MODAL: LIMPAR ATUAL */}
       <AlertDialog open={openLimparAtual} onOpenChange={setOpenLimparAtual}>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-[90vw] sm:max-w-lg rounded-xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Limpar Etiqueta Atual?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -577,9 +552,8 @@ export default function GeradorEtiquetas() {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* MODAL: LIMPAR TODOS */}
       <AlertDialog open={openLimparTodos} onOpenChange={setOpenLimparTodos}>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-[90vw] sm:max-w-lg rounded-xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Limpar Todas as Etiquetas?</AlertDialogTitle>
             <AlertDialogDescription>
