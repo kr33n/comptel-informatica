@@ -30,10 +30,10 @@ export const templates = [
     getComponent: (variante = "v1") =>
       padraoVariants[variante] || ModeloPadraoV1,
   },
-  {
-    id: "minecraft",
-    nome: "Dia das Crianças (Minecraft)",
-    getComponent: (variante = "v1") =>
-      minecraftVariants[variante] || ModeloMinecraftV1,
-  },
+  // {
+  //   id: "minecraft",
+  //   nome: "Dia das Crianças (Minecraft)",
+  //   getComponent: (variante = "v1") =>
+  //     minecraftVariants[variante] || ModeloMinecraftV1,
+  // },
 ];
