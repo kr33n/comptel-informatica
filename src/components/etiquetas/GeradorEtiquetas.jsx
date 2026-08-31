@@ -1,32 +1,95 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { templates } from "./templates";
+import FormularioV1 from "./forms/FormularioV1";
+import FormularioV2 from "./forms/FormularioV2";
+import FormularioV3 from "./forms/FormularioV3";
+import FormularioV4 from "./forms/FormularioV4";
+
+// shadcn/ui components
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Printer, Trash2, RotateCcw } from "lucide-react";
+
+const defaultTag = {
+  titulo1: "",
+  titulo2: "",
+  pagamento: "",
+  preco: "0,00",
+  precoAntigo: "",
+  textoRodape: "",
+  templateId: "padrao",
+  variante: "v1",
+};
 
 export default function GeradorEtiquetas() {
-  const [etiquetasSalvas, setEtiquetasSalvas] = useState([]);
+  // --- GERENCIAMENTO DE ESTADO ---
+  const [printMode, setPrintMode] = useState("A6"); // "A4" ou "A6"
+  const [activeStep, setActiveStep] = useState(0);
 
-  // Adicionamos 'variante' e 'textoRodape' ao estado inicial
-  const [draft, setDraft] = useState({
-    titulo1: "",
-    titulo2: "",
-    pagamento: "",
-    preco: "0,00",
-    precoAntigo: "",
-    textoRodape: "",
-    templateId: "padrao",
-    variante: "v1", // Variante Padrão
+  // Estados dos Diálogos de Confirmação (shadcn/ui)
+  const [openLimparAtual, setOpenLimparAtual] = useState(false);
+  const [openLimparTodos, setOpenLimparTodos] = useState(false);
+
+  const [tags, setTags] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("comptel_etiquetas");
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          console.error("Erro ao carregar dados", e);
+        }
+      }
+    }
+    return [defaultTag, defaultTag, defaultTag, defaultTag];
   });
 
-  const isLandscape = draft.templateId === "paisagem";
-  const isPadrao = draft.templateId === "padrao";
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("comptel_etiquetas", JSON.stringify(tags));
+    }
+  }, [tags]);
 
-  // Helpers para identificar a variação atual e mudar os labels do formulário
-  const isV1 = draft.variante === "v1" || !draft.variante;
-  const isV2 = draft.variante === "v2";
-  const isV3 = draft.variante === "v3";
-  const isV4 = draft.variante === "v4";
+  // --- VARIÁVEIS DA ETIQUETA ATIVA ---
+  const currentTag = tags[activeStep];
+  const isLandscape = currentTag.templateId === "paisagem";
+  const hasVariantes =
+    currentTag.templateId === "padrao" || currentTag.templateId === "minecraft";
+
+  // --- HANDLERS ---
+  const updateActiveTag = (updates) => {
+    const newTags = [...tags];
+    newTags[activeStep] = { ...newTags[activeStep], ...updates };
+    setTags(newTags);
+  };
 
   const handleChange = (e) => {
-    setDraft({ ...draft, [e.target.name]: e.target.value });
+    updateActiveTag({ [e.target.name]: e.target.value });
   };
 
   const handlePriceChange = (e) => {
@@ -34,58 +97,116 @@ export default function GeradorEtiquetas() {
     const onlyDigits = value.replace(/\D/g, "");
 
     if (name === "precoAntigo" && onlyDigits === "") {
-      setDraft({ ...draft, [name]: "" });
+      updateActiveTag({ [name]: "" });
       return;
     }
     if (name === "preco" && onlyDigits === "") {
-      setDraft({ ...draft, [name]: "0,00" });
+      updateActiveTag({ [name]: "0,00" });
       return;
     }
 
     let number = (parseInt(onlyDigits, 10) / 100).toFixed(2);
     let [intPart, decPart] = number.split(".");
     intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-    setDraft({ ...draft, [name]: `${intPart},${decPart}` });
+    updateActiveTag({ [name]: `${intPart},${decPart}` });
   };
 
-  const handleSalvar = () => {
-    if (isLandscape) return;
-    if (etiquetasSalvas.length >= 4) {
-      alert("A folha suporta no máximo 4 etiquetas.");
-      return;
+  const handleStepChange = (newIndex) => {
+    if (newIndex === activeStep) return;
+
+    const currentTagData = tags[activeStep];
+    const targetTagData = tags[newIndex];
+
+    const isTargetEmpty =
+      !targetTagData.titulo1 &&
+      !targetTagData.titulo2 &&
+      (targetTagData.preco === "0,00" || !targetTagData.preco) &&
+      !targetTagData.precoAntigo;
+
+    if (isTargetEmpty) {
+      const newTags = [...tags];
+      newTags[newIndex] = {
+        ...targetTagData,
+        templateId: currentTagData.templateId,
+        variante: currentTagData.variante,
+      };
+      setTags(newTags);
     }
-    setEtiquetasSalvas([...etiquetasSalvas, draft]);
+
+    setActiveStep(newIndex);
   };
 
-  const handleRemover = (indexToRemove) => {
-    setEtiquetasSalvas(
-      etiquetasSalvas.filter((_, index) => index !== indexToRemove),
-    );
+  const confirmarLimparAtual = () => {
+    const newTags = [...tags];
+    newTags[activeStep] = {
+      ...defaultTag,
+      templateId: newTags[activeStep].templateId,
+      variante: newTags[activeStep].variante,
+    };
+    setTags(newTags);
+    setOpenLimparAtual(false);
   };
 
-  const handleLimpar = () => {
-    setEtiquetasSalvas([]);
+  const confirmarLimparTodos = () => {
+    setTags([defaultTag, defaultTag, defaultTag, defaultTag]);
+    setActiveStep(0);
+    setOpenLimparTodos(false);
   };
 
   const handlePrint = () => {
     window.print();
   };
 
-  const displayList = isLandscape
-    ? [draft]
-    : etiquetasSalvas.length === 4
-      ? etiquetasSalvas
-      : [...etiquetasSalvas, draft];
+  // --- RENDERIZADORES ---
+  const isSingle = printMode === "A4" || isLandscape;
+  const displayList = isSingle ? [tags[0]] : tags;
 
-  const isSingle = displayList.length === 1;
+  const renderFormulario = () => {
+    const props = {
+      tag: currentTag,
+      onChange: handleChange,
+      onPriceChange: handlePriceChange,
+      onClearOldPrice: () => updateActiveTag({ precoAntigo: "" }),
+      hasVariantes,
+    };
+
+    if (!hasVariantes || currentTag.variante === "v1")
+      return <FormularioV1 {...props} />;
+    if (currentTag.variante === "v2") return <FormularioV2 {...props} />;
+    if (currentTag.variante === "v3") return <FormularioV3 {...props} />;
+    if (currentTag.variante === "v4") return <FormularioV4 {...props} />;
+
+    return <FormularioV1 {...props} />;
+  };
 
   const renderTemplate = (data, index) => {
+    const isEmpty =
+      !data.titulo1 &&
+      !data.titulo2 &&
+      (data.preco === "0,00" || !data.preco) &&
+      !data.precoAntigo;
+    const isEditingThis = !isSingle && activeStep === index;
+
+    if (isEmpty && !isSingle && !isEditingThis) {
+      return (
+        <div
+          className="w-full h-full border-2 border-dashed border-muted-foreground/20 rounded-lg flex flex-col items-center justify-center bg-muted/30 print:bg-white print:border-none cursor-pointer hover:bg-muted/60 transition-colors"
+          onClick={() => handleStepChange(index)}
+        >
+          <span className="text-muted-foreground font-semibold text-sm print:hidden">
+            Etiqueta {index + 1} Vazia
+          </span>
+          <span className="text-muted-foreground/70 text-xs mt-0.5 print:hidden">
+            Clique para editar
+          </span>
+        </div>
+      );
+    }
+
     const TemplateComponent =
       templates.find((t) => t.id === data.templateId)?.component ||
       templates[0].component;
 
-    // Detecta a variante para injetar os placeholders corretos no preview
     const v = data.variante || "v1";
     let defaultPagamento = "À VISTA";
     if (v === "v2") defaultPagamento = "10x";
@@ -104,49 +225,19 @@ export default function GeradorEtiquetas() {
       textoRodape: data.textoRodape || defaultTextoRodape,
     };
 
-    return <TemplateComponent data={templateData} isSingle={isSingle} />;
+    return (
+      <div
+        className={`w-full h-full transition-all cursor-pointer rounded-sm ${
+          isEditingThis
+            ? "ring-2 ring-primary ring-offset-2 shadow-sm print:ring-0 print:ring-offset-0"
+            : "hover:ring-2 hover:ring-primary/40 hover:ring-offset-1 print:hover:ring-0"
+        }`}
+        onClick={() => handleStepChange(index)}
+      >
+        <TemplateComponent data={templateData} isSingle={isSingle} />
+      </div>
+    );
   };
-
-  const emptySlots =
-    !isSingle && displayList.length < 4
-      ? Array.from({ length: 4 - displayList.length })
-      : [];
-
-  // --- Lógica de Labels Dinâmicas para o Formulário ---
-  let labelPagamento = "Forma de Pagamento";
-  let placeholderPagamento = "À VISTA";
-  if (isV2) {
-    labelPagamento = "Qtd. Parcelas (ex: 10x)";
-    placeholderPagamento = "10x";
-  } else if (isV3 || isV4) {
-    labelPagamento = "Chamada Superior";
-    placeholderPagamento = "POR APENAS";
-  }
-
-  let labelPreco = isV2 ? "Valor da Parcela" : "Preço Principal";
-
-  let labelRodape = "Preço Antigo";
-  let placeholderRodape = "12.999,00";
-  if (isV2) {
-    labelRodape = "Valor Total à Vista";
-    placeholderRodape = "6.999,00";
-  } else if (isV3) {
-    labelRodape = "Valor da Parcela";
-    placeholderRodape = "199,00";
-  }
-
-  let labelTextoRodape = "Texto do Rodapé";
-  let placeholderTextoRodape = "DE:";
-  if (isV2) {
-    labelTextoRodape = "Texto Auxiliar";
-    placeholderTextoRodape = "À VISTA";
-  } else if (isV3) {
-    labelTextoRodape = "Texto da Parcela";
-    placeholderTextoRodape = "ou 10x s/ juros";
-  } else if (isV4) {
-    labelTextoRodape = "Texto Promocional";
-    placeholderTextoRodape = "5% de desconto no PIX";
-  }
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 max-w-[1600px] mx-auto h-[calc(100%-6rem)] px-6">
@@ -159,240 +250,187 @@ export default function GeradorEtiquetas() {
       )}
 
       {/* PAINEL DE CONTROLES */}
-      <div className="w-full lg:w-1/3 space-y-6 print:hidden bg-gray-50 p-6 rounded-xl border border-gray-200 h-full overflow-y-auto">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800">Criar Etiqueta</h2>
-          <p className="text-sm text-gray-500">
-            {isLandscape
-              ? "Formato: Paisagem (1 p/ folha)"
-              : `Etiquetas na folha: ${etiquetasSalvas.length}/4`}
-          </p>
-        </div>
+      <Card className="w-full lg:w-1/3 print:hidden h-full flex flex-col shadow-sm border-border bg-card">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-xl font-bold tracking-tight">
+            Criar Etiqueta
+          </CardTitle>
+          <CardDescription>
+            Configure os dados e o layout para impressão
+          </CardDescription>
 
-        <div className="grid grid-cols-1 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Modelo
-            </label>
-            <select
-              name="templateId"
-              value={draft.templateId}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 p-2.5 border bg-white"
+          {/* TOGGLE DE MODO: A4 vs A6 */}
+          <div className="grid grid-cols-2 p-1 bg-muted rounded-lg mt-3">
+            <Button
+              type="button"
+              variant={printMode === "A4" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => {
+                setPrintMode("A4");
+                setActiveStep(0);
+              }}
+              className="text-xs font-semibold shadow-none cursor-pointer"
             >
-              {templates.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.nome}
-                </option>
-              ))}
-            </select>
+              A4 (1 Etiqueta)
+            </Button>
+            <Button
+              type="button"
+              variant={printMode === "A6" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setPrintMode("A6")}
+              className="text-xs font-semibold shadow-none cursor-pointer"
+            >
+              A6 (4 Etiquetas)
+            </Button>
           </div>
 
-          {/* Sub-menu de Variações visível apenas no Modelo Padrão */}
-          {isPadrao && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Variação do Layout
-              </label>
-              <select
-                name="variante"
-                value={draft.variante || "v1"}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 p-2.5 border bg-white font-medium text-blue-800"
-              >
-                <option value="v1">V1: Padrão (Preço + De/Por)</option>
-                <option disabled value="v2">
-                  V2: Parcela em Destaque
-                </option>
-                <option disabled value="v3">
-                  V3: Parcela no Rodapé
-                </option>
-                <option disabled value="v4">
-                  V4: Texto Promocional
-                </option>
-              </select>
+          {/* STEPPER (Navegação A6) */}
+          {printMode === "A6" && (
+            <div className="mt-3 p-3 bg-muted/40 rounded-lg border border-border/60">
+              <span className="block text-[11px] font-semibold text-muted-foreground mb-2 uppercase tracking-wider text-center">
+                Etiqueta em edição
+              </span>
+              <div className="grid grid-cols-4 gap-2">
+                {[0, 1, 2, 3].map((step) => (
+                  <Button
+                    key={step}
+                    type="button"
+                    variant={activeStep === step ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => handleStepChange(step)}
+                    className="font-bold text-sm h-9 cursor-pointer"
+                  >
+                    {step + 1}
+                  </Button>
+                ))}
+              </div>
             </div>
           )}
+        </CardHeader>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Título 1
-            </label>
-            <input
-              type="text"
-              name="titulo1"
-              value={draft.titulo1}
-              maxLength="46"
-              onChange={handleChange}
-              placeholder="Cadeira Gamer Havit"
-              className="mt-1 block w-full rounded-md p-2.5 border border-gray-300"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Título 2
-            </label>
-            <input
-              type="text"
-              name="titulo2"
-              value={draft.titulo2}
-              onChange={handleChange}
-              placeholder="GC932 | Reclinação 166°"
-              className="mt-1 block w-full rounded-md p-2.5 border border-gray-300"
-            />
-          </div>
+        <Separator />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              {labelPagamento}
-            </label>
-            <input
-              type="text"
-              name="pagamento"
-              value={draft.pagamento}
-              onChange={handleChange}
-              placeholder={placeholderPagamento}
-              className="mt-1 block w-full rounded-md p-2.5 border border-gray-300"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                {labelPreco}
-              </label>
-              <input
-                type="text"
-                name="preco"
-                value={draft.preco}
-                onChange={handlePriceChange}
-                className="mt-1 block w-full rounded-md p-2.5 border border-gray-300 font-bold text-blue-600"
-              />
+        <CardContent className="flex-1 overflow-y-auto space-y-4 pt-4">
+          {/* SELETORES GERAIS */}
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-semibold text-foreground">
+                Modelo Geral
+              </Label>
+              <Select
+                value={currentTag.templateId}
+                onValueChange={(val) =>
+                  handleChange({ target: { name: "templateId", value: val } })
+                }
+              >
+                <SelectTrigger className="w-full bg-background cursor-pointer">
+                  <SelectValue placeholder="Selecione o modelo">
+                    {templates.find((t) => t.id === currentTag.templateId)
+                      ?.nome || "Modelo Padrão"}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {templates.map((t) => (
+                    <SelectItem
+                      key={t.id}
+                      value={t.id}
+                      className="cursor-pointer"
+                    >
+                      {t.nome}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
-            {/* O campo de Preço Antigo/Secundário some na V4 pois ela é apenas texto */}
-            {!isV4 && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  {labelRodape}
-                </label>
-                <div className="relative mt-1">
-                  <input
-                    type="text"
-                    name="precoAntigo"
-                    value={draft.precoAntigo}
-                    onChange={handlePriceChange}
-                    placeholder={placeholderRodape}
-                    className="block w-full rounded-md p-2.5 pr-8 border border-gray-300"
-                  />
-                  {draft.precoAntigo && (
-                    <button
-                      type="button"
-                      onClick={() => setDraft({ ...draft, precoAntigo: "" })}
-                      className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer"
-                    >
-                      ✕
-                    </button>
-                  )}
-                </div>
+            {hasVariantes && (
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold text-foreground">
+                  Variação do Layout
+                </Label>
+                <Select
+                  value={currentTag.variante || "v1"}
+                  onValueChange={(val) =>
+                    handleChange({ target: { name: "variante", value: val } })
+                  }
+                >
+                  <SelectTrigger className="w-full bg-background cursor-pointer">
+                    <SelectValue placeholder="Selecione a variante">
+                      {currentTag.variante === "v2" &&
+                        "V2: Parcela em Destaque"}
+                      {currentTag.variante === "v3" && "V3: Parcela no Rodapé"}
+                      {currentTag.variante === "v4" && "V4: Texto Promocional"}
+                      {(!currentTag.variante || currentTag.variante === "v1") &&
+                        "V1: Padrão (Preço + De/Por)"}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="v1" className="cursor-pointer">
+                      V1: Padrão (Preço + De/Por)
+                    </SelectItem>
+                    <SelectItem disabled value="v2" className="cursor-pointer">
+                      V2: Parcela em Destaque
+                    </SelectItem>
+                    <SelectItem disabled value="v3" className="cursor-pointer">
+                      V3: Parcela no Rodapé
+                    </SelectItem>
+                    <SelectItem disabled value="v4" className="cursor-pointer">
+                      V4: Texto Promocional
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             )}
           </div>
 
-          {/* Campo liberado para editar o "DE:", "À VISTA" ou a Promocão do rodapé */}
-          {isPadrao && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                {labelTextoRodape}
-              </label>
-              <input
-                type="text"
-                name="textoRodape"
-                value={draft.textoRodape || ""}
-                onChange={handleChange}
-                placeholder={placeholderTextoRodape}
-                className="mt-1 block w-full rounded-md p-2.5 border border-gray-300"
-              />
-            </div>
-          )}
-        </div>
+          {/* FORMULÁRIO DINÂMICO DA VARIANTE */}
+          {renderFormulario()}
 
-        <div className="flex flex-col gap-3 mt-6">
-          <button
-            onClick={handleSalvar}
-            disabled={isLandscape || etiquetasSalvas.length >= 4}
-            className={`w-full font-bold py-3 px-4 rounded-lg transition-colors ${isLandscape || etiquetasSalvas.length >= 4 ? "bg-gray-400 text-gray-200 cursor-not-allowed" : "bg-gray-800 hover:bg-gray-900 text-white"}`}
-          >
-            {isLandscape
-              ? "Apenas 1 por folha (Modo Paisagem)"
-              : "Adicionar Etiqueta à Folha"}
-          </button>
+          <Separator className="my-2" />
 
-          <div className="flex gap-3">
-            <button
-              onClick={handleLimpar}
-              className="flex-1 bg-red-100 hover:bg-red-200 text-red-700 font-bold py-3 px-4 rounded-lg transition-colors"
-            >
-              Limpar Folha
-            </button>
-            <button
+          {/* AÇÕES FINAIS */}
+          <div className="space-y-2 pt-2">
+            <Button
+              type="button"
               onClick={handlePrint}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+              className="w-full gap-2 font-bold shadow cursor-pointer"
+              size="lg"
             >
+              <Printer className="w-4 h-4" />
               Imprimir Folha
-            </button>
-          </div>
-        </div>
+            </Button>
 
-        {/* Tabela de Fila */}
-        {!isLandscape && etiquetasSalvas.length > 0 && (
-          <div className="mt-6 pt-6 border-t border-gray-200 pb-4">
-            <h3 className="text-sm font-bold text-gray-800 mb-3 uppercase tracking-wider">
-              Fila de Impressão ({etiquetasSalvas.length})
-            </h3>
-            <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-              <table className="min-w-full divide-y divide-gray-200 text-sm">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-2 text-left font-medium text-gray-500">
-                      Produto
-                    </th>
-                    <th className="px-4 py-2 text-right font-medium text-gray-500">
-                      Ação
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {etiquetasSalvas.map((etiqueta, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td
-                        className="px-4 py-3 text-gray-700 font-medium truncate max-w-[180px]"
-                        title={etiqueta.titulo1}
-                      >
-                        {etiqueta.titulo1}
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <button
-                          onClick={() => handleRemover(index)}
-                          className="text-red-500 hover:text-red-700 font-semibold text-xs uppercase"
-                        >
-                          Remover
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setOpenLimparAtual(true)}
+                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                Limpar Atual
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setOpenLimparTodos(true)}
+                className="gap-1.5 text-xs text-destructive border-destructive/20 hover:bg-destructive/10 hover:text-destructive cursor-pointer"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                Limpar Todos
+              </Button>
             </div>
           </div>
-        )}
-      </div>
+        </CardContent>
+      </Card>
 
       {/* ÁREA DE PREVIEW / FOLHA A4 */}
-      <div className="w-full lg:w-2/3 h-full flex justify-center items-start print:items-start print:fixed print:inset-0 print:m-0 print:p-0 print:bg-white print:z-50 bg-gray-200 p-8 rounded-xl print:rounded-none overflow-y-auto print:overflow-hidden">
+      <div className="w-full lg:w-2/3 h-full flex justify-center items-start print:items-start print:fixed print:inset-0 print:m-0 print:p-0 print:bg-white print:z-50 bg-muted/40 border border-border/60 rounded-xl p-8 print:border-none print:rounded-none overflow-y-auto print:overflow-hidden">
         <div className="transform scale-[0.45] md:scale-[0.5] lg:scale-[0.55] xl:scale-[0.7] 2xl:scale-[0.8] origin-top print:scale-100 print:transform-none transition-transform duration-300">
           <div
-            className="bg-white shadow-2xl print:shadow-none mx-auto flex flex-wrap content-start relative overflow-hidden transition-all duration-300"
+            className="bg-white shadow-xl print:shadow-none mx-auto flex flex-wrap content-start relative overflow-hidden transition-all duration-300 rounded-sm"
             style={{
               width: isLandscape ? "295mm" : "210mm",
               height: isLandscape ? "210mm" : "297mm",
@@ -400,8 +438,8 @@ export default function GeradorEtiquetas() {
           >
             {!isSingle && !isLandscape && (
               <>
-                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0 border-r border-dashed border-gray-400 z-20 pointer-events-none" />
-                <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0 border-b border-dashed border-gray-400 z-20 pointer-events-none" />
+                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0 border-r border-dashed border-gray-300 z-20 pointer-events-none" />
+                <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0 border-b border-dashed border-gray-300 z-20 pointer-events-none" />
               </>
             )}
 
@@ -417,23 +455,58 @@ export default function GeradorEtiquetas() {
                 {renderTemplate(item, index)}
               </div>
             ))}
-
-            {emptySlots.map((_, index) => (
-              <div
-                key={`empty-${index}`}
-                className="box-border p-2 print:p-2"
-                style={{ width: "50%", height: "50%" }}
-              >
-                <div className="w-full h-full border border-dashed border-gray-200 flex items-center justify-center bg-gray-50 print:bg-white print:border-none">
-                  <span className="text-gray-300 print:hidden">
-                    Espaço Vazio
-                  </span>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
+
+      {/* MODAL: LIMPAR ATUAL */}
+      <AlertDialog open={openLimparAtual} onOpenChange={setOpenLimparAtual}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Limpar Etiqueta Atual?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Isso apagará os textos e preços preenchidos na etiqueta{" "}
+              {activeStep + 1}. O modelo e a variação selecionados serão
+              mantidos.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="cursor-pointer">
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmarLimparAtual}
+              className="cursor-pointer"
+            >
+              Confirmar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* MODAL: LIMPAR TODOS */}
+      <AlertDialog open={openLimparTodos} onOpenChange={setOpenLimparTodos}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Limpar Todas as Etiquetas?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação redefinirá todas as 4 etiquetas da folha de volta ao
+              estado original em branco. Essa ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="cursor-pointer">
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmarLimparTodos}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 cursor-pointer"
+            >
+              Limpar Tudo
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

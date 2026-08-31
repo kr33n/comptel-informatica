@@ -1,11 +1,10 @@
-import ModeloPadrao from "./ModeloPadrao";
-import ModeloPaisagem from "./ModeloPaisagem";
-import ModeloMinecraft from "./ModeloMinecraft"; // <-- Importe aqui
+import ModeloPadrao from "./padrao/ModeloPadrao";
+import ModeloMinecraft from "./dia_das_criancas_2026/ModeloMinecraft"; // <-- Importe aqui
 
 export const templates = [
   {
     id: "padrao",
-    nome: "Modelo Retrato (Azul Padrão)",
+    nome: "Modelo Padrão Comptel 2026",
     component: ModeloPadrao,
   },
   {
