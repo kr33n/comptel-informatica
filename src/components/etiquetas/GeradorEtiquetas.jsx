@@ -473,8 +473,27 @@ export default function GeradorEtiquetas() {
           </span>
         </div>
 
-        <div className="w-full aspect-[1/1.414] bg-white shadow-md rounded-md border border-border/40 overflow-hidden flex items-center justify-center">
-          {renderTemplateComponent(currentTag, isSingle)}
+        {/* Container visual da Proporção */}
+        <div className="w-full aspect-[1/1.414] bg-black/5 rounded-md border border-border/40 overflow-hidden flex items-center justify-center relative">
+          {/* Wrapper de Escala: Força o tamanho real em pixels da etiqueta e aplica o zoom (scale) para caber na tela */}
+          <div
+            className={`absolute origin-center transition-transform duration-300 flex items-center justify-center ${
+              isSingle
+                ? "scale-[0.38] md:scale-[0.40] xl:scale-[0.44]"
+                : "scale-[0.76] md:scale-[0.80] xl:scale-[0.88]"
+            }`}
+          >
+            {/* A Etiqueta real com tamanhos exatos de impressão */}
+            <div
+              className="bg-white shadow-xl relative overflow-hidden flex-shrink-0"
+              style={{
+                width: isSingle ? "794px" : "397px",
+                height: isSingle ? "1123px" : "561.5px",
+              }}
+            >
+              {renderTemplateComponent(currentTag, isSingle)}
+            </div>
+          </div>
         </div>
       </div>
 
