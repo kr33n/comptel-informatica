@@ -1,8 +1,7 @@
 import React from "react";
 
-export default function ModeloMinecraft({ data, isSingle }) {
+export default function ModeloMinecraftV1({ data, isSingle }) {
   const showOldPrice = data.precoAntigo && data.precoAntigo.trim() !== "";
-
   const precoStr = data.preco || "0,00";
   const precoLength = precoStr.length;
 
@@ -17,7 +16,7 @@ export default function ModeloMinecraft({ data, isSingle }) {
     cifraoClass = isSingle ? "text-3xl mt-6 mr-2" : "text-lg mt-1 mr-1";
   }
 
-  // 6 Avatares oficiais do Minecraft
+  // Avatares oficiais do Minecraft
   const steveImg = "https://minotar.net/helm/MHF_Steve/150.png";
   const endermanImg = "https://minotar.net/helm/MHF_Enderman/150.png";
   const creeperImg = "https://minotar.net/helm/MHF_Creeper/150.png";
@@ -40,14 +39,14 @@ export default function ModeloMinecraft({ data, isSingle }) {
         ></div>
       </div>
 
-      {/* SELO: Dia das Crianças Comptel (Posicionado no topo com largura ajustada) */}
+      {/* SELO: Dia das Crianças Comptel */}
       <div
         className={`absolute ${isSingle ? "top-[3.2rem]" : "top-[1.4rem]"} bg-[#FDB813] border-4 border-black uppercase text-center text-black font-black z-30 whitespace-nowrap ${isSingle ? "text-3xl px-8 py-2.5 shadow-[5px_5px_0px_#000000]" : "text-[0.7rem] px-3 py-1 shadow-[3px_3px_0px_#000000]"}`}
       >
         Dia das Crianças Comptel
       </div>
 
-      {/* CABEÇAS SUPERIORES (Deslocadas para baixo do banner) */}
+      {/* CABEÇAS SUPERIORES */}
       <img
         src={steveImg}
         alt="Steve"
@@ -94,7 +93,7 @@ export default function ModeloMinecraft({ data, isSingle }) {
         className={`absolute bg-[#FDB813] border-[3px] border-black z-10 ${isSingle ? "w-6 h-6 left-24 top-56 shadow-[4px_4px_0px_#000]" : "w-3 h-3 left-12 top-30 shadow-[2px_2px_0px_#000]"}`}
       ></div>
 
-      {/* CONTEÚDO CENTRAL */}
+      {/* CONTEÚDO CENTRAL (V1) */}
       <div className="relative z-20 flex flex-col items-center w-full px-20 flex-1 justify-center mt-14">
         <div className="flex flex-col items-center mb-4 w-full">
           <h1

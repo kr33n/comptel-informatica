@@ -168,15 +168,15 @@ export default function ModeloPadraoV2({ data, isSingle }) {
                 className="font-bold text-[#0022e6]"
                 style={{
                   fontSize: fp(64),
-                  marginTop: fp(16),
                   marginRight: fp(12),
+                  marginTop: fp(8),
                 }}
               >
                 R$
               </span>
               <div className="flex items-start">
                 <span
-                  className="font-extrabold text-[#0022e6] leading-normal "
+                  className="font-extrabold text-[#0022e6] leading-none "
                   style={{ fontSize: fp(160), letterSpacing: fp(-8) }}
                 >
                   {antigoInteiro},

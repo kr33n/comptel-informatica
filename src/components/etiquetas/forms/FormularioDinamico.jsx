@@ -16,7 +16,7 @@ export default function FormularioDinamico({
       {/* Linha 1: Título 1 | Título 2 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700 min-h-[1.25rem] leading-tight flex items-center mb-1">
+          <label className="text-sm font-medium text-gray-700 min-h-5 leading-tight flex items-center mb-1">
             {config.titulo1.label}
           </label>
           <input
@@ -31,7 +31,7 @@ export default function FormularioDinamico({
         </div>
 
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700 min-h-[1.25rem] leading-tight flex items-center mb-1">
+          <label className="text-sm font-medium text-gray-700 min-h-5-tight flex items-center mb-1">
             {config.titulo2.label}
           </label>
           <input
@@ -52,7 +52,7 @@ export default function FormularioDinamico({
         } gap-4 items-end`}
       >
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700 min-h-[1.25rem] leading-tight flex items-center mb-1 whitespace-nowrap">
+          <label className="text-sm font-medium text-gray-700 min-h-5 leading-tight flex items-center mb-1 whitespace-nowrap">
             {config.pagamento.label}
           </label>
           <input
@@ -66,7 +66,7 @@ export default function FormularioDinamico({
         </div>
 
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700 min-h-[1.25rem] leading-tight flex items-center mb-1 whitespace-nowrap">
+          <label className="text-sm font-medium text-gray-700 min-h-5 leading-tight flex items-center mb-1 whitespace-nowrap">
             {config.preco.label}
           </label>
           <input
@@ -80,7 +80,7 @@ export default function FormularioDinamico({
         </div>
 
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700 min-h-[1.25rem] leading-tight flex items-center mb-1 whitespace-nowrap">
+          <label className="text-sm font-medium text-gray-700 min-h-5 leading-tight flex items-center mb-1 whitespace-nowrap">
             {config.precoAntigo.label}
           </label>
           <div className="relative w-full">
@@ -106,7 +106,7 @@ export default function FormularioDinamico({
 
         {hasVariantes && (
           <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 min-h-[1.25rem] leading-tight flex items-center mb-1 whitespace-nowrap">
+            <label className="text-sm font-medium text-gray-700 min-h-5 leading-tight flex items-center mb-1 whitespace-nowrap">
               {config.textoRodape.label}
             </label>
             <input

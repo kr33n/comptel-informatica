@@ -189,9 +189,13 @@ export default function GeradorEtiquetas() {
   );
 
   const renderTemplateComponent = (data, singleMode) => {
-    const TemplateComponent =
-      templates.find((t) => t.id === data.templateId)?.component ||
-      templates[0].component;
+    const templateConfig =
+      templates.find((t) => t.id === data.templateId) || templates[0];
+
+    // Resolve o componente correspondente à variante atual
+    const TemplateComponent = templateConfig.getComponent
+      ? templateConfig.getComponent(data.variante)
+      : templateConfig.component;
 
     const v = data.variante || "v1";
     let defaultPagamento = "MÉTODO DE PAGAMENTO";
@@ -441,10 +445,10 @@ export default function GeradorEtiquetas() {
                     <SelectItem value="v2" className="cursor-pointer">
                       V2: Parcela em Destaque
                     </SelectItem>
-                    <SelectItem disabled value="v3" className="cursor-pointer">
+                    <SelectItem value="v3" className="cursor-pointer">
                       V3: Parcela no Rodapé
                     </SelectItem>
-                    <SelectItem disabled value="v4" className="cursor-pointer">
+                    <SelectItem value="v4" className="cursor-pointer">
                       V4: Texto Promocional
                     </SelectItem>
                   </SelectContent>
