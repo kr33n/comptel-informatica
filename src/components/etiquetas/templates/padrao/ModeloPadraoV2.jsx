@@ -20,10 +20,14 @@ export default function ModeloPadraoV2({ data, isSingle }) {
   );
 
   let baseGapFigma = 256;
+  let topOffsetFigma = 0;
+
   if (estimatedLines === 2) {
-    baseGapFigma = 160;
+    baseGapFigma = 140;
+    topOffsetFigma = 90; // Recuo para distanciar da arte superior
   } else if (estimatedLines >= 3) {
-    baseGapFigma = 80;
+    baseGapFigma = 70;
+    topOffsetFigma = 130;
   }
 
   const precoStr = data.preco || "0,00";
@@ -73,21 +77,29 @@ export default function ModeloPadraoV2({ data, isSingle }) {
         }}
       />
 
-      {/* Div principal com gap dinâmico */}
+      {/* Div principal com gap dinâmico e margens de segurança proporcionais */}
       <div
-        className="relative z-10 flex flex-col items-center w-full px-6 transition-all duration-200"
-        style={{ gap: fp(baseGapFigma) }}
+        className="relative z-10 flex flex-col items-center w-full transition-all duration-200"
+        style={{
+          gap: fp(baseGapFigma),
+          paddingLeft: fp(220),
+          paddingRight: fp(220),
+          paddingTop: fp(topOffsetFigma),
+        }}
       >
         {/* Bloco de Títulos */}
-        <div className="flex flex-col items-center" style={{ gap: fp(48) }}>
+        <div
+          className="flex flex-col items-center w-full"
+          style={{ gap: fp(48) }}
+        >
           <h1
-            className="font-extrabold text-center text-[#0022e6] leading-normal"
+            className="font-extrabold text-center text-[#0022e6] leading-normal w-full"
             style={{ fontSize: fp(220) }}
           >
             {titulo1Text}
           </h1>
           <h2
-            className="font-bold text-center text-[#0022e6] leading-normal"
+            className="font-semibold text-center text-[#0022e6] leading-normal w-full"
             style={{ fontSize: fp(108) }}
           >
             {data.titulo2 || "Subtítulo / Descrição"}
@@ -95,25 +107,22 @@ export default function ModeloPadraoV2({ data, isSingle }) {
         </div>
 
         {/* Bloco de Preço Principal (Parcela em Destaque) */}
-        <div className="flex items-start justify-center">
+        <div className="flex items-center justify-center">
           {/* R$ e 10x empilhados à esquerda */}
           <div
-            className="flex flex-col items-end justify-start font-bold text-[#0022e6]"
+            className="flex flex-col items-center justify-center font-bold text-[#0022e6]"
             style={{
-              marginRight: fp(16),
-              marginTop: fp(24),
+              gap: fp(56),
+              marginRight: fp(49.5),
             }}
           >
             <span
-              className="leading-none"
-              style={{ fontSize: fp(cifraoFigma) }}
+              className="leading-normal font-extrabold"
+              style={{ fontSize: fp(108) }}
             >
               R$
             </span>
-            <span
-              className="leading-tight mt-1"
-              style={{ fontSize: fp(cifraoFigma * 0.95) }}
-            >
+            <span className="leading-tight" style={{ fontSize: fp(80) }}>
               {data.pagamento || "10x"}
             </span>
           </div>
@@ -127,7 +136,7 @@ export default function ModeloPadraoV2({ data, isSingle }) {
                 letterSpacing: fp(-8),
               }}
             >
-              {parteInteira}
+              {parteInteira},
             </span>
             <span
               className="font-black text-[#0022e6] leading-none"
@@ -140,7 +149,7 @@ export default function ModeloPadraoV2({ data, isSingle }) {
                 textBoxTrim: "both",
               }}
             >
-              ,{centavos ? centavos : "00"}
+              {centavos ? centavos : "00"}
             </span>
           </div>
         </div>
@@ -149,7 +158,7 @@ export default function ModeloPadraoV2({ data, isSingle }) {
         {showFooter && (
           <div className="flex flex-col items-center">
             <span
-              className="font-bold text-center text-[#0022e6] uppercase tracking-wider leading-normal"
+              className="font-extrabold text-center text-[#0022e6] uppercase tracking-wider leading-normal"
               style={{ fontSize: fp(64), marginBottom: fp(8) }}
             >
               {data.textoRodape || "À VISTA"}
@@ -167,10 +176,10 @@ export default function ModeloPadraoV2({ data, isSingle }) {
               </span>
               <div className="flex items-start">
                 <span
-                  className="font-black text-[#0022e6] leading-none"
-                  style={{ fontSize: fp(160) }}
+                  className="font-extrabold text-[#0022e6] leading-normal "
+                  style={{ fontSize: fp(160), letterSpacing: fp(-8) }}
                 >
-                  {antigoInteiro}
+                  {antigoInteiro},
                 </span>
                 {antigoCentavos !== undefined && (
                   <span
@@ -181,9 +190,10 @@ export default function ModeloPadraoV2({ data, isSingle }) {
                       marginTop: fp(12),
                       leadingTrim: "both",
                       textBoxTrim: "both",
+                      letterSpacing: fp(-8),
                     }}
                   >
-                    ,{antigoCentavos}
+                    {antigoCentavos}
                   </span>
                 )}
               </div>

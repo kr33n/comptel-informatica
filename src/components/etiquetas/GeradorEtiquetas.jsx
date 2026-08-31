@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { templates } from "./templates";
-import FormularioV1 from "./forms/FormularioV1";
-import FormularioV2 from "./forms/FormularioV2";
-import FormularioV3 from "./forms/FormularioV3";
-import FormularioV4 from "./forms/FormularioV4";
+import FormularioDinamico from "./forms/FormularioDinamico";
 
 // shadcn/ui components
 import { Button } from "@/components/ui/button";
@@ -181,23 +178,15 @@ export default function GeradorEtiquetas() {
   const isSingle = printMode === "A4" || isLandscape;
   const printList = isSingle ? [tags[0]] : tags;
 
-  const renderFormulario = () => {
-    const props = {
-      tag: currentTag,
-      onChange: handleChange,
-      onPriceChange: handlePriceChange,
-      onClearOldPrice: () => updateActiveTag({ precoAntigo: "" }),
-      hasVariantes,
-    };
-
-    if (!hasVariantes || currentTag.variante === "v1")
-      return <FormularioV1 {...props} />;
-    if (currentTag.variante === "v2") return <FormularioV2 {...props} />;
-    if (currentTag.variante === "v3") return <FormularioV3 {...props} />;
-    if (currentTag.variante === "v4") return <FormularioV4 {...props} />;
-
-    return <FormularioV1 {...props} />;
-  };
+  const renderFormulario = () => (
+    <FormularioDinamico
+      tag={currentTag}
+      onChange={handleChange}
+      onPriceChange={handlePriceChange}
+      onClearOldPrice={() => updateActiveTag({ precoAntigo: "" })}
+      hasVariantes={hasVariantes}
+    />
+  );
 
   const renderTemplateComponent = (data, singleMode) => {
     const TemplateComponent =
@@ -206,7 +195,7 @@ export default function GeradorEtiquetas() {
 
     const v = data.variante || "v1";
     let defaultPagamento = "MÉTODO DE PAGAMENTO";
-    if (v === "v2") defaultPagamento = "10x";
+    if (v === "v2") defaultPagamento = "00x";
     if (v === "v3" || v === "v4") defaultPagamento = "POR APENAS";
 
     let defaultTextoRodape = "DE:";
@@ -216,8 +205,8 @@ export default function GeradorEtiquetas() {
 
     const templateData = {
       ...data,
-      titulo1: data.titulo1 || "Rascunho Titulo 1",
-      titulo2: data.titulo2 || "Rascunho Título 2",
+      titulo1: data.titulo1 || "Exemplo",
+      titulo2: data.titulo2 || "Exemplo",
       pagamento: data.pagamento || defaultPagamento,
       textoRodape: data.textoRodape || defaultTextoRodape,
     };
@@ -394,7 +383,7 @@ export default function GeradorEtiquetas() {
 
         <Separator />
 
-        <CardContent className="p-5 sm:p-6 space-y-6">
+        <CardContent className="p-5 sm:p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-4 rounded-xl border border-border/50">
             <div className="space-y-1.5">
               <Label className="text-xs font-semibold">Modelo Geral</Label>
