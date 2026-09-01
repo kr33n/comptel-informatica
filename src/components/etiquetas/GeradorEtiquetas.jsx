@@ -585,7 +585,7 @@ export default function GeradorEtiquetas() {
 
       {/* ÁREA DE PREVIEW STICKY (FICA FIXO AO ROLAR O FORMULÁRIO) */}
 
-      <div className="w-full lg:w-95 xl:w-105 shrink-0 print:hidden sticky top-6 flex flex-col gap-4 bg-muted/20 border border-border/60 rounded-xl p-4 sm:p-5">
+      <div className="w-full max-w-[380px] mx-auto lg:max-w-none lg:w-[380px] xl:w-[420px] shrink-0 print:hidden sticky top-6 flex flex-col gap-4 bg-muted/20 border border-border/60 rounded-xl p-4 sm:p-5">
         <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground px-1">
           <span className="flex items-center gap-1.5">
             <Eye className="w-4 h-4" />
