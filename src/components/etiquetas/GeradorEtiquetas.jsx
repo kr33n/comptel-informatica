@@ -69,27 +69,36 @@ export default function GeradorEtiquetas() {
 
   const [openLimparTodos, setOpenLimparTodos] = useState(false);
 
-  const [tags, setTags] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("comptel_etiquetas");
+  // 1. O estado inicial SEMPRE começa com as etiquetas padrão (igual no servidor)
+  const [tags, setTags] = useState([
+    defaultTag,
+    defaultTag,
+    defaultTag,
+    defaultTag,
+  ]);
 
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch (e) {
-          console.error("Erro ao carregar dados", e);
-        }
+  // Flag para sabermos que o componente já montou no navegador
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 2. Roda APENAS no navegador logo após a primeira renderização
+  useEffect(() => {
+    setIsMounted(true);
+    const saved = localStorage.getItem("comptel_etiquetas");
+    if (saved) {
+      try {
+        setTags(JSON.parse(saved));
+      } catch (e) {
+        console.error("Erro ao carregar dados", e);
       }
     }
+  }, []);
 
-    return [defaultTag, defaultTag, defaultTag, defaultTag];
-  });
-
+  // 3. Salva no localStorage sempre que as tags mudarem (mas só depois de montado)
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (isMounted) {
       localStorage.setItem("comptel_etiquetas", JSON.stringify(tags));
     }
-  }, [tags]);
+  }, [tags, isMounted]);
 
   const currentTag = tags[activeStep];
 
@@ -443,9 +452,9 @@ export default function GeradorEtiquetas() {
                 <button
                   type="button"
                   onClick={handleDuplicarParaProxima}
-                  className="flex items-center gap-1.5 p-3 rounded-[12px] border border-black bg-white hover:bg-neutral-50 font-medium text-sm text-black transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 p-2 rounded-[12px] border border-black bg-white hover:bg-neutral-50 font-medium text-sm text-black transition-colors cursor-pointer"
                 >
-                  <Copy className="w-4 h-4 text-black stroke-[2.2]" />
+                  <Copy className="w-3 h-3 text-black stroke-[2.2]" />
 
                   <span>Copiar</span>
                 </button>
@@ -453,7 +462,7 @@ export default function GeradorEtiquetas() {
                 <button
                   type="button"
                   onClick={() => setOpenLimparAtual(true)}
-                  className="flex items-center gap-1 p-3 rounded-[12px] border border-[#F85656] bg-[#fff0f0] hover:bg-[#ffe5e5] font-medium text-sm text-[#f85656] transition-colors cursor-pointer"
+                  className="flex items-center gap-1 p-2 rounded-[12px] border border-[#F85656]  hover:bg-[#FFF5F5] font-medium text-sm text-[#f85656] transition-colors cursor-pointer"
                 >
                   <Trash2 className="w-4 h-4 text-[#f85656] stroke-[2.2]" />
 
@@ -465,9 +474,9 @@ export default function GeradorEtiquetas() {
         </CardHeader>
 
         <CardContent className="px-5 sm:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 px-4 rounded-xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label className="text-xs font-semibold">Modelo</Label>
+              <Label className="font-medium text-[16px]">Modelo</Label>
 
               <Select
                 value={currentTag.templateId}
@@ -475,7 +484,8 @@ export default function GeradorEtiquetas() {
                   handleChange({ target: { name: "templateId", value: val } })
                 }
               >
-                <SelectTrigger className="w-full bg-background cursor-pointer h-12! px-4">
+                {/* Adicionadas as classes: !border-black !rounded-t-[4px] !rounded-b-none */}
+                <SelectTrigger className="w-full bg-background cursor-pointer h-12! px-4 border-[#79747e] rounded-t-sm! rounded-b-sm!">
                   <SelectValue placeholder="Selecione o modelo">
                     {templates.find((t) => t.id === currentTag.templateId)
                       ?.nome || "Modelo Padrão"}
@@ -498,7 +508,7 @@ export default function GeradorEtiquetas() {
 
             {hasVariantes && (
               <div className="space-y-1.5">
-                <Label className="text-xs font-semibold">Layout</Label>
+                <Label className="font-medium text-[16px]">Layout</Label>
 
                 <Select
                   value={currentTag.variante || "v1"}
@@ -506,7 +516,7 @@ export default function GeradorEtiquetas() {
                     handleChange({ target: { name: "variante", value: val } })
                   }
                 >
-                  <SelectTrigger className="w-full bg-background cursor-pointer h-12! px-4">
+                  <SelectTrigger className="w-full bg-background cursor-pointer h-12! px-4 border-[#79747e]! rounded-t-sm! rounded-b-sm!">
                     <SelectValue placeholder="Selecione a variante">
                       {currentTag.variante === "v2" &&
                         "V2: Parcela em Destaque"}
@@ -550,7 +560,10 @@ export default function GeradorEtiquetas() {
               onClick={() => setOpenLimparTodos(true)}
               className="flex justify-center items-center gap-2.5 px-3 py-2.5 rounded-[12px] bg-[#fff0f0] hover:bg-[#ffe5e5] transition-colors cursor-pointer border-none"
             >
-              <X className="w-4.5 h-4.5 text-[#f85656]" strokeWidth={2.2} />
+              <Trash2
+                className="w-4.5 h-4.5 text-[#f85656]"
+                strokeWidth={2.2}
+              />
               <span className="font-medium text-[16px] text-[#f85656] leading-normal font-sans">
                 Apagar tudo
               </span>
