@@ -55,7 +55,7 @@ export default function ModeloPadraoV4({ data, isSingle }) {
         src="/assets/etiquetas/logo-cima.svg"
         alt="Grafismo Superior"
         className="absolute top-0 left-0 object-contain pointer-events-none select-none z-0"
-        style={{ width: fp(812), height: fp(812) }}
+        style={{ width: fp(810), height: fp(845) }}
       />
       <img
         src="/assets/etiquetas/logo-baixo.svg"
