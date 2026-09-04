@@ -83,6 +83,7 @@ export default function GeradorEtiquetas() {
   // 2. Roda APENAS no navegador logo após a primeira renderização
   useEffect(() => {
     setIsMounted(true);
+    localStorage.removeItem("comptel_etiquetas"); // Limpa o localStorage para evitar conflitos com dados antigos
     const saved = localStorage.getItem("comptel_etiquetas");
     if (saved) {
       try {
@@ -93,19 +94,14 @@ export default function GeradorEtiquetas() {
     }
   }, []);
 
-  // 3. Salva no localStorage sempre que as tags mudarem (mas só depois de montado)
-  useEffect(() => {
-    if (isMounted) {
-      localStorage.setItem("comptel_etiquetas", JSON.stringify(tags));
-    }
-  }, [tags, isMounted]);
-
   const currentTag = tags[activeStep];
 
   const isLandscape = currentTag.templateId === "paisagem";
 
   const hasVariantes =
-    currentTag.templateId === "padrao" || currentTag.templateId === "minecraft";
+    currentTag.templateId === "padrao" ||
+    currentTag.templateId === "minecraft" ||
+    currentTag.templateId === "padrao-logo-baixo";
 
   const updateActiveTag = (updates) => {
     const newTags = [...tags];
@@ -190,17 +186,20 @@ export default function GeradorEtiquetas() {
 
     const newTags = [...tags];
 
-    newTags[targetIndex] = { ...tags[activeStep] };
+    newTags[targetIndex] = {
+      ...newTags[targetIndex],
+      titulo1: tags[activeStep].titulo1,
+      titulo2: tags[activeStep].titulo2,
+    };
 
     setTags(newTags);
 
     setActiveStep(targetIndex);
 
     setTimeout(() => {
-      const inputTitulo1 = document.querySelector('input[name="titulo1"]');
-
-      if (inputTitulo1) {
-        inputTitulo1.focus();
+      const inputPreco = document.querySelector('input[name="preco"]');
+      if (inputPreco) {
+        inputPreco.focus();
       }
     }, 50);
   };
@@ -310,6 +309,16 @@ export default function GeradorEtiquetas() {
             @page { size: A4 landscape !important; margin: 0mm !important; }
 
           }
+            body {
+            font-size: 14pt !important;
+          }
+          
+          /* Garante que os textos dos templates ganhem corpo legível no papel */
+          .print\\:text-base, span, p, div {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+        }
 
         `}</style>
       )}
@@ -518,34 +527,28 @@ export default function GeradorEtiquetas() {
                 >
                   <SelectTrigger className="w-full bg-background cursor-pointer h-12! px-4 border-[#79747e]! rounded-t-sm! rounded-b-sm!">
                     <SelectValue placeholder="Selecione a variante">
-                      {currentTag.variante === "v2" &&
-                        "V2: Parcela em Destaque"}
-
-                      {currentTag.variante === "v3" && "V3: Parcela no Rodapé"}
-
-                      {currentTag.variante === "v4" && "V4: Texto Promocional"}
-
-                      {(!currentTag.variante || currentTag.variante === "v1") &&
-                        "Preço com desconto (De/Por)"}
+                      {/* Encontra o nome da variante selecionada dinamicamente */}
+                      {templates
+                        .find((t) => t.id === currentTag.templateId)
+                        ?.variantes?.find(
+                          (v) => v.id === (currentTag.variante || "v1"),
+                        )?.nome || "Preço com desconto (De/Por)"}
                     </SelectValue>
                   </SelectTrigger>
 
                   <SelectContent>
-                    <SelectItem value="v1" className="cursor-pointer h-12!">
-                      Preço com desconto (De/Por)
-                    </SelectItem>
-
-                    <SelectItem value="v2" className="cursor-pointer h-12!">
-                      Parcelamento
-                    </SelectItem>
-
-                    <SelectItem value="v3" className="cursor-pointer h-12!">
-                      À vista e parcelado
-                    </SelectItem>
-
-                    <SelectItem value="v4" className="cursor-pointer h-12!">
-                      Promocional
-                    </SelectItem>
+                    {/* Renderiza apenas as opções que existem no array de variantes do template selecionado */}
+                    {templates
+                      .find((t) => t.id === currentTag.templateId)
+                      ?.variantes?.map((v) => (
+                        <SelectItem
+                          key={v.id}
+                          value={v.id}
+                          className="cursor-pointer h-12!"
+                        >
+                          {v.nome}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </div>

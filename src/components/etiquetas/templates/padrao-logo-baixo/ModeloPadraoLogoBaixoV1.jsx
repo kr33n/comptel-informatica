@@ -1,6 +1,8 @@
 import React from "react";
+// Importando a logo do caminho especificado (verifique se o nome do arquivo é 'loog' ou 'logo')
+import logoComptel from "@/assets/logo-comptel-azul.svg";
 
-export default function ModeloPadraoV2({ data, isSingle }) {
+export default function ModeloPadraoLogoBaixoV1({ data, isSingle }) {
   const fp = (figmaPx) => {
     const scale = isSingle ? 794 / 2480 : 794 / 2480 / 2;
     return `${Math.round(figmaPx * scale * 10) / 10}px`;
@@ -34,8 +36,8 @@ export default function ModeloPadraoV2({ data, isSingle }) {
   const precoAntigoStr = data.precoAntigo || "";
   const [antigoInteiro, antigoCentavos] = precoAntigoStr.split(",");
 
-  let precoFigma = 440; // Aumentado
-  let centavosFigma = 200; // Aumentado
+  let precoFigma = 440;
+  let centavosFigma = 200;
   let cifraoFigma = 120;
 
   if (precoLength >= 9 && precoLength <= 10) {
@@ -53,17 +55,20 @@ export default function ModeloPadraoV2({ data, isSingle }) {
       className="relative w-full h-full bg-white flex flex-col justify-center items-center overflow-hidden border border-gray-300"
       style={{ WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" }}
     >
+      {/* Logo Superior Centralizada */}
       <img
-        src="/assets/etiquetas/logo-cima.svg"
-        alt="Grafismo Superior"
-        className="absolute top-0 left-0 object-contain pointer-events-none select-none z-0"
-        style={{ width: fp(812), height: fp(812) }}
+        src={logoComptel.src}
+        alt="Logo Comptel Superior"
+        className="absolute top-0 left-1/2 -translate-x-1/2 rotate-45 object-contain pointer-events-none select-none z-0"
+        style={{ width: fp(2000), marginTop: fp(-1000) }}
       />
+
+      {/* Logo Inferior Centralizada */}
       <img
-        src="/assets/etiquetas/logo-baixo.svg"
-        alt="Grafismo Inferior"
-        className="absolute bottom-0 right-0 object-contain pointer-events-none select-none z-0"
-        style={{ width: fp(812), height: fp(812) }}
+        src={logoComptel.src}
+        alt="Logo Comptel Inferior"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 rotate-45 object-contain pointer-events-none select-none z-0"
+        style={{ width: fp(2000), marginBottom: fp(-1000) }}
       />
 
       <div
@@ -72,7 +77,10 @@ export default function ModeloPadraoV2({ data, isSingle }) {
           gap: fp(baseGapFigma),
           paddingLeft: fp(200),
           paddingRight: fp(200),
-          paddingTop: fp(topOffsetFigma),
+          // Adicionamos +200 no topOffset para afastar o texto da logo superior
+          paddingTop: fp(topOffsetFigma + 200),
+          // Adicionamos paddingBottom para afastar o rodapé da logo inferior
+          paddingBottom: fp(200),
         }}
       >
         <div

@@ -1,13 +1,14 @@
 import React from "react";
+import logoComptel from "@/assets/logo-comptel-azul.svg";
 
-export default function ModeloPadraoV3({ data, isSingle }) {
+export default function ModeloPadraoV4({ data, isSingle }) {
   const fp = (figmaPx) => {
     const scale = isSingle ? 794 / 2480 : 794 / 2480 / 2;
     return `${Math.round(figmaPx * scale * 10) / 10}px`;
   };
 
-  const showOldPrice = data.precoAntigo && data.precoAntigo.trim() !== "";
-  const showFooter = showOldPrice;
+  const textoRodape = data.textoRodape || "5% de desconto no PIX";
+  const showFooter = textoRodape.trim() !== "";
 
   const titulo1Text = data.titulo1 || "Nome do Produto";
 
@@ -31,8 +32,6 @@ export default function ModeloPadraoV3({ data, isSingle }) {
   const precoStr = data.preco || "0,00";
   const [parteInteira, centavos] = precoStr.split(",");
   const precoLength = precoStr.length;
-  const precoAntigoStr = data.precoAntigo || "";
-  const [antigoInteiro, antigoCentavos] = precoAntigoStr.split(",");
 
   let precoFigma = 440; // Aumentado
   let centavosFigma = 200; // Aumentado
@@ -53,19 +52,21 @@ export default function ModeloPadraoV3({ data, isSingle }) {
       className="relative w-full h-full bg-white flex flex-col justify-center items-center overflow-hidden border border-gray-300"
       style={{ WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" }}
     >
+      {/* Logo Superior Centralizada */}
       <img
-        src="/assets/etiquetas/logo-cima.svg"
-        alt="Grafismo Superior"
-        className="absolute top-0 left-0 object-contain pointer-events-none select-none z-0"
-        style={{ width: fp(812), height: fp(812) }}
-      />
-      <img
-        src="/assets/etiquetas/logo-baixo.svg"
-        alt="Grafismo Inferior"
-        className="absolute bottom-0 right-0 object-contain pointer-events-none select-none z-0"
-        style={{ width: fp(812), height: fp(812) }}
+        src={logoComptel.src}
+        alt="Logo Comptel Superior"
+        className="absolute top-0 left-1/2 -translate-x-1/2 rotate-45 object-contain pointer-events-none select-none z-0"
+        style={{ width: fp(2000), marginTop: fp(-1000) }}
       />
 
+      {/* Logo Inferior Centralizada */}
+      <img
+        src={logoComptel.src}
+        alt="Logo Comptel Inferior"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 rotate-45 object-contain pointer-events-none select-none z-0"
+        style={{ width: fp(2000), marginBottom: fp(-1000) }}
+      />
       <div
         className="relative z-10 flex flex-col items-center w-full transition-all duration-200"
         style={{
@@ -93,7 +94,7 @@ export default function ModeloPadraoV3({ data, isSingle }) {
           </h2>
         </div>
 
-        <div className="flex flex-col items-center" style={{ gap: fp(64) }}>
+        <div className="flex flex-col items-center" style={{ gap: fp(16) }}>
           <span
             className="font-extrabold text-center text-[#0022e6] uppercase leading-normal"
             style={{ fontSize: fp(108) }}
@@ -102,29 +103,31 @@ export default function ModeloPadraoV3({ data, isSingle }) {
           </span>
           <div className="flex items-start justify-center">
             <span
-              className="font-semibold text-[#0022e6] leading-normal"
+              className="font-bold text-[#0022e6] leading-none"
               style={{
-                fontSize: fp(120),
+                fontSize: fp(cifraoFigma),
                 marginRight: fp(16),
-                marginTop: fp(62),
+                marginTop: fp(40),
               }}
             >
               R$
             </span>
             <div className="flex items-start">
               <span
-                className="font-extrabold text-[#0022e6] leading-normal"
+                className="font-black text-[#0022e6] leading-none"
                 style={{ fontSize: fp(precoFigma), letterSpacing: fp(-8) }}
               >
                 {parteInteira},
               </span>
               <span
-                className="font-black text-[#0022e6] leading-normal"
+                className="font-black text-[#0022e6] leading-none"
                 style={{
                   fontSize: fp(centavosFigma),
                   marginLeft: fp(8),
                   marginTop: fp(24),
                   letterSpacing: fp(-8),
+                  leadingTrim: "both",
+                  textBoxTrim: "both",
                 }}
               >
                 {centavos ? centavos : "00"}
@@ -134,44 +137,13 @@ export default function ModeloPadraoV3({ data, isSingle }) {
         </div>
 
         {showFooter && (
-          <div className="flex flex-col items-center" style={{ gap: fp(32) }}>
+          <div className="flex flex-col items-center">
             <span
-              className="font-semibold text-center text-[#0022e6] leading-normal"
-              style={{ fontSize: fp(72) }}
+              className="font-bold text-center text-[#0022e6] leading-normal"
+              style={{ fontSize: fp(108) }}
             >
-              {data.textoRodape || "ou 10x s/ juros"}
+              {textoRodape}
             </span>
-            <div className="flex items-start justify-center">
-              <span
-                className="font-semibold text-[#0022e6] leading-none"
-                style={{
-                  fontSize: fp(72),
-                  marginRight: fp(12),
-                  marginTop: fp(10),
-                }}
-              >
-                R$
-              </span>
-              <div
-                className="flex items-start justify-center"
-                style={{ gap: fp(8) }}
-              >
-                <span
-                  className="font-extrabold text-[#0022e6] leading-none"
-                  style={{ fontSize: fp(200), letterSpacing: fp(-8) }}
-                >
-                  {antigoInteiro},
-                </span>
-                {antigoCentavos !== undefined && (
-                  <span
-                    className="font-extrabold text-[#0022e6] leading-none"
-                    style={{ fontSize: fp(100), letterSpacing: fp(-8) }}
-                  >
-                    {antigoCentavos}
-                  </span>
-                )}
-              </div>
-            </div>
           </div>
         )}
       </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import logoComptel from "@/assets/logo-comptel-azul.svg";
 
 export default function ModeloPadraoV3({ data, isSingle }) {
   const fp = (figmaPx) => {
@@ -53,17 +54,20 @@ export default function ModeloPadraoV3({ data, isSingle }) {
       className="relative w-full h-full bg-white flex flex-col justify-center items-center overflow-hidden border border-gray-300"
       style={{ WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" }}
     >
+      {/* Logo Superior Centralizada */}
       <img
-        src="/assets/etiquetas/logo-cima.svg"
-        alt="Grafismo Superior"
-        className="absolute top-0 left-0 object-contain pointer-events-none select-none z-0"
-        style={{ width: fp(812), height: fp(812) }}
+        src={logoComptel.src}
+        alt="Logo Comptel Superior"
+        className="absolute top-0 left-1/2 -translate-x-1/2 rotate-45 object-contain pointer-events-none select-none z-0"
+        style={{ width: fp(2000), marginTop: fp(-1000) }}
       />
+
+      {/* Logo Inferior Centralizada */}
       <img
-        src="/assets/etiquetas/logo-baixo.svg"
-        alt="Grafismo Inferior"
-        className="absolute bottom-0 right-0 object-contain pointer-events-none select-none z-0"
-        style={{ width: fp(812), height: fp(812) }}
+        src={logoComptel.src}
+        alt="Logo Comptel Inferior"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 rotate-45 object-contain pointer-events-none select-none z-0"
+        style={{ width: fp(2000), marginBottom: fp(-1000) }}
       />
 
       <div

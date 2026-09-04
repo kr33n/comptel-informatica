@@ -1,6 +1,6 @@
 import React from "react";
-
-export default function ModeloPadraoV3({ data, isSingle }) {
+import logoComptel from "@/assets/logo-comptel-azul.svg";
+export default function ModeloPadraoV2({ data, isSingle }) {
   const fp = (figmaPx) => {
     const scale = isSingle ? 794 / 2480 : 794 / 2480 / 2;
     return `${Math.round(figmaPx * scale * 10) / 10}px`;
@@ -53,17 +53,20 @@ export default function ModeloPadraoV3({ data, isSingle }) {
       className="relative w-full h-full bg-white flex flex-col justify-center items-center overflow-hidden border border-gray-300"
       style={{ WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" }}
     >
+      {/* Logo Superior Centralizada */}
       <img
-        src="/assets/etiquetas/logo-cima.svg"
-        alt="Grafismo Superior"
-        className="absolute top-0 left-0 object-contain pointer-events-none select-none z-0"
-        style={{ width: fp(812), height: fp(812) }}
+        src={logoComptel.src}
+        alt="Logo Comptel Superior"
+        className="absolute top-0 left-1/2 -translate-x-1/2 rotate-45 object-contain pointer-events-none select-none z-0"
+        style={{ width: fp(2000), marginTop: fp(-1000) }}
       />
+
+      {/* Logo Inferior Centralizada */}
       <img
-        src="/assets/etiquetas/logo-baixo.svg"
-        alt="Grafismo Inferior"
-        className="absolute bottom-0 right-0 object-contain pointer-events-none select-none z-0"
-        style={{ width: fp(812), height: fp(812) }}
+        src={logoComptel.src}
+        alt="Logo Comptel Inferior"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 rotate-45 object-contain pointer-events-none select-none z-0"
+        style={{ width: fp(2000), marginBottom: fp(-1000) }}
       />
 
       <div
@@ -93,79 +96,82 @@ export default function ModeloPadraoV3({ data, isSingle }) {
           </h2>
         </div>
 
-        <div className="flex flex-col items-center" style={{ gap: fp(64) }}>
-          <span
-            className="font-extrabold text-center text-[#0022e6] uppercase leading-normal"
-            style={{ fontSize: fp(108) }}
+        <div className="flex items-center justify-center">
+          <div
+            className="flex flex-col items-center justify-center font-bold text-[#0022e6]"
+            style={{ gap: fp(56), marginRight: fp(49.5) }}
           >
-            {data.pagamento || "POR APENAS"}
-          </span>
-          <div className="flex items-start justify-center">
             <span
-              className="font-semibold text-[#0022e6] leading-normal"
-              style={{
-                fontSize: fp(120),
-                marginRight: fp(16),
-                marginTop: fp(62),
-              }}
+              className="leading-normal font-extrabold"
+              style={{ fontSize: fp(120) }}
             >
               R$
             </span>
-            <div className="flex items-start">
-              <span
-                className="font-extrabold text-[#0022e6] leading-normal"
-                style={{ fontSize: fp(precoFigma), letterSpacing: fp(-8) }}
-              >
-                {parteInteira},
-              </span>
-              <span
-                className="font-black text-[#0022e6] leading-normal"
-                style={{
-                  fontSize: fp(centavosFigma),
-                  marginLeft: fp(8),
-                  marginTop: fp(24),
-                  letterSpacing: fp(-8),
-                }}
-              >
-                {centavos ? centavos : "00"}
-              </span>
-            </div>
+            <span className="leading-tight" style={{ fontSize: fp(96) }}>
+              {data.pagamento || "10x"}
+            </span>
+          </div>
+
+          <div className="flex items-start">
+            <span
+              className="font-black text-[#0022e6] leading-none"
+              style={{ fontSize: fp(precoFigma), letterSpacing: fp(-8) }}
+            >
+              {parteInteira},
+            </span>
+            <span
+              className="font-black text-[#0022e6] leading-none"
+              style={{
+                fontSize: fp(centavosFigma),
+                marginLeft: fp(8),
+                marginTop: fp(24),
+                letterSpacing: fp(-8),
+                leadingTrim: "both",
+                textBoxTrim: "both",
+              }}
+            >
+              {centavos ? centavos : "00"}
+            </span>
           </div>
         </div>
 
         {showFooter && (
-          <div className="flex flex-col items-center" style={{ gap: fp(32) }}>
+          <div className="flex flex-col items-center">
             <span
-              className="font-semibold text-center text-[#0022e6] leading-normal"
-              style={{ fontSize: fp(72) }}
+              className="font-extrabold text-center text-[#0022e6] uppercase tracking-wider leading-normal"
+              style={{ fontSize: fp(72), marginBottom: fp(8) }}
             >
-              {data.textoRodape || "ou 10x s/ juros"}
+              {data.textoRodape || "À VISTA"}
             </span>
             <div className="flex items-start justify-center">
               <span
-                className="font-semibold text-[#0022e6] leading-none"
+                className="font-bold text-[#0022e6]"
                 style={{
                   fontSize: fp(72),
                   marginRight: fp(12),
-                  marginTop: fp(10),
+                  marginTop: fp(8),
                 }}
               >
                 R$
               </span>
-              <div
-                className="flex items-start justify-center"
-                style={{ gap: fp(8) }}
-              >
+              <div className="flex items-start">
                 <span
-                  className="font-extrabold text-[#0022e6] leading-none"
-                  style={{ fontSize: fp(200), letterSpacing: fp(-8) }}
+                  className="font-extrabold text-[#0022e6] leading-none "
+                  style={{ fontSize: fp(180), letterSpacing: fp(-8) }}
                 >
                   {antigoInteiro},
                 </span>
                 {antigoCentavos !== undefined && (
                   <span
-                    className="font-extrabold text-[#0022e6] leading-none"
-                    style={{ fontSize: fp(100), letterSpacing: fp(-8) }}
+                    className="font-black text-[#0022e6] leading-none"
+                    style={{
+                      fontSize: fp(100),
+                      marginLeft: fp(4),
+                      marginTop: fp(12),
+                      leadingTrim: "both",
+                      textBoxTrim: "both",
+                      letterSpacing: fp(-8),
+                    }}
                   >
                     {antigoCentavos}
                   </span>
