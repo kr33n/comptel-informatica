@@ -34,7 +34,7 @@ const minecraftVariants = {
 export const templates = [
   {
     id: "padrao",
-    nome: "Modelo Padrão",
+    nome: "Modelo Padrão (Logo Diagonal)",
     variantes: [
       { id: "v1", nome: "Preço com desconto (De/Por)" },
       { id: "v2", nome: "Parcelamento" },

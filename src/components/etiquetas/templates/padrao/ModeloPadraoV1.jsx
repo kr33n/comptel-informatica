@@ -1,6 +1,8 @@
 import React from "react";
+// Certifique-se de que o caminho do import da sua logo está correto aqui
+import logoComptel from "@/assets/logo-comptel-azul.svg";
 
-export default function ModeloPadraoV2({ data, isSingle }) {
+export default function ModeloPadraoV1({ data, isSingle }) {
   const fp = (figmaPx) => {
     const scale = isSingle ? 794 / 2480 : 794 / 2480 / 2;
     return `${Math.round(figmaPx * scale * 10) / 10}px`;
@@ -34,8 +36,8 @@ export default function ModeloPadraoV2({ data, isSingle }) {
   const precoAntigoStr = data.precoAntigo || "";
   const [antigoInteiro, antigoCentavos] = precoAntigoStr.split(",");
 
-  let precoFigma = 440; // Aumentado
-  let centavosFigma = 200; // Aumentado
+  let precoFigma = 440;
+  let centavosFigma = 200;
   let cifraoFigma = 120;
 
   if (precoLength >= 9 && precoLength <= 10) {
@@ -72,7 +74,8 @@ export default function ModeloPadraoV2({ data, isSingle }) {
           gap: fp(baseGapFigma),
           paddingLeft: fp(200),
           paddingRight: fp(200),
-          paddingTop: fp(topOffsetFigma),
+          paddingTop: fp(topOffsetFigma + 200),
+          paddingBottom: fp(200),
         }}
       >
         <div
@@ -93,86 +96,98 @@ export default function ModeloPadraoV2({ data, isSingle }) {
           </h2>
         </div>
 
-        <div className="flex items-center justify-center">
-          <div
-            className="flex flex-col items-center justify-center font-bold text-[#0022e6]"
-            style={{ gap: fp(56), marginRight: fp(49.5) }}
+        {/* BLOCO DE PREÇO PRINCIPAL CORRIGIDO: "À VISTA" em cima, R$ ao lado do número */}
+        <div
+          className="flex flex-col items-center w-full"
+          style={{ gap: fp(16) }}
+        >
+          <span
+            className="font-extrabold text-center text-[#0022e6] uppercase leading-normal"
+            style={{ fontSize: fp(108) }}
           >
+            {data.pagamento || "À VISTA"}
+          </span>
+
+          <div className="flex items-center justify-center">
             <span
-              className="leading-normal font-extrabold"
-              style={{ fontSize: fp(120) }}
+              className="font-bold text-[#0022e6] leading-none"
+              style={{
+                fontSize: fp(cifraoFigma),
+                marginRight: fp(20),
+              }}
             >
               R$
             </span>
-            <span className="leading-tight" style={{ fontSize: fp(96) }}>
-              {data.pagamento || "10x"}
-            </span>
-          </div>
-
-          <div className="flex items-start">
-            <span
-              className="font-black text-[#0022e6] leading-none"
-              style={{ fontSize: fp(precoFigma), letterSpacing: fp(-8) }}
-            >
-              {parteInteira},
-            </span>
-            <span
-              className="font-black text-[#0022e6] leading-none"
-              style={{
-                fontSize: fp(centavosFigma),
-                marginLeft: fp(8),
-                marginTop: fp(24),
-                letterSpacing: fp(-8),
-                leadingTrim: "both",
-                textBoxTrim: "both",
-              }}
-            >
-              {centavos ? centavos : "00"}
-            </span>
+            <div className="flex items-start">
+              <span
+                className="font-black text-[#0022e6] leading-none"
+                style={{ fontSize: fp(precoFigma), letterSpacing: fp(-8) }}
+              >
+                {parteInteira}
+              </span>
+              <span
+                className="font-black text-[#0022e6] leading-none"
+                style={{
+                  fontSize: fp(centavosFigma),
+                  marginLeft: fp(8),
+                  marginTop: fp(24),
+                  letterSpacing: fp(-8),
+                  leadingTrim: "both",
+                  textBoxTrim: "both",
+                }}
+              >
+                ,{centavos ? centavos : "00"}
+              </span>
+            </div>
           </div>
         </div>
 
+        {/* Rodapé / Preço Antigo */}
         {showFooter && (
           <div className="flex flex-col items-center">
             <span
               className="font-extrabold text-center text-[#0022e6] uppercase tracking-wider leading-normal"
-              style={{ fontSize: fp(72), marginBottom: fp(8) }}
+              style={{ fontSize: fp(72), marginBottom: fp(16) }}
             >
-              {data.textoRodape || "À VISTA"}
+              {data.textoRodape || "DE:"}
             </span>
-            <div className="flex items-start justify-center">
+            <div className="flex items-center justify-center">
               <span
-                className="font-bold text-[#0022e6]"
+                className="font-bold text-[#0022e6] leading-none"
                 style={{
                   fontSize: fp(72),
-                  marginRight: fp(12),
-                  marginTop: fp(8),
+                  marginRight: fp(16),
                 }}
               >
                 R$
               </span>
-              <div className="flex items-start">
+              <div className="relative flex items-start">
                 <span
-                  className="font-extrabold text-[#0022e6] leading-none "
+                  className="font-extrabold text-[#0022e6] leading-none"
                   style={{ fontSize: fp(180), letterSpacing: fp(-8) }}
                 >
-                  {antigoInteiro},
+                  {antigoInteiro}
                 </span>
                 {antigoCentavos !== undefined && (
                   <span
                     className="font-black text-[#0022e6] leading-none"
                     style={{
                       fontSize: fp(100),
-                      marginLeft: fp(4),
+                      marginLeft: fp(8),
                       marginTop: fp(12),
                       leadingTrim: "both",
                       textBoxTrim: "both",
                       letterSpacing: fp(-8),
                     }}
                   >
-                    {antigoCentavos}
+                    ,{antigoCentavos}
                   </span>
                 )}
+                {/* Linha vermelha cortando estritamente os números */}
+                <div
+                  className="absolute bg-[#e60000] top-1/2 left-0 right-0 pointer-events-none -translate-y-1/2"
+                  style={{ height: fp(12) }}
+                ></div>
               </div>
             </div>
           </div>

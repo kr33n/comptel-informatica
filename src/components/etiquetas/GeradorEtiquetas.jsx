@@ -98,10 +98,10 @@ export default function GeradorEtiquetas() {
 
   const isLandscape = currentTag.templateId === "paisagem";
 
+  // Substitua a versão antiga por esta:
   const hasVariantes =
-    currentTag.templateId === "padrao" ||
-    currentTag.templateId === "minecraft" ||
-    currentTag.templateId === "padrao-logo-baixo";
+    templates.find((t) => t.id === currentTag.templateId)?.variantes?.length >
+    0;
 
   const updateActiveTag = (updates) => {
     const newTags = [...tags];
@@ -183,17 +183,20 @@ export default function GeradorEtiquetas() {
 
   const handleDuplicarParaProxima = () => {
     const targetIndex = activeStep < 3 ? activeStep + 1 : 0;
-
     const newTags = [...tags];
 
     newTags[targetIndex] = {
-      ...newTags[targetIndex],
       titulo1: tags[activeStep].titulo1,
       titulo2: tags[activeStep].titulo2,
+      templateId: tags[activeStep].templateId,
+      variante: tags[activeStep].variante,
+      pagamento: "",
+      preco: "0,00",
+      precoAntigo: "",
+      textoRodape: "",
     };
 
     setTags(newTags);
-
     setActiveStep(targetIndex);
 
     setTimeout(() => {
@@ -490,7 +493,13 @@ export default function GeradorEtiquetas() {
               <Select
                 value={currentTag.templateId}
                 onValueChange={(val) =>
-                  handleChange({ target: { name: "templateId", value: val } })
+                  updateActiveTag({
+                    templateId: val,
+                    pagamento: "",
+                    preco: "0,00",
+                    precoAntigo: "",
+                    textoRodape: "",
+                  })
                 }
               >
                 {/* Adicionadas as classes: !border-black !rounded-t-[4px] !rounded-b-none */}
@@ -522,7 +531,13 @@ export default function GeradorEtiquetas() {
                 <Select
                   value={currentTag.variante || "v1"}
                   onValueChange={(val) =>
-                    handleChange({ target: { name: "variante", value: val } })
+                    updateActiveTag({
+                      variante: val,
+                      pagamento: "",
+                      preco: "0,00",
+                      precoAntigo: "",
+                      textoRodape: "",
+                    })
                   }
                 >
                   <SelectTrigger className="w-full bg-background cursor-pointer h-12! px-4 border-[#79747e]! rounded-t-sm! rounded-b-sm!">
