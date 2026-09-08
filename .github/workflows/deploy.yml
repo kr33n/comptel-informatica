@@ -1,4 +1,4 @@
-name: Deploy Automático para HostGator
+name: Deploy Automático cPanel
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
           npm install
           npm run build
 
-      - name: Enviar arquivos gerados para a HostGator via FTP
+      - name: Enviar arquivos gerados para o host via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
