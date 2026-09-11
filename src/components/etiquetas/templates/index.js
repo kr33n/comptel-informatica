@@ -11,6 +11,11 @@ import ModeloMinecraftV4 from "./dia-das-criancas-2026/ModeloMinecraftV4";
 import ModeloPadraoLogoBaixoV1 from "./padrao-logo-baixo/ModeloPadraoLogoBaixoV1";
 import ModeloPadraoLogoBaixoV2 from "./padrao-logo-baixo/ModeloPadraoLogoBaixoV2";
 
+import ModeloOfertaV1 from "./oferta/ModeloOfertaV1";
+import ModeloOfertaV2 from "./oferta/ModeloOfertaV2";
+import ModeloOfertaV3 from "./oferta/ModeloOfertaV3";
+import ModeloOfertaV4 from "./oferta/ModeloOfertaV4";
+
 // Mapeamento direto de componentes por variante
 const padraoVariants = {
   v1: ModeloPadraoV1,
@@ -29,6 +34,13 @@ const minecraftVariants = {
   v2: ModeloMinecraftV2,
   v3: ModeloMinecraftV3,
   v4: ModeloMinecraftV4,
+};
+
+const ofertaVariants = {
+  v1: ModeloOfertaV1,
+  v2: ModeloOfertaV2,
+  v3: ModeloOfertaV3,
+  v4: ModeloOfertaV4,
 };
 
 export const templates = [
@@ -55,6 +67,18 @@ export const templates = [
     ],
     getComponent: (variante = "v1") =>
       padraoLogoBaixoVariants[variante] || ModeloPadraoLogoBaixoV1,
+  },
+  {
+    id: "oferta",
+    nome: "Modelo Oferta",
+    variantes: [
+      { id: "v1", nome: "Preço com desconto (De/Por)" },
+      { id: "v2", nome: "Parcelamento" },
+      { id: "v3", nome: "À vista e parcelado" },
+      { id: "v4", nome: "Promocional" },
+    ],
+    getComponent: (variante = "v1") =>
+      ofertaVariants[variante] || ModeloOfertaV1,
   },
   // {
   //   id: "minecraft",
