@@ -16,6 +16,8 @@ import ModeloOfertaV2 from "./oferta/ModeloOfertaV2";
 import ModeloOfertaV3 from "./oferta/ModeloOfertaV3";
 import ModeloOfertaV4 from "./oferta/ModeloOfertaV4";
 
+import ModeloLiquidaRedragonV1 from "./liquida-redragon/ModeloLiquidaRedragonV1";
+
 // Mapeamento direto de componentes por variante
 const padraoVariants = {
   v1: ModeloPadraoV1,
@@ -43,19 +45,11 @@ const ofertaVariants = {
   v4: ModeloOfertaV4,
 };
 
+const liquidaRedragonVariants = {
+  v1: ModeloLiquidaRedragonV1,
+};
+
 export const templates = [
-  {
-    id: "padrao",
-    nome: "Modelo Padrão (Logo Diagonal)",
-    variantes: [
-      { id: "v1", nome: "Preço com desconto (De/Por)" },
-      { id: "v2", nome: "Parcelamento" },
-      { id: "v3", nome: "À vista e parcelado" },
-      { id: "v4", nome: "Promocional" },
-    ],
-    getComponent: (variante = "v1") =>
-      padraoVariants[variante] || ModeloPadraoV1,
-  },
   {
     id: "padrao-logo-baixo",
     nome: "Modelo Padrão (Logo em Baixo)",
@@ -69,6 +63,19 @@ export const templates = [
       padraoLogoBaixoVariants[variante] || ModeloPadraoLogoBaixoV1,
   },
   {
+    id: "padrao",
+    nome: "Modelo Padrão (Logo Diagonal)",
+    variantes: [
+      { id: "v1", nome: "Preço com desconto (De/Por)" },
+      { id: "v2", nome: "Parcelamento" },
+      { id: "v3", nome: "À vista e parcelado" },
+      { id: "v4", nome: "Promocional" },
+    ],
+    getComponent: (variante = "v1") =>
+      padraoVariants[variante] || ModeloPadraoV1,
+  },
+
+  {
     id: "oferta",
     nome: "Modelo Oferta",
     variantes: [
@@ -79,6 +86,13 @@ export const templates = [
     ],
     getComponent: (variante = "v1") =>
       ofertaVariants[variante] || ModeloOfertaV1,
+  },
+  {
+    id: "liquida-redragon",
+    nome: "Liquida Redragon",
+    variantes: [{ id: "v1", nome: "Padrão" }],
+    getComponent: (variante = "v1") =>
+      liquidaRedragonVariants[variante] || ModeloLiquidaRedragonV1,
   },
   // {
   //   id: "minecraft",

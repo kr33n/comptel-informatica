@@ -43,27 +43,20 @@ export default function FormularioDinamico({
         </div>
 
         {/* Subtítulo (Sempre visível e 100% de largura) */}
-        <div className="flex flex-col gap-1 self-stretch">
-          <span className="font-medium text-[16px] text-black">
+        <div className="flex flex-col gap-1.5 w-full pb-4">
+          <label className="font-medium text-[16px] text-black">
             {config.titulo2.label}
-          </span>
-          <div className="flex flex-col self-stretch h-14 rounded-tl rounded-tr">
-            <div className="flex flex-col gap-2.5 self-stretch rounded border border-solid border-[#79747e] bg-white">
-              <div className="flex items-center gap-1 self-stretch px-4 py-1 rounded-tl rounded-tr">
-                <div className="flex flex-col justify-center grow8 py-1">
-                  <input
-                    type="text"
-                    name="titulo2"
-                    value={tag.titulo2}
-                    onChange={onChange}
-                    maxLength="50"
-                    placeholder={config.titulo2.placeholder}
-                    className="flex items-center self-stretch font-normal text-base text-black placeholder:text-[#c1c0c2] outline-none bg-transparent"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          </label>
+
+          <input
+            type="text"
+            name="titulo2"
+            value={tag.titulo2}
+            onChange={onChange}
+            maxLength="50"
+            placeholder={config.titulo2.placeholder}
+            className="w-full h-12 px-4 rounded border border-[#79747e] bg-white text-base text-black placeholder:text-[#c1c0c2] outline-none focus:border-black transition-colors"
+          />
         </div>
 
         {/* Grade de Campos Dinâmicos Inferiores (2 colunas na V1, 3 colunas nas demais) */}

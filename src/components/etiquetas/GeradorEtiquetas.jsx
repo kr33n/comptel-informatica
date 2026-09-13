@@ -54,7 +54,7 @@ const defaultTag = {
 
   textoRodape: "",
 
-  templateId: "padrao",
+  templateId: "padrao-logo-baixo",
 
   variante: "v1",
 };
@@ -306,24 +306,31 @@ export default function GeradorEtiquetas() {
     <div className="flex flex-col lg:flex-row items-start gap-6 max-w-350 mx-auto px-4 sm:px-6 ">
       {isLandscape && (
         <style>{`
-
-          @media print {
-
-            @page { size: A4 landscape !important; margin: 0mm !important; }
-
-          }
-            body {
-            font-size: 14pt !important;
+        @media print {
+          @page { 
+            size: A4 ${isLandscape ? "landscape" : "portrait"} !important; 
+            margin: 0 !important; 
           }
           
+          /* Esconde a barra de rolagem da tela que "rouba" espaço na impressão */
+          ::-webkit-scrollbar { display: none !important; width: 0 !important; }
+
+          html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
+          }
+
           /* Garante que os textos dos templates ganhem corpo legível no papel */
-          .print\\:text-base, span, p, div {
+          span, p, div, h1, h2 {
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
           }
         }
-
-        `}</style>
+      `}</style>
       )}
 
       {/* PAINEL DE EDIÇÃO (FLUXO NATURAL DA PÁGINA) */}
