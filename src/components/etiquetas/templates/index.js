@@ -8,6 +8,8 @@ import ModeloPadraoLogoBaixoV2 from "./padrao-logo-baixo/ModeloPadraoLogoBaixoV2
 
 import ModeloLiquidaRedragonV1 from "./liquida-redragon/ModeloLiquidaRedragonV1";
 
+import ModeloMesDasCriancasV1 from "./mes-das-criancas/ModeloMesDasCriancasV1";
+
 // Mapeamento direto de componentes por variante
 const padraoVariants = {
   v1: ModeloPadraoV1,
@@ -23,6 +25,9 @@ const padraoLogoBaixoVariants = {
 
 const liquidaRedragonVariants = {
   v1: ModeloLiquidaRedragonV1,
+};
+const MesDasCriancasVariants = {
+  v1: ModeloMesDasCriancasV1,
 };
 
 export const templates = [
@@ -56,5 +61,12 @@ export const templates = [
     variantes: [{ id: "v1", nome: "Padrão" }],
     getComponent: (variante = "v1") =>
       liquidaRedragonVariants[variante] || ModeloLiquidaRedragonV1,
+  },
+  {
+    id: "mes-das-criancas",
+    nome: "Mês das Crianças",
+    variantes: [{ id: "v1", nome: "Padrão" }],
+    getComponent: (variante = "v1") =>
+      MesDasCriancasVariants[variante] || ModeloMesDasCriancasV1,
   },
 ];
