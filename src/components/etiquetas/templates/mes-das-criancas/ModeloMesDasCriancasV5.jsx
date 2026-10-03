@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function ModeloMesDasCriancasV1({ data, isSingle }) {
+export default function ModeloMesDasCriancasV5({ data, isSingle }) {
   const fp = (figmaPx) => {
     // A base do Figma enviada para esse modelo foi 298px de largura.
     // Isso garante que o layout preencha 100% da etiqueta.
@@ -85,13 +85,13 @@ export default function ModeloMesDasCriancasV1({ data, isSingle }) {
             paddingBottom: fp(20),
             paddingLeft: fp(16),
             paddingRight: fp(16),
-            gap: fp(6),
+            gap: fp(20),
           }}
         >
           {/* Títulos com quebra fluida e leading correto */}
           <div
             className="flex flex-col items-center w-full text-center relative z-40"
-            style={{ gap: fp(2) }}
+            style={{ gap: fp(10) }}
           >
             <h1
               className="font-bold text-[#303030] leading-tight whitespace-pre-line"
@@ -115,7 +115,7 @@ export default function ModeloMesDasCriancasV1({ data, isSingle }) {
               className="font-semibold text-[#303030] uppercase"
               style={{ fontSize: fp(8) }}
             >
-              {"POR"}
+              {"A PARTIR DE"}
             </span>
             <div
               className="flex items-start justify-center w-full"
@@ -147,47 +147,6 @@ export default function ModeloMesDasCriancasV1({ data, isSingle }) {
               </div>
             </div>
           </div>
-
-          {/* Preço Antigo (Rodapé) */}
-          {showOldPrice && (
-            <div className="flex flex-col items-center w-full relative z-40">
-              <span
-                className="font-semibold text-[#303030] uppercase"
-                style={{ fontSize: fp(8) }}
-              >
-                {data.textoRodape || "DE:"}
-              </span>
-              <div
-                className="flex items-start justify-center w-full"
-                // style={{ marginTop: fp(2) }}
-              >
-                <span
-                  className="font-medium text-[#303030]"
-                  style={{
-                    fontSize: fp(12),
-                    marginRight: fp(2),
-                    // marginTop: fp(4),
-                  }}
-                >
-                  R$
-                </span>
-                <div className="flex items-start">
-                  <span
-                    className="font-bold text-[#303030] leading-none"
-                    style={{ fontSize: fp(16) }}
-                  >
-                    {antigoInteiro},
-                  </span>
-                  <span
-                    className="font-bold text-[#303030] leading-none"
-                    style={{ fontSize: fp(8), marginTop: fp(2) }}
-                  >
-                    {antigoCentavos ? antigoCentavos : "00"}
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>

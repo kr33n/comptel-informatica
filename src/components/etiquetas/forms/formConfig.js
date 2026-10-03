@@ -38,4 +38,10 @@ export const formVariantesConfig = {
       placeholder: "Ex: 5% de desconto no PIX",
     },
   },
+  v5: {
+    titulo1: { label: "Título", placeholder: "Ex: Monitor AOC" },
+    titulo2: { label: "Subtítulo", placeholder: "Ex: FHD | 120hz" },
+    layout: ["preco"], // Define que V1 tem apenas De e Por
+    preco: { label: "A partir de", placeholder: "00.000,00" },
+  },
 };
