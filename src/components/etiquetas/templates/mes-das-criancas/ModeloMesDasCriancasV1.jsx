@@ -88,21 +88,21 @@ export default function ModeloNovoV1({ data, isSingle }) {
             gap: fp(6),
           }}
         >
-          {/* Títulos */}
+          {/* Títulos com quebra fluida e leading correto */}
           <div
             className="flex flex-col items-center w-full text-center relative z-40"
-            style={{ gap: fp(4) }}
+            style={{ gap: fp(2) }}
           >
             <h1
-              className="font-bold text-[#303030] leading-tight whitespace-pre-line line-clamp-2"
-              style={{ fontSize: fp(24), gap: fp(16) }}
+              className="font-bold text-[#303030] leading-tight whitespace-pre-line"
+              style={{ fontSize: fp(22) }} // Diminuído levemente de 24 para 20 para evitar empurrar o resto
             >
               {titulo1Text}
             </h1>
             {titulo2Text && (
               <h2
-                className="font-medium text-[#303030] leading-snug whitespace-pre-line line-clamp-2"
-                style={{ fontSize: fp(14) }}
+                className="font-medium text-[#303030] leading-tight whitespace-pre-line break-words w-full overflow-hidden"
+                style={{ fontSize: fp(14) }} // Diminuído para 11 para caber até 3-4 linhas sem cortar
               >
                 {titulo2Text}
               </h2>
@@ -113,9 +113,9 @@ export default function ModeloNovoV1({ data, isSingle }) {
           <div className="flex flex-col items-center w-full relative z-40">
             <span
               className="font-semibold text-[#303030] uppercase"
-              style={{ fontSize: fp(12) }}
+              style={{ fontSize: fp(8) }}
             >
-              {data.pagamento || "À VISTA"}
+              {"POR"}
             </span>
             <div
               className="flex items-start justify-center w-full"
@@ -153,7 +153,7 @@ export default function ModeloNovoV1({ data, isSingle }) {
             <div className="flex flex-col items-center w-full relative z-40">
               <span
                 className="font-semibold text-[#303030] uppercase"
-                style={{ fontSize: fp(12) }}
+                style={{ fontSize: fp(8) }}
               >
                 {data.textoRodape || "DE:"}
               </span>
@@ -174,13 +174,13 @@ export default function ModeloNovoV1({ data, isSingle }) {
                 <div className="flex items-start">
                   <span
                     className="font-bold text-[#303030] leading-none"
-                    style={{ fontSize: fp(32) }}
+                    style={{ fontSize: fp(16) }}
                   >
                     {antigoInteiro},
                   </span>
                   <span
                     className="font-bold text-[#303030] leading-none"
-                    style={{ fontSize: fp(16), marginTop: fp(2) }}
+                    style={{ fontSize: fp(8), marginTop: fp(2) }}
                   >
                     {antigoCentavos ? antigoCentavos : "00"}
                   </span>
