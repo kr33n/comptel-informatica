@@ -3,6 +3,7 @@ export const formVariantesConfig = {
     titulo1: { label: "Título", placeholder: "Ex: Monitor AOC" },
     titulo2: { label: "Subtítulo", placeholder: "Ex: FHD | 120hz" },
     layout: ["precoAntigo", "preco"], // Define que V1 tem apenas De e Por
+    pagamento: { label: "Texto acima do preço", placeholder: "À VISTA" },
     precoAntigo: { label: "De", placeholder: "00.000,00" },
     preco: { label: "Por", placeholder: "00.000,00" },
   },

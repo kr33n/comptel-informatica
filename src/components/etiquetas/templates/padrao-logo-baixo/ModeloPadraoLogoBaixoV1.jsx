@@ -108,7 +108,7 @@ export default function ModeloPadraoV1({ data, isSingle }) {
             className="font-extrabold text-center text-[#0022e6] uppercase leading-normal"
             style={{ fontSize: fp(108) }}
           >
-            {data.pagamento || "À VISTA"}
+            {data.pagamento}
           </span>
 
           <div className="flex items-center justify-center">

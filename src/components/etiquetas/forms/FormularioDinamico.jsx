@@ -10,6 +10,10 @@ export default function FormularioDinamico({
 }) {
   const varianteKey = tag.variante || "v1";
   const config = formVariantesConfig[varianteKey] || formVariantesConfig.v1;
+  const layout =
+    tag.templateId === "padrao-logo-baixo" && varianteKey === "v1"
+      ? ["pagamento", ...config.layout]
+      : config.layout;
 
   return (
     <div className="flex flex-col gap-3 self-stretch mt-2">
@@ -59,11 +63,11 @@ export default function FormularioDinamico({
           />
         </div>
 
-        {/* Grade de Campos Dinâmicos Inferiores (2 colunas na V1, 3 colunas nas demais) */}
+        {/* Campos dinâmicos inferiores */}
         <div
-          className={`grid grid-cols-1 sm:grid-cols-2 ${config.layout.length === 3 ? "lg:grid-cols-3" : ""} gap-6 self-stretch`}
+          className={`grid grid-cols-1 sm:grid-cols-2 ${layout.length === 3 ? "lg:grid-cols-3" : ""} gap-6 self-stretch`}
         >
-          {config.layout.map((fieldKey) => {
+          {layout.map((fieldKey) => {
             const fieldConfig = config[fieldKey];
             const isPrice = fieldKey === "preco" || fieldKey === "precoAntigo";
             const hasClear = fieldKey === "precoAntigo"; // O botão "X" para limpar fica atrelado ao precoAntigo para ocultar o rodapé facilmente
